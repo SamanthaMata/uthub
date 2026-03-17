@@ -1,4 +1,0 @@
-[build]
-  base    = "uthub-netlify"
-  command = "npm run build"
-  publish = "uthub-netlify/dist"
