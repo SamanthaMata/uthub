@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito de Compra - UThub</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/comida.css">
+
+  <style>
+    /* ── CART PAGE ── */
+    .cart-page-layout {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .cart-page-layout { grid-template-columns: 1fr; }
+    }
+
+    /* Empty state */
+    .cart-empty-state {
+      text-align: center;
+      padding: 80px 40px;
+      background: var(--white, #fff);
+      border-radius: 20px;
+      border: 2px dashed #E8E4DE;
+    }
+    .cart-empty-icon {
+      font-size: 72px;
+      margin-bottom: 16px;
+    }
+    .cart-empty-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--ut-dark, #1A1A2E);
+      margin-bottom: 8px;
+    }
+    .cart-empty-desc {
+      font-size: 14px;
+      color: var(--ut-text-s, #6B6B80);
+      margin-bottom: 28px;
+    }
+
+    /* Cart items list */
+    .cart-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      background: var(--white, #fff);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 24px;
+      border-bottom: 1px solid #F0EDE8;
+      transition: background .15s;
+    }
+    .cart-item:last-child { border-bottom: none; }
+    .cart-item:hover { background: #FAFAF8; }
+
+    .cart-item-emoji {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      background: var(--ut-orange-xl, #FFF0E0);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+    .cart-item-info { flex: 1; }
+    .cart-item-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px; font-weight: 700;
+      color: var(--ut-dark, #1A1A2E);
+      margin-bottom: 2px;
+    }
+    .cart-item-tienda {
+      font-size: 12px;
+      color: var(--ut-text-s, #6B6B80);
+    }
+    .cart-item-quantity {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .qty-btn {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: 1.5px solid #E8E4DE;
+      background: white;
+      color: var(--ut-dark, #1A1A2E);
+      font-size: 18px; font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .2s;
+    }
+    .qty-btn:hover {
+      border-color: var(--ut-orange, #F5841F);
+      color: var(--ut-orange, #F5841F);
+    }
+    .qty-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px; font-weight: 700;
+      width: 28px; text-align: center;
+      color: var(--ut-dark, #1A1A2E);
+    }
+    .cart-item-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 17px; font-weight: 800;
+      color: var(--ut-orange, #F5841F);
+      min-width: 60px; text-align: right;
+    }
+    .cart-item-remove {
+      background: none; border: none;
+      cursor: pointer;
+      color: #C9C4BE;
+      padding: 4px;
+      border-radius: 6px;
+      transition: color .2s;
+      display: flex; align-items: center;
+    }
+    .cart-item-remove:hover { color: #FF4F5E; }
+
+    /* Section header */
+    .cart-section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .cart-section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px; font-weight: 800;
+      color: var(--ut-dark, #1A1A2E);
+    }
+    .cart-items-count {
+      font-size: 13px;
+      color: var(--ut-text-s, #6B6B80);
+      background: #F7F4F0;
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    /* Summary card */
+    .cart-summary-card {
+      background: white;
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 4px 20px rgba(0,0,0,.06);
+      position: sticky;
+      top: 88px;
+    }
+    .summary-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px; font-weight: 800;
+      color: var(--ut-dark, #1A1A2E);
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #F0EDE8;
+    }
+
+    /* Delivery location */
+    .delivery-section { margin-bottom: 20px; }
+    .delivery-label {
+      font-size: 12px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--ut-text-s, #6B6B80);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .delivery-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #E8E4DE;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--ut-dark, #1A1A2E);
+      background: white;
+      cursor: pointer;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .delivery-select:focus { border-color: var(--ut-orange, #F5841F); }
+
+    .instrucciones-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid #E8E4DE;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--ut-dark, #1A1A2E);
+      resize: none;
+      height: 72px;
+      outline: none;
+      transition: border-color .2s;
+      margin-top: 8px;
+    }
+    .instrucciones-input:focus { border-color: var(--ut-orange, #F5841F); }
+    .instrucciones-input::placeholder { color: #C0BBBB; }
+
+    /* Price breakdown */
+    .price-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0;
+      padding: 16px 0;
+      border-top: 1px solid #F0EDE8;
+      border-bottom: 1px solid #F0EDE8;
+    }
+    .price-row {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .price-row-label { font-size: 13px; color: var(--ut-text-s, #6B6B80); }
+    .price-row-value { font-size: 14px; font-weight: 600; color: var(--ut-dark, #1A1A2E); }
+    .price-row-value.delivery-fee { color: var(--ut-text-s, #6B6B80); }
+
+    .price-total-row {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 8px;
+    }
+    .price-total-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px; font-weight: 700;
+      color: var(--ut-dark, #1A1A2E);
+    }
+    .price-total-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 24px; font-weight: 800;
+      color: var(--ut-orange, #F5841F);
+    }
+
+    /* CTA button */
+    .btn-checkout {
+      display: block; width: 100%;
+      padding: 14px;
+      background: var(--ut-orange, #F5841F);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: background .2s, transform .15s;
+      margin-top: 20px;
+    }
+    .btn-checkout:hover {
+      background: var(--ut-orange-d, #D96A08);
+      transform: translateY(-1px);
+    }
+    .btn-checkout:active { transform: translateY(0); }
+
+    .btn-continue-shopping {
+      display: block; width: 100%;
+      padding: 11px;
+      background: transparent;
+      color: var(--ut-text-s, #6B6B80);
+      border: 1.5px solid #E8E4DE;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 500;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      transition: all .2s;
+      margin-top: 10px;
+    }
+    .btn-continue-shopping:hover {
+      border-color: var(--ut-orange, #F5841F);
+      color: var(--ut-orange, #F5841F);
+    }
+
+    /* Security badges */
+    .security-badges {
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #F0EDE8;
+    }
+    .security-badge {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 11px; color: #A0A0A8;
+    }
+
+    /* Promo tag */
+    .free-delivery-tag {
+      display: flex; align-items: center; gap: 8px;
+      background: #DCFCE7;
+      color: #16A34A;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12px; font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    /* Page header */
+    .cart-page-header {
+      margin-bottom: 28px;
+    }
+    .cart-page-header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px; font-weight: 800;
+      color: var(--ut-dark, #1A1A2E);
+    }
+    .cart-page-header p {
+      font-size: 14px;
+      color: var(--ut-text-s, #6B6B80);
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body class="dashboard-page">
+
+  <!-- HEADER -->
+  <header class="header" id="header">
+    <div class="header-container">
+      <a href="../../index.html" class="logo">
+        <span class="logo-ut">UT</span><span class="logo-hub">hub</span>
+      </a>
+
+      <nav class="nav" id="nav-menu">
+        <ul class="nav-list">
+          <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="tiendas.html" class="nav-link active">🍔 Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="carrito.html" class="icon-btn cart-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="badge-notif" id="cart-count" style="display:none;">0</span>
+        </a>
+
+        <div class="user-menu">
+          <button class="user-btn" id="user-menu-btn">
+            <div class="user-avatar">
+              <span id="user-initials">SM</span>
+            </div>
+            <div class="user-info">
+              <div class="user-name" id="user-name">Samantha Mata</div>
+              <div class="user-role">Estudiante</div>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="../../index.html">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="tiendas.html">Tiendas</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Carrito</li>
+      </ol>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <div class="container">
+
+      <div class="cart-page-header">
+        <h1>🛒 Tu Carrito</h1>
+        <p>Revisa tus productos y confirma tu pedido</p>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div id="cart-empty" style="display:none;">
+        <div class="cart-empty-state">
+          <div class="cart-empty-icon">🛒</div>
+          <div class="cart-empty-title">Tu carrito está vacío</div>
+          <div class="cart-empty-desc">Agrega productos desde el menú de tus tiendas favoritas</div>
+          <a href="tiendas.html" class="btn btn-primary" style="display:inline-block; padding:12px 28px; background:var(--ut-orange,#F5841F); color:white; border-radius:12px; text-decoration:none; font-family:'Syne',sans-serif; font-weight:700;">
+            Ver Tiendas
+          </a>
+        </div>
+      </div>
+
+      <!-- CART WITH ITEMS -->
+      <div id="cart-summary" style="display:none;">
+        <div class="cart-page-layout">
+
+          <!-- LEFT: Items -->
+          <div>
+            <div class="cart-section-header">
+              <span class="cart-section-title">Productos</span>
+              <span class="cart-items-count" id="items-count-label">0 productos</span>
+            </div>
+
+            <!-- Items are injected here by comida.js loadCartItems() -->
+            <div class="cart-items-list" id="cart-items"></div>
+          </div>
+
+          <!-- RIGHT: Summary -->
+          <div class="cart-summary-card">
+            <div class="summary-title">Resumen del Pedido</div>
+
+            <!-- Free delivery promo -->
+            <div class="free-delivery-tag">
+              ✅ Entrega dentro del campus
+            </div>
+
+            <!-- Delivery location -->
+            <div class="delivery-section">
+              <label class="delivery-label" for="ubicacion-entrega">Punto de entrega *</label>
+              <select class="delivery-select" id="ubicacion-entrega" required>
+                <option value="">Selecciona tu ubicación</option>
+                <option value="Salón A-101">Salón A-101</option>
+                <option value="Salón A-102">Salón A-102</option>
+                <option value="Salón A-201">Salón A-201</option>
+                <option value="Salón A-202">Salón A-202</option>
+                <option value="Salón B-101">Salón B-101</option>
+                <option value="Salón B-102">Salón B-102</option>
+                <option value="Salón B-201">Salón B-201</option>
+                <option value="Salón B-204">Salón B-204</option>
+                <option value="Salón C-101">Salón C-101</option>
+                <option value="Salón C-201">Salón C-201</option>
+                <option value="Área de descanso Edificio A">Área de descanso Edificio A</option>
+                <option value="Área de descanso Edificio B">Área de descanso Edificio B</option>
+                <option value="Cafetería Central">Cafetería Central</option>
+                <option value="Biblioteca">Biblioteca</option>
+                <option value="Laboratorio de Cómputo">Laboratorio de Cómputo</option>
+              </select>
+
+              <label class="delivery-label" for="instrucciones" style="margin-top:14px;">
+                Instrucciones especiales
+              </label>
+              <textarea
+                id="instrucciones"
+                class="instrucciones-input"
+                placeholder="Ej: Sin cebolla, piso 2, llama a mi cel...">
+              </textarea>
+            </div>
+
+            <!-- Price breakdown -->
+            <div class="price-breakdown">
+              <div class="price-row">
+                <span class="price-row-label">Subtotal</span>
+                <span class="price-row-value" id="cart-subtotal">$0</span>
+              </div>
+              <div class="price-row">
+                <span class="price-row-label">Cargo de entrega</span>
+                <span class="price-row-value delivery-fee" id="cart-delivery">$10</span>
+              </div>
+            </div>
+
+            <div class="price-total-row">
+              <span class="price-total-label">Total</span>
+              <span class="price-total-value" id="cart-total">$0</span>
+            </div>
+
+            <!-- CTA -->
+            <button class="btn-checkout" onclick="procesarPedido()">
+              Confirmar Pedido →
+            </button>
+            <a href="tiendas.html" class="btn-continue-shopping">
+              ← Seguir comprando
+            </a>
+
+            <!-- Security badges -->
+            <div class="security-badges">
+              <div class="security-badge">🔒 Pago seguro</div>
+              <div class="security-badge">📍 Entrega en campus</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- JS -->
+  <script src="../../js/comida.js"></script>
+  <script src="../../js/notifications.js"></script>
+  <script>
+    // Initialize cart page
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCartItems();
+      updateCartCount();
+
+      // Show empty or filled state
+      const cart = JSON.parse(localStorage.getItem('uthub_cart')) || [];
+      if (cart.length === 0) {
+        document.getElementById('cart-empty').style.display = 'block';
+        document.getElementById('cart-summary').style.display = 'none';
+      } else {
+        document.getElementById('cart-empty').style.display = 'none';
+        document.getElementById('cart-summary').style.display = 'block';
+        // Update items count label
+        const totalItems = cart.reduce((s, i) => s + i.cantidad, 0);
+        const label = document.getElementById('items-count-label');
+        if (label) label.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
+      }
+    });
+
+    // Override procesarPedido to also update the count label after quantity changes
+    const _origLoad = window.loadCartItems;
+    window.loadCartItems = function() {
+      _origLoad();
+      const cart = JSON.parse(localStorage.getItem('uthub_cart')) || [];
+      const totalItems = cart.reduce((s, i) => s + i.cantidad, 0);
+      const label = document.getElementById('items-count-label');
+      if (label) label.textContent = `${totalItems} producto${totalItems !== 1 ? 's' : ''}`;
+
+      // Toggle empty / filled state
+      if (cart.length === 0) {
+        document.getElementById('cart-empty').style.display = 'block';
+        document.getElementById('cart-summary').style.display = 'none';
+      } else {
+        document.getElementById('cart-empty').style.display = 'none';
+        document.getElementById('cart-summary').style.display = 'block';
+      }
+    };
+  </script>
+</body>
+</html>

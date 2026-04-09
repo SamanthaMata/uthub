@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ser Tutor - UThub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/comida.css">
+  <style>
+    .registro-layout{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start;}
+    @media(max-width:900px){.registro-layout{grid-template-columns:1fr;}}
+    .form-card{background:white;border-radius:20px;padding:32px;box-shadow:0 4px 20px rgba(0,0,0,.06);}
+    .form-section{margin-bottom:28px;}
+    .form-section-title{font-family:Syne,sans-serif;font-size:15px;font-weight:800;color:#1A1A2E;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #F0EDE8;}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .form-grid.full{grid-template-columns:1fr;}
+    .form-group{display:flex;flex-direction:column;gap:6px;}
+    .form-group.span2{grid-column:1/-1;}
+    .form-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B6B80;}
+    .form-input,.form-select,.form-textarea{padding:11px 14px;border:1.5px solid #E8E4DE;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;color:#1A1A2E;background:white;outline:none;transition:border-color .2s;}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:#F5841F;}
+    .form-textarea{resize:vertical;min-height:80px;}
+    .materias-selector{display:flex;flex-wrap:wrap;gap:8px;}
+    .materia-chip{padding:7px 14px;border-radius:100px;border:1.5px solid #E8E4DE;background:white;font-size:12px;font-weight:600;color:#6B6B80;cursor:pointer;transition:all .15s;user-select:none;}
+    .materia-chip.selected{background:#F5841F;border-color:#F5841F;color:white;}
+    .materia-chip:hover:not(.selected){border-color:#F5841F;color:#F5841F;}
+    .horario-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px;}
+    .dia-toggle-label{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;}
+    .dia-name{font-size:10px;font-weight:700;text-transform:uppercase;color:#9CA3AF;}
+    .dia-box{width:36px;height:36px;border-radius:10px;border:1.5px solid #E8E4DE;background:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#9CA3AF;transition:all .15s;}
+    input[type=checkbox]:checked ~ .dia-box{background:#F5841F;border-color:#F5841F;color:white;}
+    input[type=checkbox]{display:none;}
+    /* Benefits sidebar */
+    .benefit-item{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px;}
+    .benefit-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+    .benefit-title{font-family:Syne,sans-serif;font-size:14px;font-weight:700;color:#1A1A2E;margin-bottom:2px;}
+    .benefit-desc{font-size:12px;color:#6B6B80;line-height:1.5;}
+    .btn-submit{display:block;width:100%;padding:14px;background:#F5841F;color:white;border:none;border-radius:12px;font-family:Syne,sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:20px;}
+    .btn-submit:hover{background:#D96A08;transform:translateY(-1px);}
+  </style>
+</head>
+<body class="dashboard-page">
+  <header class="header" id="header">
+    <div class="header-container">
+      <a href="../../index.html" class="logo"><span class="logo-ut">UT</span><span class="logo-hub">hub</span></a>
+      <nav class="nav"><ul class="nav-list">
+          <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="../comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
+          <li><a href="buscar.html" class="nav-link active">📚 Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
+      </ul></nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="notifications-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="badge-notif">0</span>
+        </button>
+        <div class="user-menu"><button class="user-btn" id="user-menu-btn">
+          <div class="user-avatar"><span id="user-initials">SM</span></div>
+          <div class="user-info"><div class="user-name">Samantha Mata</div><div class="user-role">Estudiante</div></div>
+        </button></div>
+      </div>
+    </div>
+  </header>
+  <nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="buscar.html">Tutorías</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Ser Tutor</li>
+      </ol>
+    </div>
+  </nav>
+  <main class="main-content">
+    <div class="container">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">🎓 Conviértete en Tutor</h1>
+          <p class="page-subtitle">Comparte tu conocimiento y gana dinero ayudando a otros estudiantes.</p>
+        </div>
+      </div>
+      <div class="registro-layout">
+        <div class="form-card">
+          <div class="form-section">
+            <div class="form-section-title">Información Personal</div>
+            <div class="form-grid">
+              <div class="form-group"><label class="form-label">Nombre Completo</label><input class="form-input" id="t-nombre" placeholder="Ej: Carlos Mendoza" type="text"></div>
+              <div class="form-group"><label class="form-label">Carrera</label>
+                <select class="form-select" id="t-carrera">
+                  <option>Ing. en Sistemas</option>
+                  <option>Ing. en Mecatrónica</option>
+                  <option>Ing. en Gestión Empresarial</option>
+                  <option>Ing. Industrial</option>
+                  <option>Otra</option>
+                </select>
+              </div>
+              <div class="form-group"><label class="form-label">Semestre Actual</label>
+                <select class="form-select" id="t-semestre">
+                  <option>3er</option><option>4to</option><option>5to</option>
+                  <option>6to</option><option>7mo</option><option>8vo</option>
+                  <option>9no</option><option>10mo</option>
+                </select>
+              </div>
+              <div class="form-group"><label class="form-label">Precio por hora ($)</label><input class="form-input" id="t-precio" type="number" min="30" max="300" placeholder="Ej: 80"></div>
+              <div class="form-group span2"><label class="form-label">WhatsApp (se comparte SOLO al aceptar sesión)</label><div style="display:flex;align-items:center;gap:8px;"><span style="font-size:16px;">🇲🇽 +52</span><input class="form-input" id="t-whatsapp" type="tel" placeholder="8112345678" style="flex:1;"></div><div style="font-size:11px;color:#16A34A;margin-top:4px;">🔒 Tu número es privado hasta que confirmes una sesión</div></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Sobre ti</div>
+            <div class="form-group"><label class="form-label">Descripción</label><textarea class="form-textarea" id="t-desc" placeholder="Cuéntales a los estudiantes tu experiencia, método de enseñanza y por qué eres el tutor ideal..."></textarea></div>
+            <div class="form-group" style="margin-top:14px;"><label class="form-label">Modalidad</label>
+              <select class="form-select" id="t-modalidad">
+                <option value="presencial">📍 Presencial (en el campus)</option>
+                <option value="virtual">💻 Virtual (videollamada)</option>
+                <option value="ambas">📍💻 Ambas opciones</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-top:14px;"><label class="form-label">Ubicación / Plataforma</label><input class="form-input" id="t-ubicacion" placeholder="Ej: Biblioteca / Edificio Docencia 1 / Google Meet"></div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Materias que enseñas</div>
+            <div class="materias-selector" id="materias-chips"></div>
+            <div style="margin-top:10px;display:flex;gap:8px;align-items:center;">
+              <input class="form-input" id="materia-custom" placeholder="Otra materia..." style="flex:1;padding:8px 12px;">
+              <button onclick="addCustomMateria()" style="padding:8px 14px;background:#F5841F;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;">+ Agregar</button>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="form-section-title">Horario Disponible</div>
+            <div class="horario-grid" id="dias-grid"></div>
+            <div class="form-grid">
+              <div class="form-group"><label class="form-label">Hora inicio</label><input type="time" class="form-input" id="t-hora-ini" value="07:00"></div>
+              <div class="form-group"><label class="form-label">Hora fin</label><input type="time" class="form-input" id="t-hora-fin" value="15:00"></div>
+            </div>
+          </div>
+
+          <button class="btn-submit" onclick="registrarTutor()">Publicar mi perfil como Tutor →</button>
+        </div>
+
+        <!-- Benefits sidebar -->
+        <div>
+          <div style="background:white;border-radius:20px;padding:28px;box-shadow:0 4px 20px rgba(0,0,0,.06);margin-bottom:20px;">
+            <div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800;color:#1A1A2E;margin-bottom:20px;">¿Por qué ser tutor en UThub?</div>
+            <div class="benefit-item"><div class="benefit-icon" style="background:#FFF0E0;">💰</div><div><div class="benefit-title">Gana desde $60/hr</div><div class="benefit-desc">Tú pones el precio. Los mejores tutores ganan +$3,000 al mes.</div></div></div>
+            <div class="benefit-item"><div class="benefit-icon" style="background:#DCFCE7;">📅</div><div><div class="benefit-title">Horario flexible</div><div class="benefit-desc">Acepta solo las sesiones que quieras, cuando tengas tiempo.</div></div></div>
+            <div class="benefit-item"><div class="benefit-icon" style="background:#DBEAFE;">📲</div><div><div class="benefit-title">Coordina por WhatsApp</div><div class="benefit-desc">Sin apps extra. Habla directo con el estudiante al aceptar.</div></div></div>
+            <div class="benefit-item"><div class="benefit-icon" style="background:#F0FDF4;">⭐</div><div><div class="benefit-title">Construye reputación</div><div class="benefit-desc">Las reseñas de los estudiantes aumentan tu visibilidad.</div></div></div>
+          </div>
+          <div style="background:linear-gradient(135deg,#1A1A2E,#2D2D44);border-radius:20px;padding:24px;color:white;">
+            <div style="font-family:Syne,sans-serif;font-size:15px;font-weight:800;margin-bottom:8px;">🔒 Tu privacidad, primero</div>
+            <div style="font-size:13px;opacity:.75;line-height:1.6;">Tu número de WhatsApp <strong style="opacity:1;">nunca</strong> aparece en el catálogo público. Solo se comparte con el estudiante cuando <strong style="opacity:1;">tú aceptas</strong> la sesión.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="../../js/tutorias.js"></script>
+  <script>
+  const { saveMiPerfil } = TutoriasDB;
+  const { MATERIAS_TODAS, tutoriasToast } = TutoriasUI;
+  const DIAS = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+  let materiasSeleccionadas = new Set();
+
+  // Render materias chips
+  const chipsEl = document.getElementById('materias-chips');
+  MATERIAS_TODAS.forEach(m => {
+    const chip = document.createElement('div');
+    chip.className = 'materia-chip';
+    chip.textContent = m;
+    chip.onclick = () => { chip.classList.toggle('selected'); if(chip.classList.contains('selected')) materiasSeleccionadas.add(m); else materiasSeleccionadas.delete(m); };
+    chipsEl.appendChild(chip);
+  });
+
+  // Render dias
+  const diasEl = document.getElementById('dias-grid');
+  DIAS.forEach((d,i) => {
+    const label = document.createElement('label');
+    label.className = 'dia-toggle-label';
+    label.innerHTML = '<span class="dia-name">'+d+'</span><input type="checkbox" id="dia-'+i+'" '+(i<5?'checked':'')+' onchange=""><div class="dia-box">'+d[0]+'</div>';
+    diasEl.appendChild(label);
+  });
+
+  function addCustomMateria() {
+    const input = document.getElementById('materia-custom');
+    const val = input.value.trim();
+    if (!val) return;
+    const chip = document.createElement('div');
+    chip.className = 'materia-chip selected';
+    chip.textContent = val;
+    chip.onclick = () => { chip.classList.toggle('selected'); if(chip.classList.contains('selected')) materiasSeleccionadas.add(val); else materiasSeleccionadas.delete(val); };
+    chipsEl.appendChild(chip);
+    materiasSeleccionadas.add(val);
+    input.value = '';
+  }
+
+  function registrarTutor() {
+    const nombre = document.getElementById('t-nombre').value.trim();
+    const precio = parseInt(document.getElementById('t-precio').value);
+    const wa     = document.getElementById('t-whatsapp').value.replace(/\D/g,'');
+    const desc   = document.getElementById('t-desc').value.trim();
+    if (!nombre) { tutoriasToast('Ingresa tu nombre', 'error'); return; }
+    if (!precio||precio<30) { tutoriasToast('Ingresa un precio válido (mínimo $30)', 'error'); return; }
+    if (!wa||wa.length<10) { tutoriasToast('Ingresa tu número de WhatsApp (10 dígitos)', 'error'); return; }
+    if (!desc) { tutoriasToast('Agrega una descripción', 'error'); return; }
+    if (materiasSeleccionadas.size === 0) { tutoriasToast('Selecciona al menos una materia', 'error'); return; }
+    const dias = DIAS.map((_,i) => document.getElementById('dia-'+i).checked);
+    const perfil = {
+      id: Date.now(), nombre,
+      carrera: document.getElementById('t-carrera').value,
+      semestre: document.getElementById('t-semestre').value,
+      avatar: nombre.split(' ').map(p=>p[0]).join('').slice(0,2).toUpperCase(),
+      color: '#F5841F', precio, calificacion: 0, sesiones: 0, disponible: true,
+      materias: [...materiasSeleccionadas],
+      descripcion: desc,
+      horario:{ dias, apertura: document.getElementById('t-hora-ini').value, cierre: document.getElementById('t-hora-fin').value },
+      modalidad: document.getElementById('t-modalidad').value,
+      ubicacion: document.getElementById('t-ubicacion').value.trim(),
+      idioma: 'Español',
+      whatsapp: wa
+    };
+    saveMiPerfil(perfil);
+    // Also add to custom tutores list
+    const custom = JSON.parse(localStorage.getItem('uthub_tutores_custom')||'[]');
+    const existIdx = custom.findIndex(t => t.id === perfil.id);
+    if (existIdx>=0) custom[existIdx]=perfil; else custom.push(perfil);
+    localStorage.setItem('uthub_tutores_custom', JSON.stringify(custom));
+    tutoriasToast('¡Perfil publicado! Ya apareces en el catálogo.', 'success');
+    setTimeout(()=>location.href='mis-tutorias.html', 1800);
+  }
+  </script>
+</body>
+</html>

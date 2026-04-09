@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - UThub</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+</head>
+<body class="dashboard-page">
+  
+  <!-- HEADER CON NAVEGACIÓN COMPLETA -->
+  <header class="header" id="header">
+    <div class="header-container">
+      <a href="../../index.html" class="logo">
+        <span class="logo-ut">UT</span><span class="logo-hub">hub</span>
+      </a>
+      
+      <nav class="nav" id="nav-menu">
+        <ul class="nav-list">
+          <li><a href="#" class="nav-link active">Dashboard</a></li>
+          <li><a href="../comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
+        </ul>
+      </nav>
+      
+      <div class="header-actions">
+        <div class="search-container">
+          <input type="text" id="global-search" class="search-input" placeholder="Buscar...">
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </div>
+        
+        <button class="icon-btn" id="notifications-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span class="badge-notif">3</span>
+        </button>
+        
+        <div class="user-menu">
+          <button class="user-btn" id="user-menu-btn">
+            <div class="user-avatar">
+              <span id="user-initials">SM</span>
+            </div>
+            <div class="user-info">
+              <div class="user-name" id="user-name">Samantha Mata</div>
+              <div class="user-role">Estudiante</div>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          
+          <div class="user-dropdown" id="user-dropdown" style="display: none;">
+            <a href="usuario/perfil.html" class="dropdown-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              Mi Perfil
+            </a>
+            <a href="usuario/config.html" class="dropdown-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M12 1v6m0 6v6m8.66-12h-5.2m-6.92 0H3.34M20.66 17h-5.2m-6.92 0H3.34"></path>
+              </svg>
+              Configuración
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item" id="logout-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="../../index.html">Inicio</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+      </ol>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="dashboard-main">
+    <div class="container">
+      
+      <!-- Welcome Section -->
+      <div class="welcome-section">
+        <div class="welcome-content">
+          <h1 class="welcome-title">¡Bienvenido de nuevo, <span id="welcome-name">Samantha</span>!</h1>
+          <p class="welcome-subtitle">Aquí está un resumen de tu actividad reciente en UThub</p>
+        </div>
+        <div class="welcome-actions">
+          <button class="btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Nueva Publicación
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-orange">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Pedidos Activos</div>
+            <div class="stat-value">2</div>
+            <div class="stat-change stat-change-up">+1 esta semana</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-teal">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Tutorías Reservadas</div>
+            <div class="stat-value" id="dash-tutorias-count">1</div>
+            <div class="stat-change"><a href="../tutorias/mis-sesiones.html" style="color:inherit;text-decoration:none;">Ver mis sesiones →</a></div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Ahorrado este mes</div>
+            <div class="stat-value">$450</div>
+            <div class="stat-change stat-change-up">vs. compra nuevo</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon stat-icon-blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Reputación</div>
+            <div class="stat-value">4.8 ⭐</div>
+            <div class="stat-change">12 reseñas</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Grid -->
+      <div class="dashboard-grid">
+        
+        <!-- Columna Izquierda -->
+        <div class="dashboard-col-main">
+          
+          <!-- Actividad Reciente -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <h3 class="card-title">Actividad Reciente</h3>
+              <a href="../tutorias/mis-sesiones.html" class="link-secondary">Ver todo</a>
+            </div>
+            <div class="card-body">
+              <div class="activity-list">
+                
+                <div class="activity-item">
+                  <div class="activity-icon activity-icon-orange">🍔</div>
+                  <div class="activity-content">
+                    <div class="activity-title">Pedido confirmado - Tacos El Profe</div>
+                    <div class="activity-meta">Entrega en Salón B-204 • Hace 2 horas</div>
+                  </div>
+                  <div class="activity-amount">$85.00</div>
+                </div>
+
+                <div class="activity-item">
+                  <div class="activity-icon activity-icon-teal">📚</div>
+                  <div class="activity-content">
+                    <div class="activity-title">Reserva confirmada - Tutoría de Cálculo</div>
+                    <div class="activity-meta">Con Carlos Mendoza • Mañana 2:00 PM</div>
+                  </div>
+                  <div class="activity-amount">$80.00</div>
+                </div>
+
+                <div class="activity-item">
+                  <div class="activity-icon activity-icon-green">📖</div>
+                  <div class="activity-content">
+                    <div class="activity-title">Libro vendido - Fundamentos de BD</div>
+                    <div class="activity-meta">Comprador: Ana M. • Hace 1 día</div>
+                  </div>
+                  <div class="activity-amount activity-amount-positive">+$150.00</div>
+                </div>
+
+                <div class="activity-item">
+                  <div class="activity-icon activity-icon-blue">⭐</div>
+                  <div class="activity-content">
+                    <div class="activity-title">Nueva reseña recibida</div>
+                    <div class="activity-meta">5 estrellas en tu libro • Hace 1 día</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Accesos Rápidos -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <h3 class="card-title">Accesos Rápidos</h3>
+            </div>
+            <div class="card-body">
+              <div class="quick-actions-grid">
+                <a href="../comida/tiendas.html" class="quick-action">
+                  <div class="quick-action-icon">🍔</div>
+                  <div class="quick-action-label">Pedir Comida</div>
+                </a>
+                <a href="../tutorias/buscar.html" class="quick-action">
+                  <div class="quick-action-icon">📚</div>
+                  <div class="quick-action-label">Buscar Tutor</div>
+                </a>
+                <a href="../libros/catalogo.html" class="quick-action">
+                  <div class="quick-action-icon">📖</div>
+                  <div class="quick-action-label">Vender Libro</div>
+                </a>
+                <a href="../servicios/explorar.html" class="quick-action">
+                  <div class="quick-action-icon">💼</div>
+                  <div class="quick-action-label">Ofrecer Servicio</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Columna Derecha -->
+        <div class="dashboard-col-side">
+          
+          <!-- Notificaciones -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <h3 class="card-title">Notificaciones</h3>
+              <span class="badge-count">3</span>
+            </div>
+            <div class="card-body">
+              <div class="notifications-list">
+                
+                <div class="notification-item notification-unread">
+                  <div class="notification-dot"></div>
+                  <div class="notification-content">
+                    <div class="notification-title">Tu pedido está en camino</div>
+                    <div class="notification-time">Hace 5 minutos</div>
+                  </div>
+                </div>
+
+                <div class="notification-item notification-unread">
+                  <div class="notification-dot"></div>
+                  <div class="notification-content">
+                    <div class="notification-title">Recordatorio de tutoría mañana</div>
+                    <div class="notification-time">Hace 1 hora</div>
+                  </div>
+                </div>
+
+                <div class="notification-item notification-unread">
+                  <div class="notification-dot"></div>
+                  <div class="notification-content">
+                    <div class="notification-title">Nuevo mensaje de Carlos M.</div>
+                    <div class="notification-time">Hace 3 horas</div>
+                  </div>
+                </div>
+
+                <div class="notification-item">
+                  <div class="notification-content">
+                    <div class="notification-title">Libro marcado como entregado</div>
+                    <div class="notification-time">Hace 1 día</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Recomendaciones -->
+          <div class="dashboard-card">
+            <div class="card-header">
+              <h3 class="card-title">Recomendado para ti</h3>
+            </div>
+            <div class="card-body">
+              <div class="recommendations-list">
+                
+                <a href="../comida/menu.html?tienda=1" class="recommendation-item">
+                  <div class="recommendation-icon">🌮</div>
+                  <div class="recommendation-content">
+                    <div class="recommendation-title">Nuevos tacos de birria</div>
+                    <div class="recommendation-meta">Tacos El Profe • $55</div>
+                  </div>
+                </a>
+
+                <a href="../tutorias/tutor.html?id=2" class="recommendation-item">
+                  <div class="recommendation-icon">📐</div>
+                  <div class="recommendation-content">
+                    <div class="recommendation-title">Tutoría de Física II</div>
+                    <div class="recommendation-meta">Ana Martínez • 4.9⭐</div>
+                  </div>
+                </a>
+
+                <a href="../servicios/explorar.html" class="recommendation-item">
+                  <div class="recommendation-icon">💻</div>
+                  <div class="recommendation-content">
+                    <div class="recommendation-title">Diseño de logos</div>
+                    <div class="recommendation-meta">Servicios • Desde $200</div>
+                  </div>
+                </a>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-simple">
+        <p>&copy; 2026 UThub - UTSC. Todos los derechos reservados.</p>
+        <div class="footer-links-inline">
+          <a href="ayuda.html">Ayuda</a>
+          <a href="terminos.html">Términos</a>
+          <a href="privacidad.html">Privacidad</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="../../js/main.js"></script>
+  <script src="../../js/tutorias.js"></script>
+  <script src="../../js/notifications.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.TutoriasData) {
+        const activas = TutoriasData.getReservas()
+          .filter(r => r.estado === 'pendiente' || r.estado === 'aceptada').length;
+        const el = document.getElementById('dash-tutorias-count');
+        if (el && activas > 0) el.textContent = activas;
+      }
+    });
+  </script>
+</body>
+</html>

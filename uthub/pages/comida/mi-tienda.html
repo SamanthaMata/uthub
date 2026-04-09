@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Tienda - UThub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <style>
+    :root {
+      --orange: #F5841F;
+      --orange-d: #D96A08;
+      --orange-l: #FFA94D;
+      --orange-xl: #FFF0E0;
+      --dark: #1A1A2E;
+      --slate: #2D2D44;
+      --mist: #F7F4F0;
+      --white: #FFFFFF;
+      --text-s: #6B6B80;
+      --accent: #00C2A8;
+      --success: #22C55E;
+      --error: #FF4F5E;
+      --warn: #FBBF24;
+    }
+
+    /* ── LAYOUT ── */
+    .vendor-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 0;
+      min-height: calc(100vh - 70px);
+      margin-top: 70px;
+    }
+
+    /* ── SIDEBAR ── */
+    .vendor-sidebar {
+      background: var(--dark);
+      padding: 32px 0;
+      position: sticky;
+      top: 70px;
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+    }
+
+    .sidebar-brand {
+      padding: 0 24px 28px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      margin-bottom: 20px;
+    }
+    .sidebar-brand-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px; font-weight: 800;
+      color: white;
+      margin-bottom: 4px;
+    }
+    .sidebar-brand-status {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; color: var(--success);
+      font-weight: 500;
+    }
+    .sidebar-brand-status::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    .sidebar-nav { padding: 0 12px; }
+    .sidebar-section-label {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(255,255,255,.25);
+      padding: 0 12px;
+      margin: 20px 0 8px;
+    }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      color: rgba(255,255,255,.55);
+      text-decoration: none;
+      font-size: 13px; font-weight: 500;
+      transition: all .2s;
+      cursor: pointer;
+      margin-bottom: 2px;
+    }
+    .sidebar-link:hover {
+      background: rgba(255,255,255,.07);
+      color: rgba(255,255,255,.9);
+    }
+    .sidebar-link.active {
+      background: var(--orange);
+      color: white;
+    }
+    .sidebar-link svg { flex-shrink: 0; opacity: .8; }
+    .sidebar-link.active svg { opacity: 1; }
+
+    .sidebar-badge {
+      margin-left: auto;
+      background: var(--error);
+      color: white;
+      font-size: 10px; font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 100px;
+    }
+
+    /* ── MAIN PANEL ── */
+    .vendor-main {
+      background: var(--mist);
+      padding: 32px 40px;
+      overflow-y: auto;
+    }
+
+    /* ── PANELS (tabs) ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── PAGE HEADER ── */
+    .panel-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .panel-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px; font-weight: 800;
+      color: var(--dark);
+    }
+    .panel-subtitle {
+      font-size: 13px; color: var(--text-s);
+      margin-top: 3px;
+    }
+
+    /* ── STAT CARDS ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.05);
+    }
+    .stat-card-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      margin-bottom: 14px;
+    }
+    .stat-card-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px; font-weight: 800;
+      color: var(--dark);
+      line-height: 1;
+    }
+    .stat-card-label {
+      font-size: 12px; color: var(--text-s);
+      margin-top: 4px;
+    }
+    .stat-card-trend {
+      font-size: 11px; font-weight: 600;
+      margin-top: 8px;
+    }
+    .trend-up { color: var(--success); }
+    .trend-neutral { color: var(--text-s); }
+
+    /* ── CARD ── */
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.05);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .card-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #F0EDE8;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px; font-weight: 800;
+      color: var(--dark);
+    }
+    .card-body { padding: 24px; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all .2s;
+      text-decoration: none;
+    }
+    .btn-primary { background: var(--orange); color: white; }
+    .btn-primary:hover { background: var(--orange-d); transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--orange); border: 1.5px solid var(--orange); }
+    .btn-ghost:hover { background: var(--orange-xl); }
+    .btn-danger { background: transparent; color: var(--error); border: 1.5px solid var(--error); }
+    .btn-danger:hover { background: #FFE8EA; }
+    .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+    /* ── ORDERS TABLE ── */
+    .orders-table { width: 100%; border-collapse: collapse; }
+    .orders-table th {
+      text-align: left;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--text-s);
+      padding: 12px 16px;
+      border-bottom: 1px solid #F0EDE8;
+    }
+    .orders-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #F7F4F0;
+      font-size: 13px;
+      color: var(--dark);
+      vertical-align: middle;
+    }
+    .orders-table tr:last-child td { border-bottom: none; }
+    .orders-table tr:hover td { background: #FAFAF8; }
+
+    .order-id { font-weight: 700; font-family: 'Syne', sans-serif; }
+    .order-items-preview {
+      max-width: 180px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      color: var(--text-s); font-size: 12px;
+    }
+
+    /* Status pills */
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 4px 10px;
+      border-radius: 100px;
+      font-size: 11px; font-weight: 600;
+    }
+    .status-pill::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .pill-nuevo     { background: #FFF0E0; color: var(--orange); }
+    .pill-preparando{ background: #FEF9C3; color: #CA8A04; }
+    .pill-listo     { background: #DCFCE7; color: #16A34A; }
+    .pill-entregado { background: #F0FDF4; color: #15803D; }
+
+    /* Status select */
+    .status-select {
+      border: 1.5px solid #E8E4DE;
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 12px; font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      outline: none;
+      background: white;
+      color: var(--dark);
+    }
+    .status-select:focus { border-color: var(--orange); }
+
+    /* ── PRODUCTS GRID ── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+    .product-item-card {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,.05);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .product-item-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+    .product-item-img {
+      height: 120px; overflow: hidden;
+    }
+    .product-item-img img { width: 100%; height: 100%; object-fit: cover; }
+    .product-item-body { padding: 14px; }
+    .product-item-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px; font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .product-item-price {
+      font-size: 15px; font-weight: 800;
+      color: var(--orange);
+      font-family: 'Syne', sans-serif;
+    }
+    .product-item-actions {
+      display: flex; gap: 6px;
+      margin-top: 10px;
+    }
+
+    /* ── STORE CONFIG FORM ── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-label {
+      font-size: 12px; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase;
+      color: var(--text-s);
+    }
+    .form-input, .form-select, .form-textarea {
+      padding: 11px 14px;
+      border: 1.5px solid #E8E4DE;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--dark);
+      background: white;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--orange);
+    }
+    .form-textarea { resize: vertical; min-height: 80px; }
+
+    /* Horario toggle */
+    .horario-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+    .horario-day {
+      text-align: center;
+    }
+    .horario-day label {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 6px; cursor: pointer;
+    }
+    .day-name {
+      font-size: 11px; font-weight: 600;
+      color: var(--text-s); text-transform: uppercase;
+    }
+    .day-toggle {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      border: 1.5px solid #E8E4DE;
+      background: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      color: var(--text-s);
+      transition: all .15s;
+      cursor: pointer;
+    }
+    input[type="checkbox"]:checked + .day-toggle {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: white;
+    }
+    input[type="checkbox"] { display: none; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .empty-state-icon { font-size: 48px; margin-bottom: 12px; }
+    .empty-state-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px; font-weight: 800;
+      color: var(--dark); margin-bottom: 6px;
+    }
+    .empty-state-desc { font-size: 13px; color: var(--text-s); }
+
+    /* ── ADD PRODUCT MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(26,26,46,.6);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      display: none; align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 20px;
+      width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 32px;
+      box-shadow: 0 32px 80px rgba(0,0,0,.2);
+    }
+    .modal-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px; font-weight: 800;
+      color: var(--dark);
+      margin-bottom: 24px;
+    }
+    .modal-actions {
+      display: flex; gap: 12px;
+      margin-top: 24px; justify-content: flex-end;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .vendor-layout { grid-template-columns: 1fr; }
+      .vendor-sidebar { display: none; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .vendor-main { padding: 20px; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header" id="header" style="position:fixed;top:0;width:100%;z-index:1000;background:white;box-shadow:0 2px 12px rgba(0,0,0,.06);">
+    <div class="header-container">
+      <a href="../../index.html" class="logo">
+        <span class="logo-ut">UT</span><span class="logo-hub">hub</span>
+      </a>
+      <nav class="nav">
+        <ul class="nav-list">
+          <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="tiendas.html" class="nav-link active">🍔 Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="tiendas.html" class="btn btn-ghost btn-sm">← Volver a Tiendas</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- VENDOR LAYOUT -->
+  <div class="vendor-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="vendor-sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-name" id="sb-tienda-nombre">🌮 Mi Tienda</div>
+        <div class="sidebar-brand-status" id="sb-status">Abierta ahora</div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">Panel</div>
+        <a class="sidebar-link active" onclick="showPanel('resumen')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Resumen
+        </a>
+        <a class="sidebar-link" onclick="showPanel('pedidos')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+          Pedidos
+          <span class="sidebar-badge" id="sb-pedidos-count" style="display:none;">0</span>
+        </a>
+        <a class="sidebar-link" onclick="showPanel('productos')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Mis Productos
+        </a>
+
+        <div class="sidebar-section-label">Configuración</div>
+        <a class="sidebar-link" onclick="showPanel('config')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          Configurar Tienda
+        </a>
+        <a class="sidebar-link" onclick="showPanel('horario')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Horario
+        </a>
+      </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="vendor-main">
+
+      <!-- ── PANEL: RESUMEN ── -->
+      <div class="panel active" id="panel-resumen">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">Buen día 👋</div>
+            <div class="panel-subtitle">Aquí está el resumen de tu tienda hoy</div>
+          </div>
+          <button class="btn btn-primary" onclick="toggleTiendaStatus()" id="btn-toggle-status">
+            🔴 Cerrar Tienda
+          </button>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:#FFF0E0;">📦</div>
+            <div class="stat-card-value" id="stat-pedidos-hoy">0</div>
+            <div class="stat-card-label">Pedidos hoy</div>
+            <div class="stat-card-trend trend-neutral">Total histórico: <span id="stat-pedidos-total">0</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:#DCFCE7;">💰</div>
+            <div class="stat-card-value" id="stat-ingresos">$0</div>
+            <div class="stat-card-label">Ingresos totales</div>
+            <div class="stat-card-trend trend-up" id="stat-ticket">Ticket prom. $0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:#DBEAFE;">⭐</div>
+            <div class="stat-card-value" id="stat-rating">—</div>
+            <div class="stat-card-label">Calificación</div>
+            <div class="stat-card-trend trend-neutral" id="stat-resenas">Sin reseñas aún</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-icon" style="background:#F0FDF4;">🍽️</div>
+            <div class="stat-card-value" id="stat-productos">0</div>
+            <div class="stat-card-label">Productos activos</div>
+            <div class="stat-card-trend trend-neutral">en el menú</div>
+          </div>
+        </div>
+
+        <!-- Pedidos pendientes -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">⏳ Pedidos Pendientes</span>
+            <a class="btn btn-ghost btn-sm" onclick="showPanel('pedidos')">Ver todos</a>
+          </div>
+          <div id="resumen-pedidos-pendientes">
+            <div class="empty-state">
+              <div class="empty-state-icon">✅</div>
+              <div class="empty-state-title">Todo al día</div>
+              <div class="empty-state-desc">No hay pedidos pendientes por atender</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Producto más vendido -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">🔥 Más vendidos</span>
+          </div>
+          <div class="card-body" id="mas-vendidos">
+            <div style="text-align:center;padding:20px;color:var(--text-s);font-size:13px;">
+              Los productos más pedidos aparecerán aquí conforme recibas pedidos.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANEL: PEDIDOS ── -->
+      <div class="panel" id="panel-pedidos">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">📦 Pedidos Recibidos</div>
+            <div class="panel-subtitle">Gestiona los pedidos de tus clientes</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <select class="status-select" id="filtro-estado-pedidos" onchange="renderPedidosTable()">
+              <option value="">Todos los estados</option>
+              <option value="nuevo">Nuevo</option>
+              <option value="preparando">Preparando</option>
+              <option value="listo">Listo</option>
+              <option value="entregado">Entregado</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card">
+          <div id="pedidos-table-container">
+            <div class="empty-state">
+              <div class="empty-state-icon">📭</div>
+              <div class="empty-state-title">Sin pedidos aún</div>
+              <div class="empty-state-desc">Cuando los estudiantes hagan pedidos en tu tienda, aparecerán aquí</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANEL: PRODUCTOS ── -->
+      <div class="panel" id="panel-productos">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">🍽️ Mis Productos</div>
+            <div class="panel-subtitle">Administra tu catálogo de productos</div>
+          </div>
+          <button class="btn btn-primary" onclick="openAddProductModal()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Agregar Producto
+          </button>
+        </div>
+
+        <div id="products-grid-container"></div>
+      </div>
+
+      <!-- ── PANEL: CONFIG ── -->
+      <div class="panel" id="panel-config">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">⚙️ Configurar Tienda</div>
+            <div class="panel-subtitle">Información pública de tu tienda</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">Información General</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Nombre de la Tienda</label>
+                <input class="form-input" id="cfg-nombre" type="text" placeholder="Ej: Tacos El Profe">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Tipo de Comida</label>
+                <select class="form-select" id="cfg-tipo">
+                  <option value="mexicana">Mexicana</option>
+                  <option value="italiana">Italiana</option>
+                  <option value="rapida">Comida Rápida</option>
+                  <option value="saludable">Saludable</option>
+                  <option value="postres">Postres</option>
+                  <option value="bebidas">Café & Bebidas</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Edificio / Ubicación</label>
+                <input class="form-input" id="cfg-edificio" type="text" placeholder="Ej: Edificio Pesado 1, Salón B-204">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Emoji / Ícono</label>
+                <input class="form-input" id="cfg-emoji" type="text" placeholder="🌮" maxlength="4">
+              </div>
+              <div class="form-group full">
+                <label class="form-label">Descripción</label>
+                <textarea class="form-textarea" id="cfg-desc" placeholder="Describe tu tienda en 1-2 oraciones..."></textarea>
+              </div>
+            </div>
+            <div style="margin-top:20px;text-align:right;">
+              <button class="btn btn-primary" onclick="saveConfig()">Guardar Cambios</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PANEL: HORARIO ── -->
+      <div class="panel" id="panel-horario">
+        <div class="panel-header">
+          <div>
+            <div class="panel-title">🕐 Horario de Atención</div>
+            <div class="panel-subtitle">Configura cuándo está disponible tu tienda</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">Días de Servicio</span></div>
+          <div class="card-body">
+            <div class="horario-grid" id="horario-dias">
+              <!-- Generated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">Horas de Atención</span></div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Hora de Apertura</label>
+                <input class="form-input" id="hora-apertura" type="time" value="07:00">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Hora de Cierre</label>
+                <input class="form-input" id="hora-cierre" type="time" value="15:00">
+              </div>
+            </div>
+            <div style="margin-top:20px;text-align:right;">
+              <button class="btn btn-primary" onclick="saveHorario()">Guardar Horario</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── MODAL: AGREGAR PRODUCTO ── -->
+  <div class="modal-overlay" id="modal-add-product">
+    <div class="modal">
+      <div class="modal-title">✨ Agregar Producto</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Nombre del Producto</label>
+          <input class="form-input" id="prod-nombre" type="text" placeholder="Ej: Tacos al Pastor x3">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Precio ($)</label>
+          <input class="form-input" id="prod-precio" type="number" min="1" placeholder="45">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Categoría</label>
+          <input class="form-input" id="prod-categoria" type="text" placeholder="Ej: Tacos, Bebidas, Postres">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Badge (opcional)</label>
+          <input class="form-input" id="prod-badge" type="text" placeholder="Popular, Especial, 🔥">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Descripción</label>
+          <textarea class="form-textarea" id="prod-desc" placeholder="Describe el producto brevemente..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">URL de Imagen (Unsplash o similar)</label>
+          <input class="form-input" id="prod-img" type="url" placeholder="https://images.unsplash.com/...">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeAddProductModal()">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveProduct()">Guardar Producto</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  /* ============================================================
+     MI TIENDA — LÓGICA FRONTEND
+     Datos persistidos en localStorage bajo 'uthub_mi_tienda'
+  ============================================================ */
+
+  const DIAS = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+  const STATUS_LABELS = { nuevo:'Nuevo', preparando:'Preparando', listo:'Listo para entregar', entregado:'Entregado' };
+  const STATUS_CSS    = { nuevo:'pill-nuevo', preparando:'pill-preparando', listo:'pill-listo', entregado:'pill-entregado' };
+
+  /* ── STORE STATE ── */
+  function getStore() {
+    const defaults = {
+      nombre: 'Mi Tienda',
+      emoji: '🍽️',
+      tipo: 'mexicana',
+      edificio: '',
+      desc: '',
+      abierto: true,
+      horario: { dias: [true,true,true,true,true,false,false], apertura: '07:00', cierre: '15:00' },
+      productos: []
+    };
+    const saved = localStorage.getItem('uthub_mi_tienda');
+    return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
+  }
+
+  function saveStore(data) {
+    localStorage.setItem('uthub_mi_tienda', JSON.stringify(data));
+  }
+
+  /* ── RECEIVED ORDERS (from estudiantes) ── */
+  function getPedidosRecibidos() {
+    // We piggyback on uthub_pedidos but filter by tienda name
+    const store = getStore();
+    const todos = JSON.parse(localStorage.getItem('uthub_pedidos')) || [];
+    // In demo: show all orders; in production Zoe's backend filters by vendedor
+    return todos.map(p => ({
+      ...p,
+      estadoVendedor: p.estadoVendedor || 'nuevo'
+    }));
+  }
+
+  function savePedidoEstado(pedidoId, nuevoEstado) {
+    const pedidos = JSON.parse(localStorage.getItem('uthub_pedidos')) || [];
+    const idx = pedidos.findIndex(p => p.id == pedidoId);
+    if (idx !== -1) {
+      pedidos[idx].estadoVendedor = nuevoEstado;
+      pedidos[idx].estado = nuevoEstado === 'listo' ? 'en_camino'
+                          : nuevoEstado === 'entregado' ? 'entregado'
+                          : nuevoEstado === 'preparando' ? 'preparando'
+                          : 'confirmado';
+      localStorage.setItem('uthub_pedidos', JSON.stringify(pedidos));
+    }
+  }
+
+  /* ── PANELS ── */
+  function showPanel(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    event.currentTarget.classList.add('active');
+
+    if (id === 'pedidos') renderPedidosTable();
+    if (id === 'productos') renderProductos();
+    if (id === 'config') loadConfig();
+    if (id === 'horario') renderHorario();
+    if (id === 'resumen') renderResumen();
+  }
+
+  /* ── RESUMEN ── */
+  function renderResumen() {
+    const store = getStore();
+    const pedidos = getPedidosRecibidos();
+    const today = new Date().toDateString();
+    const pedidosHoy = pedidos.filter(p => new Date(p.fecha).toDateString() === today);
+    const ingresos = pedidos.reduce((s, p) => s + (p.total || 0), 0);
+    const ticketProm = pedidos.length ? Math.round(ingresos / pedidos.length) : 0;
+    const pendientes = pedidos.filter(p => p.estadoVendedor === 'nuevo' || p.estadoVendedor === 'preparando');
+
+    document.getElementById('stat-pedidos-hoy').textContent = pedidosHoy.length;
+    document.getElementById('stat-pedidos-total').textContent = pedidos.length;
+    document.getElementById('stat-ingresos').textContent = '$' + ingresos;
+    document.getElementById('stat-ticket').textContent = 'Ticket prom. $' + ticketProm;
+    document.getElementById('stat-productos').textContent = store.productos.length;
+
+    // Update sidebar
+    document.getElementById('sb-tienda-nombre').textContent = store.emoji + ' ' + store.nombre;
+    document.getElementById('sb-status').textContent = store.abierto ? 'Abierta ahora' : 'Cerrada';
+    document.getElementById('btn-toggle-status').textContent = store.abierto ? '🔴 Cerrar Tienda' : '🟢 Abrir Tienda';
+
+    // Badge on pedidos link
+    const badge = document.getElementById('sb-pedidos-count');
+    if (pendientes.length > 0) {
+      badge.textContent = pendientes.length;
+      badge.style.display = 'inline';
+    } else {
+      badge.style.display = 'none';
+    }
+
+    // Pendientes preview
+    const cont = document.getElementById('resumen-pedidos-pendientes');
+    if (pendientes.length === 0) {
+      cont.innerHTML = `<div class="empty-state"><div class="empty-state-icon">✅</div><div class="empty-state-title">Todo al día</div><div class="empty-state-desc">No hay pedidos pendientes</div></div>`;
+    } else {
+      cont.innerHTML = `<table class="orders-table">
+        <thead><tr><th>Pedido</th><th>Productos</th><th>Total</th><th>Estado</th></tr></thead>
+        <tbody>${pendientes.slice(0, 5).map(p => `
+          <tr>
+            <td class="order-id">#${String(p.id).slice(-5)}</td>
+            <td class="order-items-preview">${p.items.map(i => i.nombre).join(', ')}</td>
+            <td><strong>$${p.total}</strong></td>
+            <td><span class="status-pill ${STATUS_CSS[p.estadoVendedor] || 'pill-nuevo'}">${STATUS_LABELS[p.estadoVendedor] || 'Nuevo'}</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table>`;
+    }
+
+    // Más vendidos
+    const contMV = document.getElementById('mas-vendidos');
+    const productCount = {};
+    pedidos.forEach(p => p.items.forEach(i => {
+      productCount[i.nombre] = (productCount[i.nombre] || 0) + i.cantidad;
+    }));
+    const top = Object.entries(productCount).sort((a,b) => b[1]-a[1]).slice(0, 4);
+    if (top.length === 0) {
+      contMV.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-s);font-size:13px;">Los productos más pedidos aparecerán aquí.</div>`;
+    } else {
+      contMV.innerHTML = `<div style="display:flex;flex-direction:column;gap:10px;">${top.map(([nombre, qty], i) => `
+        <div style="display:flex;align-items:center;gap:12px;padding:10px;background:#FAFAF8;border-radius:10px;">
+          <span style="font-family:Syne,sans-serif;font-size:18px;font-weight:800;color:var(--orange);width:24px;">${i+1}</span>
+          <span style="flex:1;font-size:13px;font-weight:600;color:var(--dark);">${nombre}</span>
+          <span style="font-size:12px;color:var(--text-s);">${qty} vendidos</span>
+        </div>`).join('')}</div>`;
+    }
+  }
+
+  /* ── PEDIDOS TABLE ── */
+  function renderPedidosTable() {
+    const filtro = document.getElementById('filtro-estado-pedidos')?.value || '';
+    let pedidos = getPedidosRecibidos();
+    if (filtro) pedidos = pedidos.filter(p => (p.estadoVendedor || 'nuevo') === filtro);
+
+    const cont = document.getElementById('pedidos-table-container');
+    if (pedidos.length === 0) {
+      cont.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-title">Sin pedidos</div><div class="empty-state-desc">Cuando los estudiantes hagan pedidos aparecerán aquí</div></div>`;
+      return;
+    }
+
+    cont.innerHTML = `<div style="overflow-x:auto;">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Pedido</th>
+            <th>Fecha</th>
+            <th>Productos</th>
+            <th>Entrega</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${[...pedidos].reverse().map(p => {
+            const estadoActual = p.estadoVendedor || 'nuevo';
+            const fecha = new Date(p.fecha);
+            const fechaStr = fecha.toLocaleDateString('es-MX',{day:'numeric',month:'short'}) + ' ' + fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+            return `<tr>
+              <td class="order-id">#${String(p.id).slice(-5)}</td>
+              <td style="font-size:12px;color:var(--text-s);">${fechaStr}</td>
+              <td class="order-items-preview">${p.items.map(i => `${i.nombre} x${i.cantidad}`).join(', ')}</td>
+              <td style="font-size:12px;">📍 ${p.ubicacion || '—'}</td>
+              <td><strong style="color:var(--orange);">$${p.total}</strong></td>
+              <td><span class="status-pill ${STATUS_CSS[estadoActual] || 'pill-nuevo'}">${STATUS_LABELS[estadoActual] || estadoActual}</span></td>
+              <td>
+                <select class="status-select" onchange="changePedidoStatus(${p.id}, this.value)">
+                  <option value="nuevo" ${estadoActual==='nuevo'?'selected':''}>Nuevo</option>
+                  <option value="preparando" ${estadoActual==='preparando'?'selected':''}>Preparando</option>
+                  <option value="listo" ${estadoActual==='listo'?'selected':''}>Listo</option>
+                  <option value="entregado" ${estadoActual==='entregado'?'selected':''}>Entregado</option>
+                </select>
+              </td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>`;
+  }
+
+  function changePedidoStatus(id, estado) {
+    savePedidoEstado(id, estado);
+    renderPedidosTable();
+    renderResumen();
+    mostrarToast('Estado actualizado: ' + STATUS_LABELS[estado], 'success');
+  }
+
+  /* ── PRODUCTS ── */
+  function renderProductos() {
+    const store = getStore();
+    const cont = document.getElementById('products-grid-container');
+    if (store.productos.length === 0) {
+      cont.innerHTML = `<div class="card"><div class="empty-state"><div class="empty-state-icon">🍽️</div><div class="empty-state-title">Sin productos</div><div class="empty-state-desc">Agrega los productos que vendes en tu tienda</div><button class="btn btn-primary" style="margin-top:16px" onclick="openAddProductModal()">+ Agregar Producto</button></div></div>`;
+      return;
+    }
+    cont.innerHTML = `<div class="products-grid">
+      ${store.productos.map((p, i) => `
+        <div class="product-item-card">
+          <div class="product-item-img">
+            <img src="${p.img || 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop'}" alt="${p.nombre}" onerror="this.src='https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop'">
+          </div>
+          <div class="product-item-body">
+            <div class="product-item-name">${p.nombre}</div>
+            <div style="font-size:11px;color:var(--text-s);margin:2px 0 6px;">${p.categoria || ''} ${p.badge ? '· ' + p.badge : ''}</div>
+            <div class="product-item-price">$${p.precio}</div>
+            <div class="product-item-actions">
+              <button class="btn btn-danger btn-sm" onclick="deleteProduct(${i})">Eliminar</button>
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  function openAddProductModal() {
+    document.getElementById('modal-add-product').classList.add('open');
+    ['prod-nombre','prod-precio','prod-categoria','prod-badge','prod-desc','prod-img'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+  }
+  function closeAddProductModal() {
+    document.getElementById('modal-add-product').classList.remove('open');
+  }
+  function saveProduct() {
+    const nombre = document.getElementById('prod-nombre').value.trim();
+    const precio = parseInt(document.getElementById('prod-precio').value);
+    if (!nombre || !precio) { mostrarToast('Nombre y precio son obligatorios', 'error'); return; }
+    const store = getStore();
+    store.productos.push({
+      nombre,
+      precio,
+      categoria: document.getElementById('prod-categoria').value.trim(),
+      badge: document.getElementById('prod-badge').value.trim(),
+      desc: document.getElementById('prod-desc').value.trim(),
+      img: document.getElementById('prod-img').value.trim()
+    });
+    saveStore(store);
+    closeAddProductModal();
+    renderProductos();
+    mostrarToast('Producto agregado correctamente', 'success');
+  }
+  function deleteProduct(idx) {
+    if (!confirm('¿Eliminar este producto?')) return;
+    const store = getStore();
+    store.productos.splice(idx, 1);
+    saveStore(store);
+    renderProductos();
+    mostrarToast('Producto eliminado', 'info');
+  }
+
+  /* ── CONFIG ── */
+  function loadConfig() {
+    const store = getStore();
+    document.getElementById('cfg-nombre').value = store.nombre;
+    document.getElementById('cfg-tipo').value = store.tipo;
+    document.getElementById('cfg-edificio').value = store.edificio;
+    document.getElementById('cfg-emoji').value = store.emoji;
+    document.getElementById('cfg-desc').value = store.desc;
+  }
+  function saveConfig() {
+    const store = getStore();
+    store.nombre   = document.getElementById('cfg-nombre').value.trim() || store.nombre;
+    store.tipo     = document.getElementById('cfg-tipo').value;
+    store.edificio = document.getElementById('cfg-edificio').value.trim();
+    store.emoji    = document.getElementById('cfg-emoji').value || store.emoji;
+    store.desc     = document.getElementById('cfg-desc').value.trim();
+    saveStore(store);
+    document.getElementById('sb-tienda-nombre').textContent = store.emoji + ' ' + store.nombre;
+    mostrarToast('Tienda actualizada correctamente', 'success');
+  }
+
+  /* ── HORARIO ── */
+  function renderHorario() {
+    const store = getStore();
+    const cont = document.getElementById('horario-dias');
+    cont.innerHTML = DIAS.map((dia, i) => `
+      <div class="horario-day">
+        <label>
+          <span class="day-name">${dia}</span>
+          <input type="checkbox" id="dia-${i}" ${store.horario.dias[i] ? 'checked' : ''} onchange="updateDiaHorario(${i}, this.checked)">
+          <div class="day-toggle">${dia.slice(0,1)}</div>
+        </label>
+      </div>`).join('');
+    document.getElementById('hora-apertura').value = store.horario.apertura;
+    document.getElementById('hora-cierre').value = store.horario.cierre;
+  }
+  function updateDiaHorario(i, checked) {
+    const store = getStore();
+    store.horario.dias[i] = checked;
+    saveStore(store);
+  }
+  function saveHorario() {
+    const store = getStore();
+    store.horario.apertura = document.getElementById('hora-apertura').value;
+    store.horario.cierre   = document.getElementById('hora-cierre').value;
+    saveStore(store);
+    mostrarToast('Horario guardado', 'success');
+  }
+
+  /* ── TOGGLE STATUS ── */
+  function toggleTiendaStatus() {
+    const store = getStore();
+    store.abierto = !store.abierto;
+    saveStore(store);
+    document.getElementById('btn-toggle-status').textContent = store.abierto ? '🔴 Cerrar Tienda' : '🟢 Abrir Tienda';
+    document.getElementById('sb-status').textContent = store.abierto ? 'Abierta ahora' : 'Cerrada';
+    mostrarToast(store.abierto ? 'Tienda abierta 🟢' : 'Tienda cerrada 🔴', store.abierto ? 'success' : 'info');
+  }
+
+  /* ── TOAST ── */
+  function mostrarToast(msg, tipo='info') {
+    const t = document.createElement('div');
+    t.style.cssText = `position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:${tipo==='success'?'#22C55E':tipo==='error'?'#FF4F5E':'#60A5FA'};color:white;padding:12px 24px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:all .3s ease;font-family:DM Sans,sans-serif;`;
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => { t.style.transform = 'translateX(-50%) translateY(0)'; t.style.opacity = '1'; }, 50);
+    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2800);
+  }
+
+  /* ── INIT ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    renderResumen();
+    renderHorario();
+
+    // Close modal on overlay click
+    document.getElementById('modal-add-product').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeAddProductModal();
+    });
+  });
+  </script>
+  <script src="../../js/notifications.js"></script>
+</body>
+</html>
