@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear Cuenta - UThub</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/auth.css">
+</head>
+<body class="auth-page">
+  
+  <!-- HEADER SIMPLE -->
+  <header class="header-simple">
+    <div class="container">
+      <a href="../../index.html" class="logo">
+        <span class="logo-ut">UT</span><span class="logo-hub">hub</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- AUTH CONTAINER -->
+  <main class="auth-container">
+    <div class="auth-box">
+      <!-- Lado Izquierdo - Formulario -->
+      <div class="auth-form-section">
+        <div class="auth-header">
+          <h1 class="auth-title">Crear cuenta en UThub</h1>
+          <p class="auth-subtitle">Únete a la comunidad estudiantil de la UTSC</p>
+        </div>
+
+        <!-- Mensajes de error/éxito -->
+        <div id="auth-message" class="auth-message" style="display: none;"></div>
+
+        <!-- Formulario de Registro -->
+        <form id="register-form" class="auth-form">
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nombre" class="form-label">Nombre(s)</label>
+              <input 
+                type="text" 
+                id="nombre" 
+                name="nombre" 
+                class="form-input" 
+                placeholder="Juan"
+                required
+                autocomplete="given-name"
+              >
+              <span class="form-error" id="nombre-error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="apellido" class="form-label">Apellido(s)</label>
+              <input 
+                type="text" 
+                id="apellido" 
+                name="apellido" 
+                class="form-input" 
+                placeholder="Pérez"
+                required
+                autocomplete="family-name"
+              >
+              <span class="form-error" id="apellido-error"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="matricula" class="form-label">Matrícula</label>
+            <input 
+              type="text" 
+              id="matricula" 
+              name="matricula" 
+              class="form-input" 
+              placeholder="22658"
+              required
+              pattern="[0-9]{5}"
+              maxlength="5"
+              inputmode="numeric"
+            >
+            <span class="form-hint">5 dígitos numéricos</span>
+            <span class="form-error" id="matricula-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">Correo Institucional</label>
+            <input 
+              type="text" 
+              id="email" 
+              name="email" 
+              class="form-input" 
+              placeholder="22658@virtual.utsc.edu.mx"
+              required
+              readonly
+              style="background-color: #F7F4F0;"
+            >
+            <span class="form-hint">Se genera automáticamente con tu matrícula</span>
+            <span class="form-error" id="email-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="carrera" class="form-label">Carrera</label>
+            <select id="carrera" name="carrera" class="form-input" required>
+              <option value="">Selecciona tu carrera</option>
+              <option value="sistemas">Ing. en Sistemas Computacionales</option>
+              <option value="software">Gestión y Desarrollo de Software</option>
+              <option value="industrial">Ing. Industrial</option>
+              <option value="mecatronica">Ing. Mecatrónica</option>
+              <option value="electronica">Ing. Electrónica y Automatización</option>
+              <option value="logistica">Logística Internacional</option>
+              <option value="mantenimiento">Ing. en Mantenimiento Industrial</option>
+            </select>
+            <span class="form-error" id="carrera-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="password" class="form-label">Contraseña</label>
+            <div class="password-input-wrapper">
+              <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                class="form-input" 
+                placeholder="••••••••"
+                required
+                autocomplete="new-password"
+                minlength="8"
+              >
+              <button type="button" class="password-toggle" id="password-toggle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <span class="form-hint">Mínimo 8 caracteres, 1 mayúscula y 1 número</span>
+            <span class="form-error" id="password-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="password-confirm" class="form-label">Confirmar Contraseña</label>
+            <div class="password-input-wrapper">
+              <input 
+                type="password" 
+                id="password-confirm" 
+                name="password-confirm" 
+                class="form-input" 
+                placeholder="••••••••"
+                required
+                autocomplete="new-password"
+              >
+              <button type="button" class="password-toggle" id="password-confirm-toggle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <span class="form-error" id="password-confirm-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" name="terms" id="terms" required>
+              <span>Acepto los <a href="../terminos.html" class="link-primary">términos y condiciones</a> y la <a href="../privacidad.html" class="link-primary">política de privacidad</a></span>
+            </label>
+            <span class="form-error" id="terms-error"></span>
+          </div>
+
+          <button type="submit" class="btn-primary btn-full" id="register-btn">
+            <span class="btn-text">Crear cuenta</span>
+            <span class="btn-loader" style="display: none;">
+              <svg class="spinner" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10" stroke-width="4" stroke-dasharray="32" stroke-dashoffset="0">
+                  <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+                </circle>
+              </svg>
+            </span>
+          </button>
+
+        </form>
+
+        <!-- Link a Login -->
+        <p class="auth-footer">
+          ¿Ya tienes cuenta? <a href="login.html" class="link-primary">Inicia sesión</a>
+        </p>
+      </div>
+
+      <!-- Lado Derecho - Imagen/Info -->
+      <div class="auth-visual-section">
+        <div class="visual-content">
+          <div class="visual-badge">
+            <span class="badge-dot"></span>
+            Únete a UThub
+          </div>
+          
+          <h2 class="visual-title">Beneficios de crear tu cuenta</h2>
+          
+          <div class="visual-features">
+            <div class="feature-item">
+              <div class="feature-icon">✓</div>
+              <p><strong>Acceso completo</strong> a los 4 módulos</p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">✓</div>
+              <p><strong>Compra y vende</strong> de forma segura</p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">✓</div>
+              <p><strong>Conecta</strong> con otros estudiantes</p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">✓</div>
+              <p><strong>Emprende</strong> y genera ingresos</p>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">✓</div>
+              <p><strong>Ahorra dinero</strong> en libros y servicios</p>
+            </div>
+          </div>
+
+          <div class="visual-testimonial">
+            <p>"UThub me facilitó mucho la vida universitaria. Lo recomiendo 100%"</p>
+            <div class="testimonial-author">
+              <strong>María González</strong>
+              <span>Ing. en Sistemas - 5to cuatrimestre</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Formas decorativas -->
+        <div class="visual-shapes">
+          <div class="shape shape-1"></div>
+          <div class="shape shape-2"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- JavaScript -->
+  <script src="../../js/validation.js"></script>
+  <script src="../../js/auth.js"></script>
+  
+  <script>
+    // Inicializar formulario de registro
+    document.addEventListener('DOMContentLoaded', () => {
+      initRegisterForm();
+      
+      // Auto-generar correo cuando se ingresa la matrícula
+      const matriculaInput = document.getElementById('matricula');
+      const emailInput = document.getElementById('email');
+      
+      if (matriculaInput && emailInput) {
+        matriculaInput.addEventListener('input', () => {
+          UThubValidation.autoGenerateEmail(matriculaInput, emailInput);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

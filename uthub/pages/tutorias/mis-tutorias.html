@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Tutorías - UThub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/comida.css">
+  <style>
+    .panel-layout{display:grid;grid-template-columns:240px 1fr;gap:0;min-height:calc(100vh - 70px);margin-top:70px;}
+    .panel-sidebar{background:#1A1A2E;padding:24px 0;position:sticky;top:70px;height:calc(100vh - 70px);overflow-y:auto;}
+    .sb-profile{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:16px;text-align:center;}
+    .sb-avatar{width:60px;height:60px;border-radius:50%;background:#F5841F;display:flex;align-items:center;justify-content:center;font-family:Syne,sans-serif;font-size:20px;font-weight:800;color:white;margin:0 auto 10px;}
+    .sb-name{font-family:Syne,sans-serif;font-size:14px;font-weight:800;color:white;}
+    .sb-stats{font-size:11px;color:rgba(255,255,255,.45);margin-top:4px;}
+    .sb-link{display:flex;align-items:center;gap:10px;padding:9px 20px;color:rgba(255,255,255,.55);text-decoration:none;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;margin-bottom:2px;}
+    .sb-link:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9);}
+    .sb-link.active{background:#F5841F;color:white;}
+    .sb-badge{margin-left:auto;background:#FF4F5E;color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;}
+    .panel-main{background:#F7F4F0;padding:32px 36px;overflow-y:auto;}
+    .panel{display:none;}.panel.active{display:block;}
+    .ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;}
+    .ph h1{font-family:Syne,sans-serif;font-size:24px;font-weight:800;color:#1A1A2E;}
+    .ph p{font-size:13px;color:#6B6B80;margin-top:3px;}
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+    .sc{background:white;border-radius:14px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+    .sc-val{font-family:Syne,sans-serif;font-size:26px;font-weight:800;color:#1A1A2E;}
+    .sc-lbl{font-size:12px;color:#6B6B80;margin-top:3px;}
+    .solicitud-card{background:white;border-radius:16px;padding:20px 24px;box-shadow:0 2px 10px rgba(0,0,0,.05);margin-bottom:14px;border-left:4px solid #F5841F;}
+    .sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+    .sol-estudiante{font-family:Syne,sans-serif;font-size:15px;font-weight:800;color:#1A1A2E;}
+    .sol-materia{font-size:13px;color:#F5841F;font-weight:600;}
+    .sol-info{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px;}
+    .sol-dato{font-size:13px;color:#6B6B80;}
+    .sol-dato strong{color:#1A1A2E;font-weight:600;}
+    .sol-actions{display:flex;gap:10px;}
+    .btn-aceptar{padding:10px 20px;background:#22C55E;color:white;border:none;border-radius:10px;font-family:Syne,sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;}
+    .btn-aceptar:hover{background:#16A34A;transform:translateY(-1px);}
+    .btn-rechazar{padding:10px 16px;background:white;color:#FF4F5E;border:1.5px solid #FF4F5E;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+    .btn-rechazar:hover{background:#FFE8EA;}
+    .historial-row{background:white;border-radius:12px;padding:16px 20px;margin-bottom:10px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 6px rgba(0,0,0,.04);}
+    .hr-info{flex:1;}
+    .hr-nombre{font-size:14px;font-weight:600;color:#1A1A2E;}
+    .hr-meta{font-size:12px;color:#6B6B80;margin-top:2px;}
+    .empty-panel{text-align:center;padding:48px;background:white;border-radius:16px;border:2px dashed #E8E4DE;}
+    @media(max-width:900px){.panel-layout{grid-template-columns:1fr;}.panel-sidebar{display:none;}}
+  </style>
+</head>
+<body>
+  <header class="header" id="header">
+    <div class="header-container">
+      <a href="../../index.html" class="logo"><span class="logo-ut">UT</span><span class="logo-hub">hub</span></a>
+      <nav class="nav"><ul class="nav-list">
+          <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="../comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
+          <li><a href="buscar.html" class="nav-link active">📚 Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
+      </ul></nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="notifications-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="badge-notif">0</span>
+        </button>
+        <div class="user-menu"><button class="user-btn" id="user-menu-btn">
+          <div class="user-avatar"><span id="user-initials">SM</span></div>
+          <div class="user-info"><div class="user-name">Samantha Mata</div><div class="user-role">Tutor</div></div>
+        </button></div>
+      </div>
+    </div>
+  </header>
+  <div class="panel-layout">
+    <aside class="panel-sidebar">
+      <div class="sb-profile">
+        <div class="sb-avatar" id="sb-avatar">?</div>
+        <div class="sb-name" id="sb-name">Mi Perfil</div>
+        <div class="sb-stats" id="sb-stats">0 sesiones · $0 ganados</div>
+      </div>
+      <a class="sb-link active" onclick="showTab('solicitudes',this)">📩 Solicitudes <span class="sb-badge" id="badge-sol" style="display:none">0</span></a>
+      <a class="sb-link" onclick="showTab('calendario',this)">📅 Sesiones</a>
+      <a class="sb-link" onclick="showTab('historial',this)">📋 Historial</a>
+      <a class="sb-link" onclick="showTab('perfil',this)">⚙️ Mi Perfil</a>
+      <a class="sb-link" href="buscar.html" style="margin-top:16px;border-top:1px solid rgba(255,255,255,.08);padding-top:16px;">← Ver catálogo</a>
+    </aside>
+    <main class="panel-main">
+
+      <!-- Solicitudes -->
+      <div class="panel active" id="panel-solicitudes">
+        <div class="ph"><div><h1>📩 Solicitudes Nuevas</h1><p>Acepta o rechaza las solicitudes de sesión</p></div></div>
+        <div id="solicitudes-cont"></div>
+      </div>
+
+      <!-- Calendario / sesiones confirmadas -->
+      <div class="panel" id="panel-calendario">
+        <div class="ph"><div><h1>📅 Sesiones Confirmadas</h1><p>Tus próximas tutorías aceptadas</p></div></div>
+        <div class="stats-row">
+          <div class="sc"><div class="sc-val" id="cal-total">0</div><div class="sc-lbl">Total sesiones</div></div>
+          <div class="sc"><div class="sc-val" id="cal-ganado">$0</div><div class="sc-lbl">Total ganado</div></div>
+          <div class="sc"><div class="sc-val" id="cal-prox">0</div><div class="sc-lbl">Próximas</div></div>
+        </div>
+        <div id="calendario-cont"></div>
+      </div>
+
+      <!-- Historial -->
+      <div class="panel" id="panel-historial">
+        <div class="ph"><div><h1>📋 Historial Completo</h1><p>Todas tus sesiones pasadas</p></div></div>
+        <div id="historial-cont"></div>
+      </div>
+
+      <!-- Perfil -->
+      <div class="panel" id="panel-perfil">
+        <div class="ph"><div><h1>⚙️ Mi Perfil como Tutor</h1><p>Así te ven los estudiantes</p></div></div>
+        <div id="perfil-cont"></div>
+      </div>
+
+    </main>
+  </div>
+  <script src="../../js/tutorias.js"></script>
+  <script>
+  const { getSesiones, cambiarEstadoSesion, getMiPerfil } = TutoriasDB;
+  const { estadoBadge, tutoriasToast, modalidadLabel } = TutoriasUI;
+
+  function showTab(id, el) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('panel-'+id).classList.add('active');
+    el.classList.add('active');
+    if (id==='solicitudes') renderSolicitudes();
+    if (id==='calendario')  renderCalendario();
+    if (id==='historial')   renderHistorial();
+    if (id==='perfil')      renderPerfil();
+  }
+
+  // In demo, ALL pending sessions are "mine" as tutor
+  function getMisSesiones() { return getSesiones(); }
+
+  function renderSolicitudes() {
+    const sols = getMisSesiones().filter(s => s.estado === 'pendiente');
+    const badge = document.getElementById('badge-sol');
+    badge.textContent = sols.length; badge.style.display = sols.length ? 'inline' : 'none';
+    const cont = document.getElementById('solicitudes-cont');
+    if (!sols.length) {
+      cont.innerHTML = '<div class="empty-panel"><div style="font-size:40px">📭</div><div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800;color:#1A1A2E;margin:10px 0 6px;">Sin solicitudes pendientes</div><div style="font-size:13px;color:#6B6B80;">Las nuevas solicitudes de los estudiantes aparecerán aquí</div></div>';
+      return;
+    }
+    cont.innerHTML = sols.map(s => `
+      <div class="solicitud-card">
+        <div class="sol-header">
+          <div><div class="sol-estudiante">Estudiante solicitante</div><div class="sol-materia">${s.materia}</div></div>
+          <div style="font-size:12px;color:#9CA3AF;">${new Date(s.fechaCreacion).toLocaleDateString('es-MX')}</div>
+        </div>
+        <div class="sol-info">
+          <div class="sol-dato">📅 <strong>${s.fecha}</strong></div>
+          <div class="sol-dato">🕐 <strong>${s.hora}</strong></div>
+          <div class="sol-dato">💰 <strong>$${s.precio}/hr</strong></div>
+          <div class="sol-dato">${modalidadLabel(s.modalidad)}</div>
+        </div>
+        ${s.notas ? '<div style="font-size:12px;color:#6B6B80;margin-bottom:12px;padding:8px 12px;background:#F7F4F0;border-radius:8px;">📝 '+s.notas+'</div>' : ''}
+        <div class="sol-actions">
+          <button class="btn-aceptar" onclick="accionSesion(${s.id},'aceptada')">✅ Aceptar — revelar WhatsApp</button>
+          <button class="btn-rechazar" onclick="accionSesion(${s.id},'rechazada')">✗ Rechazar</button>
+        </div>
+      </div>`).join('');
+  }
+
+  function accionSesion(id, estado) {
+    const msg = estado === 'aceptada'
+      ? '¿Aceptar esta sesión? El estudiante recibirá tu número de WhatsApp.'
+      : '¿Rechazar esta solicitud?';
+    if (!confirm(msg)) return;
+    cambiarEstadoSesion(id, estado);
+    tutoriasToast(estado==='aceptada' ? '✅ Sesión aceptada. El estudiante ya tiene tu WhatsApp.' : 'Solicitud rechazada.', estado==='aceptada'?'success':'info');
+    renderSolicitudes();
+    renderSidebar();
+  }
+
+  function renderCalendario() {
+    const hoy = new Date().toISOString().split('T')[0];
+    const prox = getMisSesiones().filter(s => s.estado==='aceptada' && s.fecha >= hoy);
+    const total = getMisSesiones().filter(s => s.estado==='aceptada'||s.estado==='completada');
+    const ganado = total.reduce((a,s) => a+s.precio, 0);
+    document.getElementById('cal-total').textContent = total.length;
+    document.getElementById('cal-ganado').textContent = '$'+ganado;
+    document.getElementById('cal-prox').textContent = prox.length;
+    const cont = document.getElementById('calendario-cont');
+    if (!prox.length) { cont.innerHTML = '<div class="empty-panel"><div style="font-size:40px">📅</div><div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800;color:#1A1A2E;margin:10px 0 6px;">Sin sesiones próximas</div></div>'; return; }
+    cont.innerHTML = prox.map(s => `
+      <div class="historial-row">
+        <div style="width:40px;height:40px;border-radius:10px;background:${s.tutorColor||'#F5841F'};display:flex;align-items:center;justify-content:center;color:white;font-family:Syne,sans-serif;font-weight:800;font-size:14px;flex-shrink:0;">E</div>
+        <div class="hr-info">
+          <div class="hr-nombre">${s.materia}</div>
+          <div class="hr-meta">📅 ${s.fecha} · 🕐 ${s.hora} · 💰 $${s.precio}/hr</div>
+        </div>
+        ${estadoBadge(s.estado)}
+        <button onclick="completar(${s.id})" style="padding:7px 14px;background:#DCFCE7;color:#16A34A;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;">Marcar completada</button>
+      </div>`).join('');
+  }
+
+  function completar(id) {
+    cambiarEstadoSesion(id, 'completada');
+    tutoriasToast('Sesión marcada como completada ⭐', 'success');
+    renderCalendario();
+  }
+
+  function renderHistorial() {
+    const hist = getMisSesiones().filter(s => s.estado==='completada'||s.estado==='rechazada'||s.estado==='cancelada');
+    const cont = document.getElementById('historial-cont');
+    if (!hist.length) { cont.innerHTML = '<div class="empty-panel"><div style="font-size:40px">📋</div><div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800;color:#1A1A2E;margin:10px 0 6px;">Sin historial aún</div></div>'; return; }
+    cont.innerHTML = [...hist].reverse().map(s => `
+      <div class="historial-row">
+        <div class="hr-info">
+          <div class="hr-nombre">${s.materia}</div>
+          <div class="hr-meta">📅 ${s.fecha} · $${s.precio}/hr</div>
+        </div>
+        ${estadoBadge(s.estado)}
+      </div>`).join('');
+  }
+
+  function renderPerfil() {
+    const perfil = getMiPerfil();
+    const cont = document.getElementById('perfil-cont');
+    if (!perfil) {
+      cont.innerHTML = '<div class="empty-panel"><div style="font-size:40px">📝</div><div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800;color:#1A1A2E;margin:10px 0 6px;">No tienes perfil de tutor</div><a href="ser-tutor.html" style="display:inline-block;margin-top:12px;padding:10px 24px;background:#F5841F;color:white;border-radius:10px;text-decoration:none;font-family:Syne,sans-serif;font-weight:700;">Crear mi perfil</a></div>';
+      return;
+    }
+    cont.innerHTML = `<div style="background:white;border-radius:16px;padding:24px;box-shadow:0 2px 10px rgba(0,0,0,.05);">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
+        <div style="width:60px;height:60px;border-radius:50%;background:${perfil.color};display:flex;align-items:center;justify-content:center;font-family:Syne,sans-serif;font-size:20px;font-weight:800;color:white;">${perfil.avatar}</div>
+        <div>
+          <div style="font-family:Syne,sans-serif;font-size:18px;font-weight:800;color:#1A1A2E;">${perfil.nombre}</div>
+          <div style="font-size:13px;color:#6B6B80;">${perfil.carrera} · ${perfil.semestre} · $${perfil.precio}/hr</div>
+        </div>
+      </div>
+      <p style="font-size:13px;color:#6B6B80;line-height:1.6;margin-bottom:16px;">${perfil.descripcion}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">${perfil.materias.map(m=>'<span style="background:#FFF0E0;color:#D96A08;padding:5px 12px;border-radius:100px;font-size:12px;font-weight:600;">'+m+'</span>').join('')}</div>
+      <div style="font-size:13px;color:#6B6B80;margin-bottom:12px;">${modalidadLabel(perfil.modalidad)} · ${perfil.ubicacion}</div>
+      <div style="font-size:12px;color:#16A34A;padding:10px 14px;background:#DCFCE7;border-radius:8px;">🔒 Tu WhatsApp (+52${perfil.whatsapp}) solo se revela cuando aceptas una sesión</div>
+      <div style="margin-top:16px;"><a href="ser-tutor.html" style="font-size:13px;color:#F5841F;font-weight:600;">✏️ Editar perfil</a></div>
+    </div>`;
+  }
+
+  function renderSidebar() {
+    const perfil = getMiPerfil();
+    if (perfil) {
+      document.getElementById('sb-avatar').textContent = perfil.avatar;
+      document.getElementById('sb-name').textContent = perfil.nombre;
+      const total = getMisSesiones().filter(s=>s.estado==='completada'||s.estado==='aceptada').length;
+      const ganado = getMisSesiones().filter(s=>s.estado==='completada'||s.estado==='aceptada').reduce((a,s)=>a+s.precio,0);
+      document.getElementById('sb-stats').textContent = total+' sesiones · $'+ganado+' ganados';
+    }
+    const sols = getMisSesiones().filter(s=>s.estado==='pendiente').length;
+    const badge = document.getElementById('badge-sol');
+    badge.textContent = sols; badge.style.display = sols ? 'inline' : 'none';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => { renderSolicitudes(); renderSidebar(); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Servicio - UThub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/servicios.css">
+</head>
+<body class="dashboard-page">
+
+  <header class="header" id="header">
+    <div class="header-container">
+      <a href="../../index.html" class="logo"><span class="logo-ut">UT</span><span class="logo-hub">hub</span></a>
+      <nav class="nav">
+        <ul class="nav-list">
+          <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="../comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
+          <li><a href="explorar.html" class="nav-link active">💼 Servicios</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <div class="user-menu">
+          <button class="user-btn"><div class="user-avatar"><span>SM</span></div>
+            <div class="user-info"><div class="user-name">Samantha Mata</div><div class="user-role">Estudiante</div></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="explorar.html">Servicios</a></li>
+        <li class="breadcrumb-item active" id="bc-titulo" aria-current="page">Detalle</li>
+      </ol>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div class="container">
+      <div id="servicio-root">
+        <div style="text-align:center;padding:80px;color:#6B6B80;">Cargando servicio...</div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../js/servicios.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const id = parseInt(new URLSearchParams(location.search).get('id'));
+      const s = ServiciosDB.getServicioById(id);
+      const root = document.getElementById('servicio-root');
+
+      if (!s) {
+        root.innerHTML = `<div style="text-align:center;padding:80px;"><div style="font-size:48px">💼</div><h2 style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;margin:12px 0 8px;">Servicio no encontrado</h2><a href="explorar.html" style="color:#F5841F;">← Volver a servicios</a></div>`;
+        return;
+      }
+
+      document.title = s.titulo + ' - UThub';
+      document.getElementById('bc-titulo').textContent = s.titulo;
+
+      const waMsg = encodeURIComponent(`Hola ${s.freelancer.nombre.split(' ')[0]}, vi tu servicio *"${s.titulo}"* en UThub y me interesa contratarte. ¿Está disponible?`);
+
+      root.innerHTML = `
+        <div class="servicio-detail-layout">
+          <!-- Columna izquierda -->
+          <div>
+            <!-- Cover -->
+            <div class="servicio-galeria" style="background:linear-gradient(135deg,${s.color},${s.colorDark}44);">
+              <span style="position:relative;z-index:1;font-size:96px;">${s.emoji}</span>
+              <span style="position:absolute;top:16px;left:16px;background:rgba(255,255,255,.95);color:#1A1A2E;padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;z-index:2;">${s.categoria}</span>
+            </div>
+
+            <!-- Freelancer -->
+            <div class="servicio-info-card">
+              <div style="display:flex;align-items:center;gap:14px;padding-bottom:20px;border-bottom:1px solid #F0EDE8;margin-bottom:20px;">
+                <div style="width:56px;height:56px;border-radius:50%;background:${s.freelancer.color};display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:white;">${s.freelancer.iniciales}</div>
+                <div>
+                  <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:#1A1A2E;">${s.freelancer.nombre}</div>
+                  <div style="font-size:13px;color:#6B6B80;">${s.freelancer.carrera} · ${s.freelancer.semestre} semestre</div>
+                  <div style="display:flex;align-items:center;gap:4px;margin-top:4px;font-size:13px;">
+                    <span style="color:#F5841F;">${ServiciosUI.renderStars(s.calificacion)}</span>
+                    <span style="font-weight:600;">${s.calificacion > 0 ? s.calificacion.toFixed(1) : 'Nuevo'}</span>
+                    <span style="color:#6B6B80;">(${s.reseñas} reseñas · ${s.trabajos} trabajos)</span>
+                  </div>
+                </div>
+              </div>
+              <h2 style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#1A1A2E;margin-bottom:12px;">${s.titulo}</h2>
+              <p style="font-size:15px;color:#6B6B80;line-height:1.75;">${s.descripcion}</p>
+              <div class="tags-row">
+                ${s.habilidades.map(h => `<span class="tag-skill">${h}</span>`).join('')}
+              </div>
+            </div>
+
+            <!-- Paquetes comparativa -->
+            <div class="servicio-info-card">
+              <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:16px;">Paquetes disponibles</h3>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                ${[
+                  { nombre: 'Básico', precio: s.precioBasico, entrega: s.entregaBasico, desc: 'Servicio esencial con las características principales.' },
+                  { nombre: 'Estándar', precio: s.precio, entrega: s.entrega, desc: 'La opción más popular. Incluye revisiones y soporte.' },
+                  { nombre: 'Premium', precio: s.precioPremium, entrega: s.entregaPremium, desc: 'Máxima calidad, entrega express y dedicación completa.' }
+                ].map((p, i) => `
+                <div style="border:${i===1?'2px solid #F5841F':'1.5px solid #E8E4DE'};border-radius:14px;padding:16px;background:${i===1?'#FFF0E0':'white'};position:relative;">
+                  ${i===1 ? '<span style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#F5841F;color:white;font-size:10px;font-weight:800;padding:3px 10px;border-radius:100px;white-space:nowrap;">Más popular</span>' : ''}
+                  <div style="font-family:\'Syne\',sans-serif;font-size:13px;font-weight:800;color:#1A1A2E;margin-bottom:6px;">${p.nombre}</div>
+                  <div style="font-family:\'Syne\',sans-serif;font-size:22px;font-weight:800;color:#F5841F;margin-bottom:4px;">$${p.precio}</div>
+                  <div style="font-size:11px;color:#6B6B80;margin-bottom:8px;">⏱ Entrega en ${p.entrega}</div>
+                  <p style="font-size:12px;color:#6B6B80;line-height:1.5;">${p.desc}</p>
+                </div>`).join('')}
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <div>
+            <div class="contratar-card">
+              <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#F5841F;margin-bottom:4px;">
+                $${s.precio} <span style="font-size:13px;font-weight:400;color:#6B6B80;">/ paquete estándar</span>
+              </div>
+
+              <div class="entrega-info">
+                <span>⏱</span> Entrega estimada: <strong style="color:#1A1A2E;">${s.entrega}</strong>
+              </div>
+
+              <a href="https://wa.me/52${s.whatsapp}?text=${waMsg}" target="_blank" class="btn-contactar" style="margin-top:4px;">
+                📱 Contratar por WhatsApp
+              </a>
+
+              <button onclick="ServiciosUI.serviciosToast('¡Guardado en favoritos!','success')" style="display:block;width:100%;padding:12px;background:#F7F4F0;color:#1A1A2E;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:16px;transition:all .2s;" onmouseover="this.style.background='#EDE8E0'" onmouseout="this.style.background='#F7F4F0'">
+                ♡ Guardar servicio
+              </button>
+
+              <div style="border-top:1px solid #F0EDE8;padding-top:16px;display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B6B80;">
+                  <span>✅</span> Estudiante verificado UTSC
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B6B80;">
+                  <span>🔒</span> Pago contra entrega
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B6B80;">
+                  <span>🔄</span> Revisiones incluidas
+                </div>
+              </div>
+            </div>
+
+            <!-- Otros servicios del freelancer -->
+            <div style="background:white;border-radius:16px;padding:20px;margin-top:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);">
+              <p style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:8px;">Más de ${s.freelancer.nombre.split(' ')[0]}</p>
+              <p style="font-size:12px;color:#6B6B80;margin-bottom:10px;">Pregúntale por otros servicios que puede ofrecer.</p>
+              <a href="explorar.html" style="font-size:13px;color:#F5841F;font-weight:600;text-decoration:none;">Ver todos los servicios →</a>
+            </div>
+          </div>
+        </div>`;
+    });
+  </script>
+</body>
+</html>

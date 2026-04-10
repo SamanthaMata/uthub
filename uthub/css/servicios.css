@@ -1,0 +1,477 @@
+/* ============================================
+   UTHUB - MÓDULO DE SERVICIOS FREELANCE
+   Universidad Tecnológica Santa Catarina
+   ============================================ */
+
+/* ── Hero del módulo ── */
+.servicios-hero {
+  background: linear-gradient(135deg, var(--ut-dark) 0%, var(--ut-slate) 100%);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+.servicios-hero::before {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,132,31,.25) 0%, transparent 70%);
+  top: -100px; right: -50px;
+  pointer-events: none;
+}
+
+.servicios-hero-text h2 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 800;
+  color: white;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.servicios-hero-text p {
+  font-size: 15px;
+  color: rgba(255,255,255,.5);
+  line-height: 1.7;
+  max-width: 400px;
+}
+
+.btn-publicar-servicio {
+  padding: 14px 28px;
+  background: var(--ut-orange);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btn-publicar-servicio:hover {
+  background: var(--ut-orange-d);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(245,132,31,.3);
+}
+
+/* ── Categorías ── */
+.categorias-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 28px;
+  scrollbar-width: none;
+}
+
+.categorias-strip::-webkit-scrollbar { display: none; }
+
+.cat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid #E8E4DE;
+  background: var(--ut-white);
+  color: var(--ut-text-s);
+  white-space: nowrap;
+  transition: all .2s;
+}
+
+.cat-chip:hover {
+  border-color: var(--ut-orange);
+  color: var(--ut-orange);
+}
+
+.cat-chip.active {
+  background: var(--ut-orange);
+  border-color: var(--ut-orange);
+  color: white;
+}
+
+/* ── Grilla de servicios ── */
+.servicios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+}
+
+/* ── Tarjeta de servicio ── */
+.servicio-card {
+  background: var(--ut-white);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 2px solid transparent;
+  transition: all .3s ease;
+  cursor: pointer;
+}
+
+.servicio-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--ut-orange);
+}
+
+.servicio-cover {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 56px;
+  position: relative;
+  overflow: hidden;
+}
+
+.servicio-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,.08) 100%);
+}
+
+.servicio-cat-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  z-index: 1;
+  background: rgba(255,255,255,.95);
+  color: var(--ut-text);
+}
+
+.servicio-body {
+  padding: 18px 20px;
+}
+
+.servicio-freelancer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.free-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 800;
+  color: white;
+  flex-shrink: 0;
+}
+
+.free-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ut-text-s);
+}
+
+.free-carrera {
+  font-size: 11px;
+  color: #9CA3AF;
+}
+
+.servicio-titulo {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ut-text);
+  margin-bottom: 6px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.35;
+}
+
+.servicio-desc-short {
+  font-size: 12px;
+  color: var(--ut-text-s);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.servicio-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid #F0EDE8;
+}
+
+.servicio-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ut-text-s);
+}
+
+.servicio-rating .stars-s { color: var(--ut-orange); font-size: 11px; }
+
+.servicio-precio {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--ut-orange);
+}
+
+.servicio-precio span {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ut-text-s);
+}
+
+/* ── Detalle de servicio ── */
+.servicio-detail-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 28px;
+  align-items: start;
+}
+
+.servicio-galeria {
+  background: linear-gradient(135deg, #1A1A2E, #2D2D44);
+  border-radius: var(--radius-xl);
+  height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 96px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.servicio-galeria::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(245,132,31,.2) 0%, transparent 60%);
+}
+
+.servicio-info-card {
+  background: var(--ut-white);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+}
+
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag-skill {
+  background: var(--ut-orange-xl);
+  color: var(--ut-orange-d);
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.contratar-card {
+  background: var(--ut-white);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 88px;
+  border: 2px solid var(--ut-orange-xl);
+}
+
+.paquete-tabs {
+  display: flex;
+  border: 1.5px solid #E8E4DE;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.paquete-tab {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: var(--ut-white);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ut-text-s);
+  cursor: pointer;
+  transition: all .2s;
+  border-right: 1px solid #E8E4DE;
+}
+
+.paquete-tab:last-child { border-right: none; }
+
+.paquete-tab.active {
+  background: var(--ut-orange);
+  color: white;
+}
+
+.entrega-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--ut-mist);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--ut-text-s);
+}
+
+/* ── Publicar servicio ── */
+.publicar-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 28px;
+  align-items: start;
+}
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.cat-option {
+  position: relative;
+}
+
+.cat-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.cat-option label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 10px;
+  border: 1.5px solid #E8E4DE;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  transition: all .2s;
+  color: var(--ut-text-s);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.cat-option label .cat-emoji {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.cat-option input:checked + label {
+  border-color: var(--ut-orange);
+  background: var(--ut-orange-xl);
+  color: var(--ut-orange-d);
+}
+
+/* ── Mi perfil freelance ── */
+.perfil-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.perfil-card-aside {
+  background: var(--ut-white);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  position: sticky;
+  top: 88px;
+}
+
+.perfil-avatar-lg {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 800;
+  color: white;
+  margin: 0 auto 16px;
+}
+
+.perfil-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.pstat {
+  background: var(--ut-mist);
+  border-radius: var(--radius-md);
+  padding: 12px 8px;
+}
+
+.pstat-val {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ut-text);
+}
+
+.pstat-lbl {
+  font-size: 10px;
+  color: var(--ut-text-s);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .servicio-detail-layout { grid-template-columns: 1fr; }
+  .publicar-layout { grid-template-columns: 1fr; }
+  .perfil-layout { grid-template-columns: 1fr; }
+  .cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .servicios-hero { flex-direction: column; align-items: flex-start; }
+}
