@@ -9,15 +9,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- CSS -->
-  <link rel="stylesheet" href="../css/styles.css">
-  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
 </head>
 <body class="dashboard-page">
   
   <!-- HEADER CON NAVEGACIÓN COMPLETA -->
   <header class="header" id="header">
     <div class="header-container">
-      <a href="../index.html" class="logo">
+      <a href="../../index.html" class="logo">
         <span class="logo-ut">UT</span><span class="logo-hub">hub</span>
       </a>
       
@@ -25,9 +25,9 @@
         <ul class="nav-list">
           <li><a href="#" class="nav-link active">Dashboard</a></li>
           <li><a href="comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
-          <li><a href="tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
-          <li><a href="libros/catalogo.html" class="nav-link">📖 Libros</a></li>
-          <li><a href="servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
         </ul>
       </nav>
       
@@ -96,7 +96,7 @@
   <nav aria-label="breadcrumb" class="breadcrumb-nav">
     <div class="container">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="../index.html">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="../../index.html">Inicio</a></li>
         <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
       </ol>
     </div>
@@ -149,8 +149,8 @@
           </div>
           <div class="stat-content">
             <div class="stat-label">Tutorías Reservadas</div>
-            <div class="stat-value">1</div>
-            <div class="stat-change">Próxima: Mañana 2:00 PM</div>
+            <div class="stat-value" id="dash-tutorias-count">1</div>
+            <div class="stat-change"><a href="tutorias/mis-sesiones.html" style="color:inherit;text-decoration:none;">Ver mis sesiones →</a></div>
           </div>
         </div>
 
@@ -191,7 +191,7 @@
           <div class="dashboard-card">
             <div class="card-header">
               <h3 class="card-title">Actividad Reciente</h3>
-              <a href="#" class="link-secondary">Ver todo</a>
+              <a href="tutorias/mis-sesiones.html" class="link-secondary">Ver todo</a>
             </div>
             <div class="card-body">
               <div class="activity-list">
@@ -199,7 +199,7 @@
                 <div class="activity-item">
                   <div class="activity-icon activity-icon-orange">🍔</div>
                   <div class="activity-content">
-                    <div class="activity-title">Pedido confirmado - Tacos El Profe</div>
+                    <div class="activity-title"><a href="comida/pedidos.html" style="color:inherit;text-decoration:none;">Pedido confirmado - Tacos El Profe</a></div>
                     <div class="activity-meta">Entrega en Salón B-204 • Hace 2 horas</div>
                   </div>
                   <div class="activity-amount">$85.00</div>
@@ -208,7 +208,7 @@
                 <div class="activity-item">
                   <div class="activity-icon activity-icon-teal">📚</div>
                   <div class="activity-content">
-                    <div class="activity-title">Reserva confirmada - Tutoría de Cálculo</div>
+                    <div class="activity-title"><a href="tutorias/mis-sesiones.html" style="color:inherit;text-decoration:none;">Reserva confirmada - Tutoría de Cálculo</a></div>
                     <div class="activity-meta">Con Carlos Mendoza • Mañana 2:00 PM</div>
                   </div>
                   <div class="activity-amount">$80.00</div>
@@ -246,11 +246,11 @@
                   <div class="quick-action-icon">🍔</div>
                   <div class="quick-action-label">Pedir Comida</div>
                 </a>
-                <a href="tutorias/buscar.html" class="quick-action">
+                <a href="../tutorias/buscar.html" class="quick-action">
                   <div class="quick-action-icon">📚</div>
                   <div class="quick-action-label">Buscar Tutor</div>
                 </a>
-                <a href="libros/vender.html" class="quick-action">
+                <a href="../libros/catalogo.html" class="quick-action">
                   <div class="quick-action-icon">📖</div>
                   <div class="quick-action-label">Vender Libro</div>
                 </a>
@@ -319,7 +319,7 @@
             <div class="card-body">
               <div class="recommendations-list">
                 
-                <a href="#" class="recommendation-item">
+                <a href="comida/menu.html?tienda=1" class="recommendation-item">
                   <div class="recommendation-icon">🌮</div>
                   <div class="recommendation-content">
                     <div class="recommendation-title">Nuevos tacos de birria</div>
@@ -327,7 +327,7 @@
                   </div>
                 </a>
 
-                <a href="#" class="recommendation-item">
+                <a href="tutorias/tutor.html?id=2" class="recommendation-item">
                   <div class="recommendation-icon">📐</div>
                   <div class="recommendation-content">
                     <div class="recommendation-title">Tutoría de Física II</div>
@@ -335,7 +335,7 @@
                   </div>
                 </a>
 
-                <a href="#" class="recommendation-item">
+                <a href="../servicios/explorar.html" class="recommendation-item">
                   <div class="recommendation-icon">💻</div>
                   <div class="recommendation-content">
                     <div class="recommendation-title">Diseño de logos</div>
@@ -368,22 +368,19 @@
   </footer>
 
   <!-- JavaScript -->
-  <script src="../js/validation.js"></script>
-  <script src="../js/auth.js"></script>
-  <script src="../js/main.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="../../js/tutorias.js"></script>
+  <script src="../../js/notifications.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      initDashboard();
+      // Contador dinámico de tutorías desde localStorage
+      if (window.TutoriasData) {
+        const reservas = TutoriasData.getReservas();
+        const activas = reservas.filter(r => r.estado === 'pendiente' || r.estado === 'aceptada').length;
+        const el = document.getElementById('dash-tutorias-count');
+        if (el && activas > 0) el.textContent = activas;
+      }
     });
-  </script>
-</body>
-  <script src="../js/main.js"></script>
-  <script>
-    // Inicializar dashboard
-    document.addEventListener('DOMContentLoaded', () => {
-      initDashboard();
-    });
-    
   </script>
 </body>
 </html>

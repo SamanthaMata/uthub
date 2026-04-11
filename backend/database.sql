@@ -1,0 +1,14 @@
+CREATE DATABASE IF NOT EXISTS uthub_db;
+USE uthub_db;
+
+CREATE TABLE IF NOT EXISTS usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  apellido VARCHAR(100) NOT NULL,
+  email VARCHAR(150) UNIQUE NOT NULL,
+  matricula VARCHAR(10) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  carrera VARCHAR(100),
+  rol ENUM('estudiante','emprendedor') DEFAULT 'estudiante',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

@@ -2,7 +2,7 @@
    UTHUB - API CLIENT
    ============================================ */
 
-const API_BASE_URL = '/backend/api';
+const API_BASE_URL = 'http://localhost:3000/api';
 
 /**
  * Cliente HTTP para llamadas al API
@@ -181,16 +181,19 @@ const api = new UThubAPI();
 // ── AUTH ──
 const authAPI = {
   login: (email, password, remember = false) => 
-    api.post('/auth/login.php', { email, password, remember }),
+    api.post('/auth/login', { email, password }),
   
   register: (userData) => 
-    api.post('/auth/register.php', userData),
+    api.post('/auth/register', userData),
   
   resetPassword: (email) => 
-    api.post('/auth/reset.php', { email }),
+    api.post('/auth/forgot-password', { email }),
   
-  logout: () => 
-    api.post('/auth/logout.php', {})
+  logout: () => {
+    localStorage.removeItem('uthub_token');
+    localStorage.removeItem('uthub_user');
+    window.location.href = '/pages/auth/login.html';
+  }
 };
 
 // ── COMIDA ──
@@ -286,19 +289,10 @@ const searchAPI = {
 // ── USUARIO ──
 const userAPI = {
   getPerfil: () => 
-    api.get('/user/perfil.php'),
+    api.get('/user/profile'),
   
   actualizarPerfil: (userData) => 
-    api.put('/user/perfil.php', userData),
-  
-  subirAvatar: (file) => 
-    api.upload('/user/avatar.php', file),
-  
-  getNotificaciones: () => 
-    api.get('/user/notificaciones.php'),
-  
-  marcarNotificacionLeida: (notifId) => 
-    api.put(`/user/notificaciones.php?id=${notifId}`, { leida: true })
+    api.put('/user/profile', userData),
 };
 
 // Exportar

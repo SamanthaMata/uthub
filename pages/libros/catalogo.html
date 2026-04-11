@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Libros de Segunda Mano - UThub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/libros.css">
+</head>
+<body class="dashboard-page">
+
+  <header class="header" id="header">
+    <div class="header-container">
+      <a href="../../index.html" class="logo"><span class="logo-ut">UT</span><span class="logo-hub">hub</span></a>
+      <nav class="nav" id="nav-menu">
+        <ul class="nav-list">
+          <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="../comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
+          <li><a href="catalogo.html" class="nav-link active">📖 Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="notifications-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="badge-notif" id="notif-count">0</span>
+        </button>
+        <div class="user-menu">
+          <button class="user-btn"><div class="user-avatar"><span id="user-initials">SM</span></div>
+            <div class="user-info"><div class="user-name">Samantha Mata</div><div class="user-role">Estudiante</div></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="../auth/dashboard.html">Inicio</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Libros de Segunda Mano</li>
+      </ol>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <div class="container">
+
+      <!-- Page header -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:28px;flex-wrap:wrap;">
+        <div>
+          <h1 style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#1A1A2E;margin-bottom:6px;">📖 Libros de Segunda Mano</h1>
+          <p style="font-size:15px;color:#6B6B80;">Ahorra hasta un 70% comprando libros usados entre estudiantes UTSC</p>
+        </div>
+        <a href="vender.html" style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;background:#F5841F;color:white;border-radius:12px;text-decoration:none;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;white-space:nowrap;transition:all .2s;" onmouseover="this.style.background='#D96A08'" onmouseout="this.style.background='#F5841F'">
+          + Vender mi libro
+        </a>
+      </div>
+
+      <!-- Filtros -->
+      <div class="libros-toolbar">
+        <div class="filter-search-wrap" style="flex:3;">
+          <svg class="filter-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="busqueda" class="filter-input" placeholder="Buscar por título, autor, carrera...">
+        </div>
+        <div class="filter-group">
+          <label>Carrera</label>
+          <select id="filtro-carrera" class="filter-select">
+            <option value="">Todas las carreras</option>
+            <option value="Ing. en Sistemas">Ing. en Sistemas</option>
+            <option value="Ing. en Mecatrónica">Ing. en Mecatrónica</option>
+            <option value="Ing. en Gestión Empresarial">Ing. en Gestión Emp.</option>
+            <option value="Todas las carreras">General</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Estado</label>
+          <select id="filtro-estado" class="filter-select">
+            <option value="">Todos los estados</option>
+            <option value="nuevo">Nuevo</option>
+            <option value="muy-bueno">Muy bueno</option>
+            <option value="bueno">Buen estado</option>
+            <option value="regular">Regular</option>
+          </select>
+        </div>
+        <div class="filter-group" style="min-width:120px;">
+          <label>Precio máx.</label>
+          <select id="filtro-precio" class="filter-select">
+            <option value="">Sin límite</option>
+            <option value="100">$100</option>
+            <option value="150">$150</option>
+            <option value="200">$200</option>
+            <option value="300">$300</option>
+          </select>
+        </div>
+        <button class="btn-limpiar" onclick="limpiarFiltros()">Limpiar</button>
+      </div>
+
+      <!-- Contador resultados -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <p style="font-size:14px;color:#6B6B80;" id="resultado-count">Cargando...</p>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <a href="mis-libros.html" style="font-size:13px;color:#F5841F;font-weight:600;text-decoration:none;">Mis publicaciones →</a>
+        </div>
+      </div>
+
+      <!-- Grid de libros -->
+      <div class="libros-grid" id="libros-grid">
+        <!-- Renderizado por JS -->
+      </div>
+
+    </div>
+  </main>
+
+  <script src="../../js/libros.js"></script>
+  <script>
+    let filtrosActivos = {};
+
+    function renderGrid(libros) {
+      const grid = document.getElementById('libros-grid');
+      const count = document.getElementById('resultado-count');
+      if (libros.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:60px;background:white;border-radius:20px;border:2px dashed #E8E4DE;">
+            <div style="font-size:48px;margin-bottom:16px;">📭</div>
+            <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#1A1A2E;margin-bottom:8px;">No se encontraron libros</h3>
+            <p style="color:#6B6B80;">Intenta con otros filtros o <a href="vender.html" style="color:#F5841F;">publica el primero</a></p>
+          </div>`;
+        count.textContent = '0 resultados';
+        return;
+      }
+      grid.innerHTML = libros.map(l => LibrosUI.renderCard(l)).join('');
+      count.textContent = `${libros.length} libro${libros.length !== 1 ? 's' : ''} disponible${libros.length !== 1 ? 's' : ''}`;
+    }
+
+    function aplicarFiltros() {
+      filtrosActivos = {
+        busqueda: document.getElementById('busqueda').value.trim(),
+        carrera: document.getElementById('filtro-carrera').value,
+        estado: document.getElementById('filtro-estado').value,
+        precioMax: document.getElementById('filtro-precio').value
+      };
+      renderGrid(LibrosDB.filtrarLibros(filtrosActivos));
+    }
+
+    function limpiarFiltros() {
+      document.getElementById('busqueda').value = '';
+      document.getElementById('filtro-carrera').value = '';
+      document.getElementById('filtro-estado').value = '';
+      document.getElementById('filtro-precio').value = '';
+      filtrosActivos = {};
+      renderGrid(LibrosDB.getLibros());
+    }
+
+    // Event listeners
+    document.getElementById('busqueda').addEventListener('input', aplicarFiltros);
+    document.getElementById('filtro-carrera').addEventListener('change', aplicarFiltros);
+    document.getElementById('filtro-estado').addEventListener('change', aplicarFiltros);
+    document.getElementById('filtro-precio').addEventListener('change', aplicarFiltros);
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+      renderGrid(LibrosDB.getLibros());
+    });
+  </script>
+</body>
+</html>

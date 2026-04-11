@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscar Tutores - UThub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/styles.css">
+  <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="../../css/tutorias.css">
+  <style>
+    .tutores-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:24px; }
+    .tutor-card { background:white; border-radius:16px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,.06); border:2px solid transparent; transition:all .3s; }
+    .tutor-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,.12); border-color:var(--ut-orange,#F5841F); }
+    .tutor-card-top { padding:20px 20px 0; display:flex; align-items:center; gap:14px; }
+    .tutor-avatar { width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:Syne,sans-serif; font-size:18px; font-weight:800; color:white; flex-shrink:0; overflow:hidden; }
+    .tutor-avatar img { width:100%; height:100%; object-fit:cover; }
+    .tutor-name { font-family:Syne,sans-serif; font-size:16px; font-weight:800; color:#1A1A2E; margin-bottom:2px; }
+    .tutor-carrera { font-size:12px; color:#6B6B80; }
+    .tutor-body { padding:14px 20px; }
+    .tutor-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+    .tag-materia { background:#FFF0E0; color:#D96A08; padding:4px 10px; border-radius:100px; font-size:11px; font-weight:600; }
+    .tag-more { background:#F3F4F6; color:#6B7280; padding:4px 10px; border-radius:100px; font-size:11px; font-weight:600; }
+    .tutor-meta { display:flex; align-items:center; gap:16px; margin-bottom:12px; }
+    .tutor-rating { display:flex; align-items:center; gap:4px; font-size:13px; font-weight:600; color:#1A1A2E; }
+    .tutor-rating .stars { color:#F5841F; font-size:13px; }
+    .tutor-sesiones { font-size:12px; color:#6B6B80; }
+    .tutor-precio { font-family:Syne,sans-serif; font-size:18px; font-weight:800; color:#F5841F; }
+    .tutor-precio span { font-size:12px; font-weight:400; color:#6B6B80; }
+    .tutor-desc { font-size:13px; color:#6B6B80; line-height:1.55; margin-bottom:14px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .tutor-modalidad { font-size:12px; color:#6B6B80; margin-bottom:14px; }
+    .disponible-badge { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; padding:3px 8px; border-radius:100px; }
+    .disp-si { background:#DCFCE7; color:#16A34A; }
+    .disp-no { background:#F3F4F6; color:#9CA3AF; }
+    .disp-si::before,.disp-no::before { content:''; width:6px; height:6px; border-radius:50%; background:currentColor; }
+    .empty-grid { text-align:center; padding:60px; background:white; border-radius:16px; border:2px dashed #E8E4DE; }
+  </style>
+</head>
+<body class="dashboard-page">
+  <header class="header" id="header">
+    <div class="header-container">
+      <a href="../../index.html" class="logo"><span class="logo-ut">UT</span><span class="logo-hub">hub</span></a>
+      <nav class="nav" id="nav-menu">
+        <ul class="nav-list">
+          <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="../comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
+          <li><a href="buscar.html" class="nav-link active">📚 Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-btn" id="notifications-btn">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span class="badge-notif">0</span>
+        </button>
+        <div class="user-menu">
+          <button class="user-btn" id="user-menu-btn">
+            <div class="user-avatar"><span id="user-initials">SM</span></div>
+            <div class="user-info"><div class="user-name">Samantha Mata</div><div class="user-role">Estudiante</div></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="../../index.html">Inicio</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Tutorías</li>
+      </ol>
+    </div>
+  </nav>
+  <main class="main-content">
+    <div class="container">
+      <div class="page-header">
+        <div>
+          <h1 class="page-title">📚 Encuentra tu Tutor</h1>
+          <p class="page-subtitle">Tutores verificados de tu mismo campus. Reserva en minutos.</p>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <a href="mis-sesiones.html" class="btn-tienda" style="width:auto;padding:10px 20px;font-size:13px;">Mis Sesiones</a>
+          <a href="ser-tutor.html" class="btn-tienda" style="width:auto;padding:10px 20px;font-size:13px;background:white;color:#F5841F;border:2px solid #F5841F;">Ser Tutor</a>
+        </div>
+      </div>
+
+      <div class="filters-section">
+        <div class="search-bar-large">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="search-tutores" placeholder="Buscar por nombre, materia o carrera...">
+        </div>
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label class="filter-label">Materia</label>
+            <select class="filter-select" id="filter-materia"><option value="">Todas las materias</option></select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Modalidad</label>
+            <select class="filter-select" id="filter-modalidad">
+              <option value="">Todas</option>
+              <option value="presencial">Presencial</option>
+              <option value="virtual">Virtual</option>
+              <option value="ambas">Ambas</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Precio máximo / hora</label>
+            <select class="filter-select" id="filter-precio">
+              <option value="">Sin límite</option>
+              <option value="60">Hasta $60</option>
+              <option value="80">Hasta $80</option>
+              <option value="100">Hasta $100</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Disponibilidad</label>
+            <select class="filter-select" id="filter-disponible">
+              <option value="">Todos</option>
+              <option value="1">Solo disponibles</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="tutores-grid" id="tutores-grid"></div>
+      <div id="empty-state" class="empty-grid" style="display:none;">
+        <div style="font-size:48px;margin-bottom:12px;">🔍</div>
+        <div style="font-family:Syne,sans-serif;font-size:18px;font-weight:800;color:#1A1A2E;margin-bottom:8px;">Sin resultados</div>
+        <div style="font-size:14px;color:#6B6B80;">Prueba con otros filtros o busca otra materia</div>
+      </div>
+    </div>
+  </main>
+  <script src="../../js/tutorias.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const { getTutores } = TutoriasDB;
+  const { renderStars, modalidadLabel, MATERIAS_TODAS } = TutoriasUI;
+
+  // Populate materia filter
+  const selMat = document.getElementById('filter-materia');
+  MATERIAS_TODAS.forEach(m => { const o=document.createElement('option'); o.value=m; o.textContent=m; selMat.appendChild(o); });
+
+  function render() {
+    const q = document.getElementById('search-tutores').value.toLowerCase();
+    const mat = document.getElementById('filter-materia').value;
+    const mod = document.getElementById('filter-modalidad').value;
+    const prec = parseInt(document.getElementById('filter-precio').value)||999;
+    const disp = document.getElementById('filter-disponible').value;
+    let tutores = getTutores().filter(t => {
+      const hayQ = !q || t.nombre.toLowerCase().includes(q) || t.materias.some(m=>m.toLowerCase().includes(q)) || t.carrera.toLowerCase().includes(q);
+      const hayMat = !mat || t.materias.includes(mat);
+      const hayMod = !mod || t.modalidad===mod || t.modalidad==='ambas';
+      const hayPrec = t.precio <= prec;
+      const hayDisp = !disp || t.disponible;
+      return hayQ && hayMat && hayMod && hayPrec && hayDisp;
+    });
+    const grid = document.getElementById('tutores-grid');
+    const empty = document.getElementById('empty-state');
+    if (!tutores.length) { grid.innerHTML=''; empty.style.display='block'; return; }
+    empty.style.display='none';
+    grid.innerHTML = tutores.map(t => {
+      const top3 = t.materias.slice(0,3);
+      const mas = t.materias.length-3;
+      const tags = top3.map(m=>'<span class="tag-materia">'+m+'</span>').join('')+(mas>0?'<span class="tag-more">+'+mas+'</span>':'');
+      const disp = t.disponible
+        ? '<span class="disponible-badge disp-si">Disponible</span>'
+        : '<span class="disponible-badge disp-no">Cupo lleno</span>';
+      const foto = t.foto ? '<img src="'+t.foto+'" alt="'+t.nombre+'" loading="lazy">' : t.avatar;
+      return '<div class="tutor-card">'
+        +'<div class="tutor-card-top">'
+          +'<div class="tutor-avatar" style="background:'+t.color+'">'+foto+'</div>'
+          +'<div><div class="tutor-name">'+t.nombre+'</div>'
+          +'<div class="tutor-carrera">'+t.carrera+' · '+t.semestre+'</div></div>'
+          +'<div style="margin-left:auto">'+disp+'</div>'
+        +'</div>'
+        +'<div class="tutor-body">'
+          +'<div class="tutor-tags">'+tags+'</div>'
+          +'<div class="tutor-meta">'
+            +'<div class="tutor-rating"><span class="stars">'+renderStars(t.calificacion)+'</span>'+t.calificacion+'</div>'
+            +'<div class="tutor-sesiones">'+t.sesiones+' sesiones</div>'
+            +'<div class="tutor-precio">$'+t.precio+'<span>/hr</span></div>'
+          +'</div>'
+          +'<div class="tutor-desc">'+t.descripcion+'</div>'
+          +'<div class="tutor-modalidad">'+modalidadLabel(t.modalidad)+' · '+t.ubicacion+'</div>'
+          +(t.disponible
+            ? '<a href="tutor.html?id='+t.id+'" class="btn-tienda">Ver perfil y reservar</a>'
+            : '<span class="btn-tienda btn-disabled">Sin disponibilidad</span>')
+        +'</div>'
+      +'</div>';
+    }).join('');
+  }
+  ['search-tutores','filter-materia','filter-modalidad','filter-precio','filter-disponible']
+    .forEach(id => document.getElementById(id).addEventListener('input', render));
+  document.getElementById('filter-materia').addEventListener('change', render);
+  document.getElementById('filter-modalidad').addEventListener('change', render);
+  document.getElementById('filter-precio').addEventListener('change', render);
+  document.getElementById('filter-disponible').addEventListener('change', render);
+  render();
+  }); // end DOMContentLoaded
+  </script>
+</body>
+</html>
