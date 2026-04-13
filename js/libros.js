@@ -155,7 +155,13 @@ const LibrosDB = (() => {
     libro.fecha = new Date().toISOString().split('T')[0];
     libro.vistas = 0;
     libro.activo = true;
-    libro.vendedor = { id: 0, nombre: 'Samantha Mata', iniciales: 'SM', color: '#F5841F' };
+    const user = JSON.parse(localStorage.getItem('uthub_user'));
+    libro.vendedor = { 
+      id: user?.id || 0,
+      nombre: user?.nombre || 'Usuario',
+      iniciales: user?.nombre?.slice(0,2).toUpperCase() || 'US',
+      color: '#F5841F'
+    };
     mis.push(libro);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(mis));
     return libro;

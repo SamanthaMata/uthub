@@ -51,10 +51,10 @@
         <div class="user-menu">
           <button class="user-btn" id="user-menu-btn">
             <div class="user-avatar">
-              <span id="user-initials">SM</span>
+              <span id="user-initials"></span>
             </div>
             <div class="user-info">
-              <div class="user-name" id="user-name">Samantha Mata</div>
+              <div class="user-name" id="user-name"></div>
               <div class="user-role">Estudiante</div>
             </div>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -109,7 +109,7 @@
       <!-- Welcome Section -->
       <div class="welcome-section">
         <div class="welcome-content">
-          <h1 class="welcome-title">¡Bienvenido de nuevo, <span id="welcome-name">Samantha</span>!</h1>
+          <h1 class="welcome-title">¡Bienvenido de nuevo, <span id="welcome-name"></span>!</h1>
           <p class="welcome-subtitle">Aquí está un resumen de tu actividad reciente en UThub</p>
         </div>
         <div class="welcome-actions">
@@ -368,22 +368,17 @@
   </footer>
 
   <!-- JavaScript -->
-  <script src="../js/validation.js"></script>
-  <script src="../js/auth.js"></script>
-  <script src="../js/main.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      initDashboard();
-    });
-  </script>
-</body>
-  <script src="../js/main.js"></script>
-  <script>
-    // Inicializar dashboard
-    document.addEventListener('DOMContentLoaded', () => {
-      initDashboard();
-    });
-    
-  </script>
+<script src="../js/protect.js"></script>
+<script src="../js/validation.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/main.js"></script>
+<script src="../js/comida.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    initDashboard();
+    protegerRuta()
+  });
+  
+</script>
 </body>
 </html>

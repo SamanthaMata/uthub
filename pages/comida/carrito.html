@@ -353,10 +353,10 @@
         <div class="user-menu">
           <button class="user-btn" id="user-menu-btn">
             <div class="user-avatar">
-              <span id="user-initials">SM</span>
+              <span id="user-initials"></span>
             </div>
             <div class="user-info">
-              <div class="user-name" id="user-name">Samantha Mata</div>
+              <div class="user-name" id="user-name"></div>
               <div class="user-role">Estudiante</div>
             </div>
           </button>
@@ -491,12 +491,14 @@
   </main>
 
   <!-- JS -->
+  <script src="../../js/protect.js"></script>
+  <script src="../../js/main.js"></script>
   <script src="../../js/comida.js"></script>
-  <script src="../../js/notifications.js"></script>
   <script>
     // Initialize cart page
     document.addEventListener('DOMContentLoaded', () => {
       loadCartItems();
+      protegerRutas()
       updateCartCount();
 
       // Show empty or filled state

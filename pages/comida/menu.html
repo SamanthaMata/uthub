@@ -427,11 +427,13 @@
   </div>
 
   <!-- JavaScript -->
+  <script src="../../js/protect.js"></script>
   <script src="../../js/main.js"></script>
   <script src="../../js/comida.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       initMenuPage();
+      protegerRutas()
       updateCartDisplay();
     });
   </script>

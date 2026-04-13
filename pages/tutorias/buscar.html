@@ -42,7 +42,7 @@
       <a href="../../index.html" class="logo"><span class="logo-ut">UT</span><span class="logo-hub">hub</span></a>
       <nav class="nav" id="nav-menu">
         <ul class="nav-list">
-          <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="../dashboard.html" class="nav-link">Dashboard</a></li>
           <li><a href="../comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
           <li><a href="buscar.html" class="nav-link active">📚 Tutorías</a></li>
           <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
@@ -59,8 +59,8 @@
         </button>
         <div class="user-menu">
           <button class="user-btn" id="user-menu-btn">
-            <div class="user-avatar"><span id="user-initials">SM</span></div>
-            <div class="user-info"><div class="user-name">Samantha Mata</div><div class="user-role">Estudiante</div></div>
+            <div class="user-avatar"><span id="user-initials"></span></div>
+            <div class="user-info"><div class="user-name" id="user-name"></div><div class="user-role">Estudiante</div></div>
           </button>
         </div>
       </div>
@@ -70,6 +70,7 @@
     <div class="container">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="../../index.html">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="../dashboard.html">Dashboard</a></li>
         <li class="breadcrumb-item active" aria-current="page">Tutorías</li>
       </ol>
     </div>
@@ -133,9 +134,15 @@
       </div>
     </div>
   </main>
-  <script src="../../js/tutorias.js"></script>
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
+  <script src="../../js/protect.js"></script>
+<script src="../../js/validation.js"></script>
+<script src="../../js/auth.js"></script>
+<script src="../../js/main.js"></script>
+<script src="../../js/tutorias.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  protegerRuta()
+  protegerRutas()
   const { getTutores } = TutoriasDB;
   const { renderStars, modalidadLabel, MATERIAS_TODAS } = TutoriasUI;
 

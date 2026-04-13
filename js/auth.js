@@ -221,7 +221,7 @@ function logout() {
   if (confirm('¿Estás seguro de cerrar sesión?')) {
     localStorage.removeItem('uthub_token');
     localStorage.removeItem('uthub_user');
-    window.location.href = 'pages/auth/login.html';
+    window.location.href = window.location.origin + window.location.pathname.split('/pages/')[0] + '/pages/auth/login.html';
   }
 }
 

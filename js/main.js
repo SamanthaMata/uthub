@@ -347,22 +347,147 @@ function resaltarModuloFavorito(modulo) {
     card.style.border = '2px solid var(--ut-orange)';
   }
 }
+function initUserUI() {
+  const user = JSON.parse(localStorage.getItem("uthub_user"));
+  if (!user) return;
 
-// ──── INICIALIZACIÓN ────
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('🍊 UThub cargado correctamente');
+  const fullName = `${user.nombre} ${user.apellido || ""}`.trim();
+
+  const initials = getInitials(fullName);
+
+  const userNameEl = document.getElementById("user-name");
+  const userInitialsEl = document.getElementById("user-initials");
+  const welcomeNameEl = document.getElementById("welcome-name");
+
+  if (userNameEl) userNameEl.textContent = fullName;
+  if (userInitialsEl) userInitialsEl.textContent = initials;
+  if (welcomeNameEl) userNombreEl.textContent = user.nombre; // solo nombre en welcome
+}
+
+function getInitials(nombreCompleto) {
+  const partes = nombreCompleto.split(" ");
   
+  if (partes.length >= 2) {
+    return (partes[0][0] + partes[1][0]).toUpperCase();
+  }
+  
+  return partes[0][0].toUpperCase();
+}
+function initUserMenu() {
+  const userBtn = document.getElementById("user-menu-btn");
+  const dropdown = document.getElementById("user-dropdown");
+  const logoutBtn = document.getElementById("logout-btn");
+
+  if (userBtn && dropdown) {
+    userBtn.addEventListener("click", () => {
+      dropdown.style.display =
+        dropdown.style.display === "block" ? "none" : "block";
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!userBtn.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.style.display = "none";
+      }
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("uthub_user");
+      window.location.href = "/pages/auth/login.html";
+    });
+  }
+}
+function protegerRuta() {
+  const rutasProtegidas = [
+    '/pages/comida/',
+    '/pages/tutorias/',
+    '/pages/libros/',
+    '/pages/servicios/',
+    '/pages/dashboard.html'
+  ];
+
+  const path = window.location.pathname;
+
+  const requiereAuth = rutasProtegidas.some(ruta => path.includes(ruta));
+
+  if (requiereAuth && !localStorage.getItem('uthub_token')) {
+    window.location.href = '/pages/auth/login.html';
+  }
+}
+// ──── INICIALIZACIÓN ────
+function cargarUsuarioGlobal() {
+  const user = JSON.parse(localStorage.getItem('uthub_user') || '{}');
+
+  if (!user.nombre) return;
+
+  const nombre = user.nombre;
+  const apellido = user.apellido || '';
+
+  const iniciales = `${nombre.charAt(0)}${apellido.charAt(0) || ''}`;
+
+  const userNameEl = document.getElementById('user-name');
+  const userInitialsEl = document.getElementById('user-initials');
+
+  if (userNameEl) {
+    userNameEl.textContent = `${nombre} ${apellido}`;
+  }
+
+  if (userInitialsEl) {
+    userInitialsEl.textContent = iniciales.toUpperCase();
+  }
+}
+
+function protegerRutas() {
+  const token = localStorage.getItem('uthub_token');
+  const path = window.location.pathname;
+
+  // Rutas que NO necesitan login
+  const rutasPublicas = [
+    '/index.html',
+    '/pages/auth/login.html',
+    '/pages/auth/register.html',
+    '/pages/auth/reset.html'
+  ];
+
+  // Verifica si es pública
+  const esPublica = rutasPublicas.some(ruta => path.includes(ruta));
+
+  // Si NO es pública y NO hay token → redirigir
+  if (!esPublica && !token) {
+    console.log('🔒 Acceso bloqueado, redirigiendo a login...');
+    
+    // Detectar nivel de carpeta automáticamente
+    if (path.includes('/pages/comida/') || 
+        path.includes('/pages/tutorias/') || 
+        path.includes('/pages/libros/') || 
+        path.includes('/pages/servicios/')) {
+      window.location.href = '../../pages/auth/login.html';
+    } else if (path.includes('/pages/')) {
+      window.location.href = '../pages/auth/login.html';
+    } else {
+      window.location.href = 'pages/auth/login.html';
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  
+  console.log('🍊 UThub cargado correctamente');
+
+  // 🔥 ESTO ES LO IMPORTANTE
+  initUserUI();
+  initUserMenu();
+  protegerRuta()
+  protegerRutas()
   // Cargar preferencias del usuario
   cargarPreferencias();
-  
-  // Log de eventos importantes
+
   console.log('📍 Página actual:', window.location.pathname);
-  
-  // Verificar si el usuario está autenticado
+
   const token = localStorage.getItem('uthub_token');
   if (token) {
     console.log('✓ Usuario autenticado');
-    // Aquí puedes mostrar elementos adicionales para usuarios autenticados
   } else {
     console.log('○ Usuario no autenticado');
   }

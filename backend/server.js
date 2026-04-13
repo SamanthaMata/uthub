@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 
 dotenv.config();
 
@@ -8,6 +9,11 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+
+
+// Servir archivos estáticos (frontend)
+app.use(express.static(path.join(__dirname, '../uthub')));
 
 // Rutas
 app.use('/api/auth', require('./routes/auth'));

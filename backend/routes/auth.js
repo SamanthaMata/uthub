@@ -33,7 +33,15 @@ router.post('/register', async (req, res) => {
       { expiresIn: '24h' }
     );
 
-    res.status(201).json({ token, usuario: { id: result.insertId, nombre, email } });
+    res.status(201).json({ 
+    token, 
+    usuario: { 
+    id: result.insertId, 
+    nombre, 
+    apellido, // 👈 ESTE
+    email 
+  } 
+});
   } catch (err) {
     res.status(500).json({ error: 'Error del servidor' });
   }
@@ -68,7 +76,16 @@ router.post('/login', async (req, res) => {
       { expiresIn: '24h' }
     );
 
-    res.json({ token, usuario: { id: usuario.id, nombre: usuario.nombre, email: usuario.email, rol: usuario.rol } });
+    res.json({ 
+    token, 
+    usuario: { 
+    id: usuario.id, 
+    nombre: usuario.nombre, 
+    apellido: usuario.apellido, // 👈 ESTE
+    email: usuario.email, 
+    rol: usuario.rol 
+  } 
+});
   } catch (err) {
     res.status(500).json({ error: 'Error del servidor' });
   }

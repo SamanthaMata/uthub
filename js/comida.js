@@ -375,7 +375,12 @@ function showToast(message, type = 'info') {
 }
 
 // Estilos para toast
-const toastStyles = document.createElement('style');
+if (!document.getElementById('toast-styles')) {
+  const toastStyles = document.createElement('style');
+  toastStyles.id = 'toast-styles';
+  toastStyles.textContent = `...`;
+  document.head.appendChild(toastStyles);
+}
 toastStyles.textContent = `
   .toast-notification {
     position: fixed;
