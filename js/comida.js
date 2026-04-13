@@ -381,6 +381,7 @@ if (!document.getElementById('toast-styles')) {
   toastStyles.textContent = `...`;
   document.head.appendChild(toastStyles);
 }
+
 toastStyles.textContent = `
   .toast-notification {
     position: fixed;

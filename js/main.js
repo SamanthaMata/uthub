@@ -394,25 +394,37 @@ function initUserMenu() {
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
       localStorage.removeItem("uthub_user");
-      window.location.href = "/pages/auth/login.html";
+      window.location.href = window.location.origin + '/UThub/pages/auth/login.html';
     });
   }
 }
+
+function redirigirLogin() {
+  const origin = window.location.origin;
+  const base = window.location.pathname.split('/UThub')[0] + '/UThub';
+
+  window.location.origin + '/UThub/pages/auth/login.html';
+}
+
 function protegerRuta() {
-  const rutasProtegidas = [
-    '/pages/comida/',
-    '/pages/tutorias/',
-    '/pages/libros/',
-    '/pages/servicios/',
-    '/pages/dashboard.html'
+  const token = localStorage.getItem('uthub_token');
+  const user = localStorage.getItem('uthub_user');
+  const path = window.location.pathname;
+  
+
+  // Rutas públicas (no requieren login)
+  const rutasPublicas = [
+    '/index.html',
+    '/pages/auth/login.html',
+    '/pages/auth/register.html',
+    '/pages/auth/reset.html'
   ];
 
-  const path = window.location.pathname;
+  const esPublica = rutasPublicas.some(ruta => path.includes(ruta));
 
-  const requiereAuth = rutasProtegidas.some(ruta => path.includes(ruta));
-
-  if (requiereAuth && !localStorage.getItem('uthub_token')) {
-    window.location.href = '/pages/auth/login.html';
+  // Si NO es pública y NO hay sesión → redirigir
+  if (!esPublica && (!token || !user)) {
+    window.location.href = `${window.location.origin}/UThub/pages/auth/login.html`;
   }
 }
 // ──── INICIALIZACIÓN ────
@@ -438,38 +450,6 @@ function cargarUsuarioGlobal() {
   }
 }
 
-function protegerRutas() {
-  const token = localStorage.getItem('uthub_token');
-  const path = window.location.pathname;
-
-  // Rutas que NO necesitan login
-  const rutasPublicas = [
-    '/index.html',
-    '/pages/auth/login.html',
-    '/pages/auth/register.html',
-    '/pages/auth/reset.html'
-  ];
-
-  // Verifica si es pública
-  const esPublica = rutasPublicas.some(ruta => path.includes(ruta));
-
-  // Si NO es pública y NO hay token → redirigir
-  if (!esPublica && !token) {
-    console.log('🔒 Acceso bloqueado, redirigiendo a login...');
-    
-    // Detectar nivel de carpeta automáticamente
-    if (path.includes('/pages/comida/') || 
-        path.includes('/pages/tutorias/') || 
-        path.includes('/pages/libros/') || 
-        path.includes('/pages/servicios/')) {
-      window.location.href = '../../pages/auth/login.html';
-    } else if (path.includes('/pages/')) {
-      window.location.href = '../pages/auth/login.html';
-    } else {
-      window.location.href = 'pages/auth/login.html';
-    }
-  }
-}
 
 document.addEventListener('DOMContentLoaded', () => {
   
@@ -479,7 +459,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initUserUI();
   initUserMenu();
   protegerRuta()
-  protegerRutas()
   // Cargar preferencias del usuario
   cargarPreferencias();
 
