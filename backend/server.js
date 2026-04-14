@@ -31,3 +31,6 @@ app.listen(PORT, () => {
 
 app.use('/api/user', require('./routes/protected'));
 
+const comidaRoutes = require('./routes/comida');
+app.use('/api/comida', comidaRoutes);
+

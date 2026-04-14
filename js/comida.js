@@ -4,6 +4,7 @@
 
 // Carrito (guardar en localStorage)
 let cart = JSON.parse(localStorage.getItem('uthub_cart')) || [];
+let tiendaActual = '';
 
 /**
  * INICIALIZAR PÁGINA DE TIENDAS
@@ -130,7 +131,7 @@ function addToCart(nombre, precio, id) {
       nombre: nombre,
       precio: precio,
       cantidad: 1,
-      tienda: 'Tacos El Profe' // En producción, esto vendría dinámicamente
+      tienda: tiendaActual
     });
   }
   
@@ -373,6 +374,165 @@ function showToast(message, type = 'info') {
     setTimeout(() => toast.remove(), 300);
   }, 3000);
 }
+const API_URL = 'http://localhost:3000/api';
+// 🏪 Obtener una tienda por ID
+router.get('/tienda/:id', async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      'SELECT * FROM tiendas WHERE id = ?',
+      [req.params.id]
+    );
+    res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener tienda' });
+  }
+});
+
+async function cargarTiendas() {
+  try {
+    const res = await fetch(`${API_URL}/comida/tiendas`);
+    const tiendas = await res.json();
+
+    const contenedor = document.getElementById('tiendas-grid');
+
+    if (!contenedor) return;
+
+    contenedor.innerHTML = tiendas.map(t => `
+  <div class="tienda-card">
+
+    <div class="tienda-image">
+      <img src="${t.imagen || 'https://via.placeholder.com/400'}">
+    </div>
+
+    <div class="tienda-content">
+      <h3 class="tienda-name">${t.nombre}</h3>
+      <p class="tienda-description">${t.descripcion}</p>
+
+      <a href="menu.html?id=${t.id}" class="btn-tienda">
+        Ver Menú
+      </a>
+    </div>
+
+  </div>
+`).join('');
+
+  } catch (error) {
+    console.error('Error cargando tiendas:', error);
+  }
+}
+async function cargarProductos() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const tiendaId = params.get('id');
+
+    if (!tiendaId) return;
+
+    const res = await fetch(`${API_URL}/comida/productos/${tiendaId}`);
+    const productos = await res.json();
+
+    const contenedor = document.getElementById('productos-container');
+
+    if (!contenedor) return;
+
+    contenedor.innerHTML = productos.map(p => `
+  <div class="producto-card">
+    
+    <div class="producto-image">
+      <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=300&fit=crop" alt="${p.nombre}">
+      <div class="producto-badge">Popular</div>
+    </div>
+
+    <div class="producto-content">
+      <h3 class="producto-name">${p.nombre}</h3>
+      <p class="producto-description">${p.descripcion || 'Delicioso producto disponible'}</p>
+
+      <div class="producto-footer">
+        <div class="producto-price">$${p.precio}</div>
+
+        <button class="btn-add-cart" onclick="addToCart('${p.nombre}', ${p.precio}, ${p.id})">
+          Agregar
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+`).join('');
+
+  } catch (error) {
+    console.error('Error cargando productos:', error);
+  }
+}
+
+async function cargarInfoTienda() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const tiendaId = params.get('id');
+
+    if (!tiendaId) return;
+
+    const res = await fetch(`${API_URL}/comida/tienda/${tiendaId}`);
+    const tienda = await res.json();
+
+    // 👉 guardar nombre para carrito
+    tiendaActual = tienda.nombre;
+
+    // 🧠 NOMBRE
+    const nombreEl = document.querySelector('.tienda-detail-name');
+    if (nombreEl) nombreEl.textContent = tienda.nombre;
+
+    // 🧠 DESCRIPCIÓN
+    const descEl = document.querySelector('.tienda-detail-description');
+    if (descEl) descEl.textContent = tienda.descripcion;
+
+    // 🧠 BREADCRUMB
+    const breadcrumb = document.querySelector('.breadcrumb-item.active');
+    if (breadcrumb) breadcrumb.textContent = tienda.nombre;
+
+    // 🧠 IMAGEN (usa una default si no tienes en BD)
+    const banner = document.querySelector('.tienda-detail-banner');
+    if (banner) {
+      banner.innerHTML = `
+        <img src="${tienda.imagen || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200'}" alt="${tienda.nombre}">
+      `;
+    }
+
+    // 🧠 LOGO (emoji simple)
+    const logo = document.querySelector('.tienda-logo');
+    if (logo) {
+      logo.textContent = tienda.logo || '🍔';
+    }
+
+    // 🧠 RATING (fake por ahora si no tienes en BD)
+    const rating = document.querySelector('.rating-value');
+    if (rating) rating.textContent = tienda.rating || '4.5';
+
+    const stars = document.querySelector('.stars');
+    if (stars) stars.textContent = '★★★★★';
+
+    const reviews = document.querySelector('.rating-count');
+    if (reviews) reviews.textContent = '(50 reseñas)';
+
+    // 🧠 META
+    const metas = document.querySelectorAll('.meta-text');
+    if (metas[0]) metas[0].textContent = tienda.tipo || 'Comida';
+    if (metas[1]) metas[1].textContent = tienda.ubicacion || 'UT';
+
+    // 🧠 STATUS
+    const status = document.querySelector('.status-dot');
+    if (status) status.style.background = 'green';
+
+    const hours = document.querySelector('.status-hours');
+    if (hours) hours.textContent = tienda.horario || '9:00 AM - 6:00 PM';
+
+  } catch (error) {
+    console.error('Error cargando tienda:', error);
+  }
+}
 
 // Estilos para toast
 if (!document.getElementById('toast-styles')) {
@@ -421,7 +581,10 @@ document.head.appendChild(toastStyles);
 
 // Exportar funciones
 window.initTiendasPage = initTiendasPage;
+window.cargarProductos = cargarProductos;
+window.cargarTiendas = cargarTiendas;
 window.initMenuPage = initMenuPage;
+window.cargarInfoTienda = cargarInfoTienda;
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;
 window.updateQuantity = updateQuantity;
@@ -431,3 +594,4 @@ window.clearFilters = clearFilters;
 window.updateCartDisplay = updateCartDisplay;
 
 console.log('✅ Módulo de Comida inicializado');
+
