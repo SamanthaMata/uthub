@@ -18,16 +18,22 @@
     .btn-ghost:hover{border-color:var(--teal);transform:translateY(-1px);}
     .btn-primary{background:var(--teal);color:white;border:1.5px solid var(--teal);}
     .btn-primary:hover{background:var(--teal-d);border-color:var(--teal-d);transform:translateY(-1px);}
-    .tutor-hero{background:linear-gradient(135deg,#1A1A2E 0%,#253052 58%,#009985 100%);border-radius:22px;padding:30px;display:grid;grid-template-columns:1.4fr .8fr;gap:24px;align-items:center;margin-bottom:28px;color:white;overflow:hidden;position:relative;}
-    .tutor-hero:before{content:'';position:absolute;inset:auto -80px -130px auto;width:300px;height:300px;border-radius:50%;background:rgba(0,194,168,.25);pointer-events:none;}
-    .hero-kicker{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.12);font-size:12px;font-weight:700;margin-bottom:14px;}
+    .tutor-hero{background:linear-gradient(135deg,#1A1A2E 0%,#292841 55%,#8C470B 100%);border-radius:24px;padding:34px;display:grid;grid-template-columns:1.35fr .8fr;gap:32px;align-items:center;margin-bottom:28px;color:white;overflow:hidden;position:relative;box-shadow:0 18px 48px rgba(26,26,46,.16);}
+    .tutor-hero:before{content:'';position:absolute;inset:auto -80px -130px auto;width:330px;height:330px;border-radius:50%;background:rgba(245,132,31,.3);pointer-events:none;}
+    .tutor-hero:after{content:'';position:absolute;inset:-130px auto auto 44%;width:230px;height:230px;border-radius:50%;background:rgba(0,194,168,.12);pointer-events:none;}
+    .hero-kicker{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);font-size:12px;font-weight:700;margin-bottom:14px;}
+    .hero-kicker:before{content:'';width:7px;height:7px;border-radius:50%;background:#FFA94D;box-shadow:0 0 0 4px rgba(255,169,77,.16);}
     .hero-title{font-family:var(--font-display);font-size:clamp(24px,3.4vw,36px);font-weight:800;line-height:1.12;margin-bottom:10px;max-width:700px;}
     .hero-copy{font-size:14px;line-height:1.7;color:rgba(255,255,255,.72);max-width:620px;}
     .hero-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px;}
     .hero-metric{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px;}
     .hero-metric strong{display:block;font-family:var(--font-display);font-size:22px;font-weight:800;color:white;line-height:1;}
     .hero-metric span{display:block;margin-top:6px;font-size:11px;color:rgba(255,255,255,.64);line-height:1.35;}
-    .hero-preview{position:relative;background:white;color:var(--dark);border-radius:18px;padding:18px;box-shadow:0 18px 42px rgba(0,0,0,.18);}
+    .hero-preview{position:relative;z-index:1;background:white;color:var(--dark);border-radius:20px;padding:20px;box-shadow:0 18px 42px rgba(0,0,0,.2);transform:rotate(1deg);}
+    .preview-status{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #F0EDE8;}
+    .preview-status-label{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--text-s);}
+    .preview-status-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:999px;background:#FFF0E0;color:#D96A08;font-size:10px;font-weight:800;}
+    .preview-status-pill:before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
     .preview-top{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
     .preview-avatar{width:54px;height:54px;border-radius:16px;background:var(--teal);display:flex;align-items:center;justify-content:center;color:white;font-family:var(--font-display);font-weight:800;}
     .preview-name{font-family:var(--font-display);font-size:16px;font-weight:800;color:var(--dark);}
@@ -36,40 +42,52 @@
     .preview-tag{background:var(--teal-l);color:var(--teal-d);font-size:11px;font-weight:700;border-radius:999px;padding:4px 10px;}
     .preview-row{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #F0EDE8;padding-top:12px;font-size:12px;color:var(--text-s);}
     .preview-price{font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--dark);}
+    .profile-progress{background:white;border-radius:18px;padding:18px 20px;box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.04);margin-bottom:18px;}
+    .progress-top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:10px;}
+    .progress-title{font-family:var(--font-display);font-size:14px;font-weight:800;color:var(--dark);}
+    .progress-value{font-family:var(--font-display);font-size:14px;font-weight:800;color:var(--orange);}
+    .progress-track{height:8px;border-radius:999px;background:#F0EDE8;overflow:hidden;}
+    .progress-fill{height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--orange),#FFA94D);transition:width .3s ease;}
+    .progress-copy{font-size:11px;color:var(--text-s);margin-top:8px;}
     .registro-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start;}
     .form-card{background:white;border-radius:20px;padding:0;box-shadow:0 4px 20px rgba(0,0,0,.06);overflow:hidden;border:1px solid rgba(0,0,0,.04);}
     .form-section{padding:28px 30px;border-bottom:1px solid #F0EDE8;}
     .form-section:last-of-type{border-bottom:none;}
     .form-section-heading{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px;}
-    .step-badge{width:34px;height:34px;border-radius:12px;background:var(--teal-l);color:var(--teal-d);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:13px;flex-shrink:0;}
+    .step-badge{width:36px;height:36px;border-radius:12px;background:var(--orange-xl);color:#D96A08;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:13px;flex-shrink:0;}
     .form-section-title{font-family:var(--font-display);font-size:17px;font-weight:800;color:var(--dark);line-height:1.2;margin-bottom:3px;}
     .form-section-desc{font-size:12px;color:var(--text-s);line-height:1.45;}
     .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
     .form-group{display:flex;flex-direction:column;gap:6px;min-width:0;}
     .form-group.span2{grid-column:1/-1;}
     .form-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-s);}
+    .required-mark{color:var(--orange);margin-left:2px;}
     .form-input,.form-select,.form-textarea{width:100%;padding:12px 14px;border:1.5px solid #E8E4DE;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--dark);background:white;outline:none;transition:border-color .2s,box-shadow .2s;}
-    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--teal);box-shadow:0 0 0 4px rgba(0,194,168,.1);}
+    .form-input:hover,.form-select:hover,.form-textarea:hover{border-color:#D8D1C8;}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--orange);box-shadow:0 0 0 4px rgba(245,132,31,.1);}
     .form-textarea{resize:vertical;min-height:112px;line-height:1.55;}
     .phone-field{display:flex;align-items:center;gap:8px;}
     .phone-prefix{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border-radius:12px;background:var(--mist);font-size:13px;font-weight:700;color:var(--dark);white-space:nowrap;}
     .field-hint{font-size:11px;color:#16A34A;margin-top:2px;}
     .materias-selector{display:flex;flex-wrap:wrap;gap:9px;}
-    .materia-chip{padding:8px 13px;border-radius:999px;border:1.5px solid #E8E4DE;background:white;font-size:12px;font-weight:700;color:var(--text-s);cursor:pointer;transition:all .15s;user-select:none;}
-    .materia-chip.selected{background:var(--teal);border-color:var(--teal);color:white;box-shadow:0 8px 18px rgba(0,194,168,.18);}
-    .materia-chip:hover:not(.selected){border-color:var(--teal);color:var(--teal-d);}
+    .materia-chip{padding:8px 13px;border-radius:999px;border:1.5px solid #E8E4DE;background:white;font-family:var(--font-body);font-size:12px;font-weight:700;color:var(--text-s);cursor:pointer;transition:all .15s;user-select:none;}
+    .materia-chip.selected{background:var(--orange);border-color:var(--orange);color:white;box-shadow:0 8px 18px rgba(245,132,31,.2);}
+    .materia-chip:hover:not(.selected){border-color:var(--orange);color:#D96A08;}
+    .materia-chip:focus-visible,.btn-add-materia:focus-visible,.btn-submit:focus-visible,.btn-ghost:focus-visible,.btn-primary:focus-visible{outline:3px solid rgba(245,132,31,.28);outline-offset:2px;}
     .add-materia-row{margin-top:12px;display:flex;gap:8px;align-items:center;}
     .btn-add-materia{min-height:42px;padding:0 14px;background:var(--dark);color:white;border:none;border-radius:12px;font-weight:800;font-size:13px;white-space:nowrap;}
     .horario-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:16px;}
     .dia-toggle-label{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;}
     .dia-name{font-size:10px;font-weight:800;text-transform:uppercase;color:#9CA3AF;}
-    .dia-box{width:40px;height:40px;border-radius:13px;border:1.5px solid #E8E4DE;background:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#9CA3AF;transition:all .15s;}
-    input[type=checkbox]:checked ~ .dia-box{background:var(--teal);border-color:var(--teal);color:white;box-shadow:0 8px 18px rgba(0,194,168,.18);}
-    input[type=checkbox]{display:none;}
+    .dia-box{width:42px;height:42px;border-radius:13px;border:1.5px solid #E8E4DE;background:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#9CA3AF;transition:all .15s;}
+    .dia-toggle-label:hover .dia-box{border-color:var(--orange);color:#D96A08;}
+    .dia-toggle-label input:checked ~ .dia-box{background:var(--orange);border-color:var(--orange);color:white;box-shadow:0 8px 18px rgba(245,132,31,.2);}
+    .dia-toggle-label input:focus-visible ~ .dia-box{outline:3px solid rgba(245,132,31,.28);outline-offset:2px;}
+    .dia-toggle-label input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;}
     .form-actions{padding:24px 30px;background:#FBFAF8;display:flex;align-items:center;justify-content:space-between;gap:18px;}
     .submit-note{font-size:12px;color:var(--text-s);line-height:1.45;max-width:420px;}
-    .btn-submit{min-width:230px;padding:14px 20px;background:var(--teal);color:white;border:none;border-radius:14px;font-family:var(--font-display);font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;}
-    .btn-submit:hover{background:var(--teal-d);transform:translateY(-1px);}
+    .btn-submit{min-width:230px;padding:14px 20px;background:var(--orange);color:white;border:none;border-radius:14px;font-family:var(--font-display);font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 10px 24px rgba(245,132,31,.2);}
+    .btn-submit:hover{background:#D96A08;transform:translateY(-1px);}
     .side-stack{display:flex;flex-direction:column;gap:18px;position:sticky;top:96px;}
     .side-card{background:white;border-radius:20px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.04);}
     .side-card.dark{background:linear-gradient(135deg,#1A1A2E,#2D2D44);color:white;}
@@ -85,7 +103,7 @@
     .check-item{display:flex;gap:9px;align-items:flex-start;font-size:12px;color:var(--text-s);line-height:1.45;}
     .check-dot{width:18px;height:18px;border-radius:7px;background:var(--teal-l);color:var(--teal-d);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
     @media(max-width:980px){.tutor-hero,.registro-layout{grid-template-columns:1fr;}.side-stack{position:static;}.hero-preview{max-width:420px;}.page-header{align-items:flex-start;}}
-    @media(max-width:680px){.tutor-hero{padding:22px;border-radius:18px;}.hero-metrics{grid-template-columns:1fr;}.form-section,.form-actions{padding:22px 18px;}.form-grid{grid-template-columns:1fr;}.form-actions{flex-direction:column;align-items:stretch;}.btn-submit{width:100%;min-width:0;}.horario-grid{grid-template-columns:repeat(4,1fr);}.add-materia-row,.phone-field{flex-direction:column;align-items:stretch;}.page-actions{width:100%;}.btn-ghost,.btn-primary{flex:1;}}
+    @media(max-width:680px){.main-content{padding-top:26px;}.tutor-hero{padding:22px;border-radius:18px;}.hero-metrics{grid-template-columns:1fr;}.hero-preview{transform:none;}.form-section,.form-actions{padding:22px 18px;}.form-grid{grid-template-columns:1fr;}.form-actions{flex-direction:column;align-items:stretch;}.btn-submit{width:100%;min-width:0;}.horario-grid{grid-template-columns:repeat(4,1fr);}.add-materia-row,.phone-field{flex-direction:column;align-items:stretch;}.page-actions{width:100%;}.btn-ghost,.btn-primary{flex:1;}.page-title{font-size:28px;}}
   </style>
 </head>
 <body class="dashboard-page">
@@ -134,9 +152,9 @@
 
       <section class="tutor-hero" aria-label="Resumen para publicar perfil de tutor">
         <div>
-          <div class="hero-kicker">Perfil de tutor verificado</div>
+          <div class="hero-kicker">Comunidad académica UThub</div>
           <h2 class="hero-title">Convierte tus materias fuertes en sesiones bien organizadas.</h2>
-          <p class="hero-copy">La pantalla ahora guía el alta del tutor como una experiencia completa: datos personales, propuesta de valor, materias, horario y privacidad quedan separados en pasos claros.</p>
+          <p class="hero-copy">Crea un perfil que inspire confianza, define tu disponibilidad y conecta con estudiantes de tu campus que necesitan justo lo que tú sabes.</p>
           <div class="hero-metrics">
             <div class="hero-metric"><strong>4</strong><span>pasos simples para publicar</span></div>
             <div class="hero-metric"><strong>$60+</strong><span>referencia por hora en campus</span></div>
@@ -144,6 +162,10 @@
           </div>
         </div>
         <div class="hero-preview">
+          <div class="preview-status">
+            <span class="preview-status-label">Vista previa de tu perfil</span>
+            <span class="preview-status-pill">Borrador</span>
+          </div>
           <div class="preview-top">
             <div class="preview-avatar" id="preview-avatar">TU</div>
             <div>
@@ -163,7 +185,18 @@
       </section>
 
       <div class="registro-layout">
-        <div class="form-card">
+        <div>
+          <div class="profile-progress" aria-live="polite">
+            <div class="progress-top">
+              <span class="progress-title">Progreso de tu perfil</span>
+              <span class="progress-value" id="profile-progress-value">0%</span>
+            </div>
+            <div class="progress-track" role="progressbar" aria-label="Progreso del perfil" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="profile-progress-track">
+              <div class="progress-fill" id="profile-progress-fill"></div>
+            </div>
+            <p class="progress-copy" id="profile-progress-copy">Comienza con tus datos básicos.</p>
+          </div>
+        <form class="form-card" id="tutor-profile-form" novalidate>
           <div class="form-section">
             <div class="form-section-heading">
               <div class="step-badge">01</div>
@@ -173,8 +206,8 @@
               </div>
             </div>
             <div class="form-grid">
-              <div class="form-group"><label class="form-label">Nombre completo</label><input class="form-input" id="t-nombre" placeholder="Ej: Carlos Mendoza" type="text"></div>
-              <div class="form-group"><label class="form-label">Carrera</label>
+              <div class="form-group"><label class="form-label" for="t-nombre">Nombre completo <span class="required-mark">*</span></label><input class="form-input" id="t-nombre" placeholder="Ej: Carlos Mendoza" type="text" autocomplete="name" required></div>
+              <div class="form-group"><label class="form-label" for="t-carrera">Carrera <span class="required-mark">*</span></label>
                 <select class="form-select" id="t-carrera">
                   <option>Ing. en Sistemas</option>
                   <option>Ing. en Mecatrónica</option>
@@ -183,19 +216,19 @@
                   <option>Otra</option>
                 </select>
               </div>
-              <div class="form-group"><label class="form-label">Semestre actual</label>
+              <div class="form-group"><label class="form-label" for="t-semestre">Semestre actual <span class="required-mark">*</span></label>
                 <select class="form-select" id="t-semestre">
                   <option>3er</option><option>4to</option><option>5to</option>
                   <option>6to</option><option>7mo</option><option>8vo</option>
                   <option>9no</option><option>10mo</option>
                 </select>
               </div>
-              <div class="form-group"><label class="form-label">Precio por hora ($)</label><input class="form-input" id="t-precio" type="number" min="30" max="300" placeholder="Ej: 80"></div>
+              <div class="form-group"><label class="form-label" for="t-precio">Precio por hora ($) <span class="required-mark">*</span></label><input class="form-input" id="t-precio" type="number" min="30" max="300" placeholder="Ej: 80" inputmode="numeric" required></div>
               <div class="form-group span2">
-                <label class="form-label">WhatsApp</label>
+                <label class="form-label" for="t-whatsapp">WhatsApp <span class="required-mark">*</span></label>
                 <div class="phone-field">
                   <span class="phone-prefix">MX +52</span>
-                  <input class="form-input" id="t-whatsapp" type="tel" placeholder="8112345678">
+                  <input class="form-input" id="t-whatsapp" type="tel" placeholder="8112345678" autocomplete="tel" inputmode="tel" required>
                 </div>
                 <div class="field-hint">Tu número es privado hasta que confirmes una sesión.</div>
               </div>
@@ -210,15 +243,15 @@
                 <div class="form-section-desc">Cuenta cómo enseñas, qué experiencia tienes y dónde puedes atender.</div>
               </div>
             </div>
-            <div class="form-group"><label class="form-label">Descripción</label><textarea class="form-textarea" id="t-desc" placeholder="Cuéntales a los estudiantes tu experiencia, método de enseñanza y por qué eres el tutor ideal..."></textarea></div>
-            <div class="form-group" style="margin-top:14px;"><label class="form-label">Modalidad</label>
+            <div class="form-group"><label class="form-label" for="t-desc">Descripción <span class="required-mark">*</span></label><textarea class="form-textarea" id="t-desc" placeholder="Cuéntales a los estudiantes tu experiencia, método de enseñanza y por qué eres el tutor ideal..." required></textarea></div>
+            <div class="form-group" style="margin-top:14px;"><label class="form-label" for="t-modalidad">Modalidad <span class="required-mark">*</span></label>
               <select class="form-select" id="t-modalidad">
                 <option value="presencial">📍 Presencial (en el campus)</option>
                 <option value="virtual">💻 Virtual (videollamada)</option>
                 <option value="ambas">📍💻 Ambas opciones</option>
               </select>
             </div>
-            <div class="form-group" style="margin-top:14px;"><label class="form-label">Ubicación / Plataforma</label><input class="form-input" id="t-ubicacion" placeholder="Ej: Biblioteca / Edificio Docencia 1 / Google Meet"></div>
+            <div class="form-group" style="margin-top:14px;"><label class="form-label" for="t-ubicacion">Ubicación / Plataforma</label><input class="form-input" id="t-ubicacion" placeholder="Ej: Biblioteca / Edificio Docencia 1 / Google Meet"></div>
           </div>
 
           <div class="form-section">
@@ -231,8 +264,8 @@
             </div>
             <div class="materias-selector" id="materias-chips"></div>
             <div class="add-materia-row">
-              <input class="form-input" id="materia-custom" placeholder="Otra materia...">
-              <button class="btn-add-materia" onclick="addCustomMateria()">Agregar</button>
+              <input class="form-input" id="materia-custom" placeholder="Otra materia..." aria-label="Agregar otra materia">
+              <button class="btn-add-materia" type="button" onclick="addCustomMateria()">Agregar</button>
             </div>
           </div>
 
@@ -246,15 +279,16 @@
             </div>
             <div class="horario-grid" id="dias-grid"></div>
             <div class="form-grid">
-              <div class="form-group"><label class="form-label">Hora inicio</label><input type="time" class="form-input" id="t-hora-ini" value="07:00"></div>
-              <div class="form-group"><label class="form-label">Hora fin</label><input type="time" class="form-input" id="t-hora-fin" value="15:00"></div>
+              <div class="form-group"><label class="form-label" for="t-hora-ini">Hora inicio</label><input type="time" class="form-input" id="t-hora-ini" value="07:00"></div>
+              <div class="form-group"><label class="form-label" for="t-hora-fin">Hora fin</label><input type="time" class="form-input" id="t-hora-fin" value="15:00"></div>
             </div>
           </div>
 
           <div class="form-actions">
             <div class="submit-note">Antes de publicar, revisa que el precio, materias y horario sean claros. Tu perfil aparecerá en el catálogo de Tutorías.</div>
-            <button class="btn-submit" onclick="registrarTutor()">Publicar perfil</button>
+            <button class="btn-submit" type="submit">Publicar mi perfil</button>
           </div>
+        </form>
         </div>
 
         <aside class="side-stack">
@@ -294,6 +328,12 @@
   const DIAS = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
   let materiasSeleccionadas = new Set();
 
+  function escapeHtml(value) {
+    return value.replace(/[&<>"']/g, char => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+    })[char]);
+  }
+
   function getInitials(nombre) {
     const partes = nombre.trim().split(/\s+/).filter(Boolean);
     if (!partes.length) return 'TU';
@@ -323,17 +363,41 @@
     document.getElementById('preview-mode').textContent = modalidadPreview(modalidad);
     document.getElementById('preview-price').textContent = `$${precio}/hr`;
     document.getElementById('preview-tags').innerHTML = (materias.length ? materias : ['Materia', 'Campus'])
-      .map(m => `<span class="preview-tag">${m}</span>`)
+      .map(m => `<span class="preview-tag">${escapeHtml(m)}</span>`)
       .join('');
+    updateProfileProgress();
+  }
+
+  function updateProfileProgress() {
+    const checks = [
+      document.getElementById('t-nombre').value.trim().length >= 3,
+      Number(document.getElementById('t-precio').value) >= 30,
+      document.getElementById('t-whatsapp').value.replace(/\D/g, '').length >= 10,
+      document.getElementById('t-desc').value.trim().length >= 30,
+      materiasSeleccionadas.size > 0,
+      DIAS.some((_, i) => document.getElementById('dia-' + i)?.checked)
+    ];
+    const completed = checks.filter(Boolean).length;
+    const progress = Math.round((completed / checks.length) * 100);
+    const fill = document.getElementById('profile-progress-fill');
+    const track = document.getElementById('profile-progress-track');
+    document.getElementById('profile-progress-value').textContent = progress + '%';
+    document.getElementById('profile-progress-copy').textContent = progress === 100
+      ? 'Tu perfil está listo para publicarse.'
+      : `Completa ${checks.length - completed} ${checks.length - completed === 1 ? 'detalle' : 'detalles'} para terminar.`;
+    fill.style.width = progress + '%';
+    track.setAttribute('aria-valuenow', progress);
   }
 
   // Render materias chips
   const chipsEl = document.getElementById('materias-chips');
   tutorMaterias.forEach(m => {
-    const chip = document.createElement('div');
+    const chip = document.createElement('button');
     chip.className = 'materia-chip';
+    chip.type = 'button';
+    chip.setAttribute('aria-pressed', 'false');
     chip.textContent = m;
-    chip.onclick = () => { chip.classList.toggle('selected'); if(chip.classList.contains('selected')) materiasSeleccionadas.add(m); else materiasSeleccionadas.delete(m); updateTutorPreview(); };
+    chip.onclick = () => { chip.classList.toggle('selected'); chip.setAttribute('aria-pressed', String(chip.classList.contains('selected'))); if(chip.classList.contains('selected')) materiasSeleccionadas.add(m); else materiasSeleccionadas.delete(m); updateTutorPreview(); };
     chipsEl.appendChild(chip);
   });
 
@@ -342,7 +406,8 @@
   DIAS.forEach((d,i) => {
     const label = document.createElement('label');
     label.className = 'dia-toggle-label';
-    label.innerHTML = '<span class="dia-name">'+d+'</span><input type="checkbox" id="dia-'+i+'" '+(i<5?'checked':'')+' onchange=""><div class="dia-box">'+d[0]+'</div>';
+    label.innerHTML = '<span class="dia-name">'+d+'</span><input type="checkbox" id="dia-'+i+'" '+(i<5?'checked':'')+' aria-label="'+d+'"><div class="dia-box">'+d[0]+'</div>';
+    label.querySelector('input').addEventListener('change', updateProfileProgress);
     diasEl.appendChild(label);
   });
 
@@ -350,19 +415,31 @@
     const input = document.getElementById('materia-custom');
     const val = input.value.trim();
     if (!val) return;
-    const chip = document.createElement('div');
+    const chip = document.createElement('button');
     chip.className = 'materia-chip selected';
+    chip.type = 'button';
+    chip.setAttribute('aria-pressed', 'true');
     chip.textContent = val;
-    chip.onclick = () => { chip.classList.toggle('selected'); if(chip.classList.contains('selected')) materiasSeleccionadas.add(val); else materiasSeleccionadas.delete(val); updateTutorPreview(); };
+    chip.onclick = () => { chip.classList.toggle('selected'); chip.setAttribute('aria-pressed', String(chip.classList.contains('selected'))); if(chip.classList.contains('selected')) materiasSeleccionadas.add(val); else materiasSeleccionadas.delete(val); updateTutorPreview(); };
     chipsEl.appendChild(chip);
     materiasSeleccionadas.add(val);
     input.value = '';
     updateTutorPreview();
   }
 
-  ['t-nombre','t-carrera','t-semestre','t-precio','t-modalidad'].forEach(id => {
+  ['t-nombre','t-carrera','t-semestre','t-precio','t-modalidad','t-whatsapp','t-desc'].forEach(id => {
     document.getElementById(id).addEventListener('input', updateTutorPreview);
     document.getElementById(id).addEventListener('change', updateTutorPreview);
+  });
+  document.getElementById('materia-custom').addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      addCustomMateria();
+    }
+  });
+  document.getElementById('tutor-profile-form').addEventListener('submit', event => {
+    event.preventDefault();
+    registrarTutor();
   });
   updateTutorPreview();
 
@@ -374,9 +451,13 @@
     if (!nombre) { showTutorToast('Ingresa tu nombre', 'error'); return; }
     if (!precio||precio<30) { showTutorToast('Ingresa un precio válido (mínimo $30)', 'error'); return; }
     if (!wa||wa.length<10) { showTutorToast('Ingresa tu número de WhatsApp (10 dígitos)', 'error'); return; }
-    if (!desc) { showTutorToast('Agrega una descripción', 'error'); return; }
+    if (desc.length < 30) { showTutorToast('Describe tu experiencia en al menos 30 caracteres', 'error'); return; }
     if (materiasSeleccionadas.size === 0) { showTutorToast('Selecciona al menos una materia', 'error'); return; }
     const dias = DIAS.map((_,i) => document.getElementById('dia-'+i).checked);
+    if (!dias.some(Boolean)) { showTutorToast('Selecciona al menos un día disponible', 'error'); return; }
+    const horaInicio = document.getElementById('t-hora-ini').value;
+    const horaFin = document.getElementById('t-hora-fin').value;
+    if (horaInicio >= horaFin) { showTutorToast('La hora de fin debe ser posterior a la hora de inicio', 'error'); return; }
     const perfil = {
       id: Date.now(), nombre,
       carrera: document.getElementById('t-carrera').value,
@@ -385,7 +466,7 @@
       color: '#F5841F', precio, calificacion: 0, sesiones: 0, disponible: true,
       materias: [...materiasSeleccionadas],
       descripcion: desc,
-      horario:{ dias, apertura: document.getElementById('t-hora-ini').value, cierre: document.getElementById('t-hora-fin').value },
+      horario:{ dias, apertura: horaInicio, cierre: horaFin },
       modalidad: document.getElementById('t-modalidad').value,
       ubicacion: document.getElementById('t-ubicacion').value.trim(),
       idioma: 'Español',
