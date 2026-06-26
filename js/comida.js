@@ -30,6 +30,8 @@ function initTiendasPage() {
   
   // Actualizar contador del carrito
   updateCartCount();
+  initCampusFoodMap();
+  cargarWikimediaFoodInfo();
 }
 
 /**
@@ -69,6 +71,7 @@ function filterTiendas() {
   const emptyState = document.getElementById('empty-state');
   const tiendasGrid = document.getElementById('tiendas-grid');
   
+  syncCampusMapWithFilters();
   if (visibleCount === 0) {
     if (emptyState) emptyState.style.display = 'block';
     if (tiendasGrid) tiendasGrid.style.display = 'none';
@@ -90,6 +93,99 @@ function clearFilters() {
   filterTiendas();
 }
 
+
+const CAMPUS_FOOD_POINTS = [
+  { id: 'cafeteria', nombre: 'Cafetería', tipo: 'Zona principal', detalle: 'Buen punto para recoger pedidos y encontrar opciones rápidas.', lat: 25.67588, lng: -100.46036 },
+  { id: 'mediateca', nombre: 'Mediateca', tipo: 'Punto de encuentro', detalle: 'Zona tranquila para recibir pedidos entre clases.', lat: 25.67642, lng: -100.45974 },
+  { id: 'docencia', nombre: 'Docencia 1', tipo: 'Entrega sugerida', detalle: 'Punto práctico para estudiantes que salen de clase.', lat: 25.67545, lng: -100.45925 },
+  { id: 'entrada', nombre: 'Entrada principal', tipo: 'Referencia', detalle: 'Útil para ubicar repartos o visitantes.', lat: 25.67506, lng: -100.46004 }
+];
+let campusFoodMap = null;
+let campusFoodMarkers = [];
+
+function initCampusFoodMap() {
+  const mapEl = document.getElementById('campus-food-map');
+  const pointsEl = document.getElementById('campus-map-points');
+  if (!mapEl || !pointsEl || campusFoodMap) return;
+
+  pointsEl.innerHTML = CAMPUS_FOOD_POINTS.map(point => `
+    <button class="campus-point-btn" type="button" data-point-id="${point.id}">
+      <span class="campus-point-name">${point.nombre}</span>
+      <span class="campus-point-meta">${point.tipo}</span>
+    </button>
+  `).join('');
+
+  if (typeof L === 'undefined') {
+    mapEl.innerHTML = '<div style="padding:24px;color:#6B6B80;">No se pudo cargar el mapa. Revisa tu conexión e intenta de nuevo.</div>';
+    return;
+  }
+
+  campusFoodMap = L.map(mapEl, { scrollWheelZoom: false }).setView([25.67588, -100.46004], 17);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(campusFoodMap);
+
+  campusFoodMarkers = CAMPUS_FOOD_POINTS.map(point => {
+    const marker = L.marker([point.lat, point.lng]).addTo(campusFoodMap);
+    marker.bindPopup(`<strong>${point.nombre}</strong><br>${point.detalle}`);
+    return { ...point, marker };
+  });
+
+  pointsEl.querySelectorAll('.campus-point-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = campusFoodMarkers.find(point => point.id === button.dataset.pointId);
+      if (!item) return;
+      pointsEl.querySelectorAll('.campus-point-btn').forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      campusFoodMap.setView([item.lat, item.lng], 18, { animate: true });
+      item.marker.openPopup();
+    });
+  });
+
+  setTimeout(() => campusFoodMap.invalidateSize(), 200);
+}
+
+function syncCampusMapWithFilters() {
+  if (!campusFoodMap) return;
+  setTimeout(() => campusFoodMap.invalidateSize(), 50);
+}
+
+async function cargarWikimediaFoodInfo() {
+  const content = document.getElementById('wiki-food-content');
+  const link = document.getElementById('wiki-food-link');
+  if (!content) return;
+
+  try {
+    const res = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/Mexican_cuisine');
+    if (!res.ok) throw new Error('Wikipedia no disponible');
+    const data = await res.json();
+    content.innerHTML = '';
+
+    if (data.thumbnail?.source) {
+      const img = document.createElement('img');
+      img.className = 'wiki-thumb';
+      img.src = data.thumbnail.source;
+      img.alt = data.title || 'Mexican cuisine';
+      content.appendChild(img);
+    }
+
+    const title = document.createElement('h2');
+    title.className = 'section-card-title';
+    title.textContent = data.title || 'Mexican cuisine';
+    content.appendChild(title);
+
+    const copy = document.createElement('p');
+    copy.className = 'section-card-copy';
+    copy.textContent = data.extract || 'Información gastronómica disponible en Wikipedia.';
+    content.appendChild(copy);
+
+    if (link && data.content_urls?.desktop?.page) link.href = data.content_urls.desktop.page;
+    else if (link) link.href = 'https://en.wikipedia.org/wiki/Mexican_cuisine';
+  } catch (error) {
+    content.innerHTML = '<h2 class="section-card-title">Dato gastronómico</h2><p class="section-card-copy">No se pudo cargar Wikipedia por ahora, pero el mapa sigue funcionando.</p>';
+  }
+}
 /**
  * INICIALIZAR PÁGINA DE MENÚ
  */
@@ -375,19 +471,6 @@ function showToast(message, type = 'info') {
   }, 3000);
 }
 const API_URL = 'http://localhost:3000/api';
-// 🏪 Obtener una tienda por ID
-router.get('/tienda/:id', async (req, res) => {
-  try {
-    const [rows] = await db.query(
-      'SELECT * FROM tiendas WHERE id = ?',
-      [req.params.id]
-    );
-    res.json(rows[0]);
-  } catch (error) {
-    res.status(500).json({ error: 'Error al obtener tienda' });
-  }
-});
-
 async function cargarTiendas() {
   try {
     const res = await fetch(`${API_URL}/comida/tiendas`);
@@ -535,14 +618,14 @@ async function cargarInfoTienda() {
 }
 
 // Estilos para toast
-if (!document.getElementById('toast-styles')) {
-  const toastStyles = document.createElement('style');
-  toastStyles.id = 'toast-styles';
-  toastStyles.textContent = `...`;
-  document.head.appendChild(toastStyles);
+var comidaToastStyles = document.getElementById('toast-styles');
+if (!comidaToastStyles) {
+  comidaToastStyles = document.createElement('style');
+  comidaToastStyles.id = 'toast-styles';
+  document.head.appendChild(comidaToastStyles);
 }
 
-toastStyles.textContent = `
+comidaToastStyles.textContent = `
   .toast-notification {
     position: fixed;
     bottom: 24px;
@@ -559,28 +642,19 @@ toastStyles.textContent = `
     transition: all 0.3s ease;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   }
-  
+
   .toast-notification.show {
     transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
-  
-  .toast-success {
-    background: #22C55E;
-  }
-  
-  .toast-error {
-    background: #FF4F5E;
-  }
-  
-  .toast-info {
-    background: #60A5FA;
-  }
-`;
-document.head.appendChild(toastStyles);
 
+  .toast-success { background: #22C55E; }
+  .toast-error { background: #FF4F5E; }
+  .toast-info { background: #60A5FA; }
+`;
 // Exportar funciones
 window.initTiendasPage = initTiendasPage;
+window.initCampusFoodMap = initCampusFoodMap;
 window.cargarProductos = cargarProductos;
 window.cargarTiendas = cargarTiendas;
 window.initMenuPage = initMenuPage;
@@ -594,4 +668,3 @@ window.clearFilters = clearFilters;
 window.updateCartDisplay = updateCartDisplay;
 
 console.log('✅ Módulo de Comida inicializado');
-

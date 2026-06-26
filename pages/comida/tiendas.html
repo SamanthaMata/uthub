@@ -11,6 +11,7 @@
   <!-- CSS -->
   <link rel="stylesheet" href="../../css/styles.css">
   <link rel="stylesheet" href="../../css/dashboard.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="../../css/comida.css">
 </head>
 <body class="dashboard-page">
@@ -204,6 +205,32 @@
         </div>
       </div>
 
+      <!-- Mapa y cultura -->
+      <section class="food-campus-section" aria-label="Mapa de comida en campus">
+        <div class="campus-map-card">
+          <div class="section-card-header">
+            <div>
+              <span class="section-kicker">Leaflet + OpenStreetMap</span>
+              <h2 class="section-card-title">Puntos rápidos para comer o recoger</h2>
+              <p class="section-card-copy">Ubica zonas útiles del campus para comprar, entregar o encontrarte con tu pedido.</p>
+            </div>
+          </div>
+          <div id="campus-food-map" class="campus-food-map" role="img" aria-label="Mapa interactivo de puntos de comida dentro del campus"></div>
+          <div class="campus-map-points" id="campus-map-points"></div>
+        </div>
+
+        <aside class="wiki-food-card" aria-label="Dato de Wikipedia sobre gastronomía">
+          <div class="wiki-card-top">
+            <span class="section-kicker">Wikipedia REST API</span>
+            <span class="wiki-badge">Gratis</span>
+          </div>
+          <div class="wiki-content" id="wiki-food-content">
+            <h2 class="section-card-title">Dato gastronómico</h2>
+            <p class="section-card-copy">Cargando información desde Wikipedia...</p>
+          </div>
+          <a href="https://en.wikipedia.org/wiki/Mexican_cuisine" target="_blank" rel="noopener noreferrer" class="wiki-link" id="wiki-food-link">Leer más en Wikipedia</a>
+        </aside>
+      </section>
       <!-- Tiendas Grid -->
       <div class="tiendas-grid" id="tiendas-grid"></div>
 
@@ -235,6 +262,7 @@
   <!-- JavaScript -->
   <script src="../../js/protect.js"></script>
 <script src="../../js/main.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="../../js/comida.js"></script>
 
 <script>

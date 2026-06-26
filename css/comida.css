@@ -622,6 +622,160 @@
   position: relative;
 }
 
+
+/* ---- MAPA Y WIKIMEDIA ---- */
+.food-campus-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) 360px;
+  gap: 24px;
+  align-items: stretch;
+  margin: 0 0 32px;
+}
+
+.campus-map-card,
+.wiki-food-card {
+  background: var(--ut-white);
+  border: 1px solid rgba(26, 26, 46, 0.06);
+  border-radius: 20px;
+  box-shadow: 0 8px 28px rgba(26, 26, 46, 0.07);
+  overflow: hidden;
+}
+
+.campus-map-card { padding: 22px; }
+.wiki-food-card { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+
+.section-card-header,
+.wiki-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ut-orange-d);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.section-kicker::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--ut-orange);
+}
+
+.section-card-title {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ut-text);
+  margin: 0 0 6px;
+  line-height: 1.25;
+}
+
+.section-card-copy {
+  color: var(--ut-text-s);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.campus-food-map {
+  width: 100%;
+  min-height: 330px;
+  border-radius: 16px;
+  border: 1px solid #E8E4DE;
+  overflow: hidden;
+  background: #F7F4F0;
+  z-index: 1;
+}
+
+.campus-map-points {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.campus-point-btn {
+  text-align: left;
+  border: 1.5px solid #E8E4DE;
+  border-radius: 13px;
+  padding: 11px 12px;
+  background: #FBFAF8;
+  color: var(--ut-text);
+  transition: all .2s ease;
+}
+
+.campus-point-btn:hover,
+.campus-point-btn.active {
+  border-color: var(--ut-orange);
+  background: var(--ut-orange-xl);
+  transform: translateY(-1px);
+}
+
+.campus-point-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 2px;
+}
+
+.campus-point-meta {
+  display: block;
+  color: var(--ut-text-s);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.wiki-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: var(--ut-orange-xl);
+  color: var(--ut-orange-d);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.wiki-thumb {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin-bottom: 14px;
+}
+
+.wiki-link {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--ut-dark);
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.wiki-link:hover { background: var(--ut-slate); transform: translateY(-1px); }
+
+.leaflet-popup-content-wrapper { border-radius: 14px; }
+.leaflet-popup-content { font-family: var(--font-body); color: var(--ut-text); }
 /* ──── EMPTY STATE ──── */
 .empty-state {
   text-align: center;
@@ -649,6 +803,9 @@
 
 /* ──── RESPONSIVE ──── */
 @media (max-width: 968px) {
+  .food-campus-section { grid-template-columns: 1fr; }
+  .wiki-food-card { order: 2; }
+
   .menu-container {
     grid-template-columns: 1fr;
   }
@@ -672,6 +829,10 @@
 }
 
 @media (max-width: 640px) {
+  .campus-map-card, .wiki-food-card { padding: 18px; border-radius: 16px; }
+  .campus-food-map { min-height: 280px; }
+  .campus-map-points { grid-template-columns: 1fr; }
+
   .page-header {
     flex-direction: column;
     align-items: flex-start;
