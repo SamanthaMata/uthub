@@ -625,15 +625,10 @@
 
 /* ---- MAPA Y WIKIMEDIA ---- */
 .food-campus-section {
-  display: grid;
-  grid-template-columns: minmax(0, 1.35fr) 360px;
-  gap: 24px;
-  align-items: stretch;
   margin: 0 0 32px;
 }
 
-.campus-map-card,
-.wiki-food-card {
+.campus-map-card {
   background: var(--ut-white);
   border: 1px solid rgba(26, 26, 46, 0.06);
   border-radius: 20px;
@@ -642,7 +637,6 @@
 }
 
 .campus-map-card { padding: 22px; }
-.wiki-food-card { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
 
 .section-card-header,
 .wiki-card-top {

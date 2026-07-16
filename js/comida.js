@@ -31,7 +31,6 @@ function initTiendasPage() {
   // Actualizar contador del carrito
   updateCartCount();
   initCampusFoodMap();
-  cargarWikimediaFoodInfo();
 }
 
 /**
@@ -94,21 +93,33 @@ function clearFilters() {
 }
 
 
-const CAMPUS_FOOD_POINTS = [
-  { id: 'cafeteria', nombre: 'Cafetería', tipo: 'Zona principal', detalle: 'Buen punto para recoger pedidos y encontrar opciones rápidas.', lat: 25.67588, lng: -100.46036 },
-  { id: 'mediateca', nombre: 'Mediateca', tipo: 'Punto de encuentro', detalle: 'Zona tranquila para recibir pedidos entre clases.', lat: 25.67642, lng: -100.45974 },
-  { id: 'docencia', nombre: 'Docencia 1', tipo: 'Entrega sugerida', detalle: 'Punto práctico para estudiantes que salen de clase.', lat: 25.67545, lng: -100.45925 },
-  { id: 'entrada', nombre: 'Entrada principal', tipo: 'Referencia', detalle: 'Útil para ubicar repartos o visitantes.', lat: 25.67506, lng: -100.46004 }
-];
+let campusLocationsCache = null;
 let campusFoodMap = null;
 let campusFoodMarkers = [];
 
-function initCampusFoodMap() {
+async function fetchCampusLocations() {
+  if (campusLocationsCache) return campusLocationsCache;
+
+  const response = await fetch(`${API_URL}/comida/ubicaciones`);
+  if (!response.ok) throw new Error('No se pudieron cargar las ubicaciones del campus');
+  campusLocationsCache = await response.json();
+  return campusLocationsCache;
+}
+
+async function initCampusFoodMap() {
   const mapEl = document.getElementById('campus-food-map');
   const pointsEl = document.getElementById('campus-map-points');
   if (!mapEl || !pointsEl || campusFoodMap) return;
 
-  pointsEl.innerHTML = CAMPUS_FOOD_POINTS.map(point => `
+  let locations;
+  try {
+    locations = await fetchCampusLocations();
+  } catch (error) {
+    mapEl.innerHTML = '<div style="padding:24px;color:#6B6B80;">No se pudieron cargar las ubicaciones del campus.</div>';
+    return;
+  }
+
+  pointsEl.innerHTML = locations.map(point => `
     <button class="campus-point-btn" type="button" data-point-id="${point.id}">
       <span class="campus-point-name">${point.nombre}</span>
       <span class="campus-point-meta">${point.tipo}</span>
@@ -120,13 +131,13 @@ function initCampusFoodMap() {
     return;
   }
 
-  campusFoodMap = L.map(mapEl, { scrollWheelZoom: false }).setView([25.67588, -100.46004], 17);
+  campusFoodMap = L.map(mapEl, { scrollWheelZoom: false }).setView([25.69012, -100.51155], 17);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(campusFoodMap);
 
-  campusFoodMarkers = CAMPUS_FOOD_POINTS.map(point => {
+  campusFoodMarkers = locations.map(point => {
     const marker = L.marker([point.lat, point.lng]).addTo(campusFoodMap);
     marker.bindPopup(`<strong>${point.nombre}</strong><br>${point.detalle}`);
     return { ...point, marker };
@@ -151,41 +162,69 @@ function syncCampusMapWithFilters() {
   setTimeout(() => campusFoodMap.invalidateSize(), 50);
 }
 
-async function cargarWikimediaFoodInfo() {
-  const content = document.getElementById('wiki-food-content');
-  const link = document.getElementById('wiki-food-link');
-  if (!content) return;
+let deliveryMap = null;
+let deliveryMarker = null;
+
+async function initCartDeliveryMap() {
+  const select = document.getElementById('ubicacion-entrega');
+  const mapEl = document.getElementById('delivery-location-map');
+  const status = document.getElementById('delivery-map-status');
+  if (!select || !mapEl) return;
+
+  select.disabled = true;
 
   try {
-    const res = await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/Mexican_cuisine');
-    if (!res.ok) throw new Error('Wikipedia no disponible');
-    const data = await res.json();
-    content.innerHTML = '';
+    const locations = await fetchCampusLocations();
+    select.innerHTML = '<option value="">Selecciona tu ubicación</option>';
+    locations.forEach(location => {
+      const option = document.createElement('option');
+      option.value = location.id;
+      option.textContent = location.nombre;
+      select.appendChild(option);
+    });
+    select.disabled = false;
 
-    if (data.thumbnail?.source) {
-      const img = document.createElement('img');
-      img.className = 'wiki-thumb';
-      img.src = data.thumbnail.source;
-      img.alt = data.title || 'Mexican cuisine';
-      content.appendChild(img);
+    if (typeof L === 'undefined') {
+      status.textContent = 'No se pudo cargar el mapa. Revisa tu conexión.';
+      return;
     }
 
-    const title = document.createElement('h2');
-    title.className = 'section-card-title';
-    title.textContent = data.title || 'Mexican cuisine';
-    content.appendChild(title);
+    deliveryMap = L.map(mapEl, { scrollWheelZoom: false });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(deliveryMap);
 
-    const copy = document.createElement('p');
-    copy.className = 'section-card-copy';
-    copy.textContent = data.extract || 'Información gastronómica disponible en Wikipedia.';
-    content.appendChild(copy);
+    const bounds = L.latLngBounds(locations.map(location => [location.lat, location.lng]));
+    deliveryMap.fitBounds(bounds, { padding: [28, 28], maxZoom: 17 });
+    setTimeout(() => deliveryMap.invalidateSize(), 200);
 
-    if (link && data.content_urls?.desktop?.page) link.href = data.content_urls.desktop.page;
-    else if (link) link.href = 'https://en.wikipedia.org/wiki/Mexican_cuisine';
+    select.addEventListener('change', () => {
+      const location = locations.find(item => item.id === select.value);
+      if (!location) {
+        if (deliveryMarker) {
+          deliveryMap.removeLayer(deliveryMarker);
+          deliveryMarker = null;
+        }
+        deliveryMap.fitBounds(bounds, { padding: [28, 28], maxZoom: 17 });
+        status.textContent = 'Selecciona un punto para mostrar la entrega en el mapa.';
+        return;
+      }
+
+      if (deliveryMarker) deliveryMap.removeLayer(deliveryMarker);
+      deliveryMarker = L.marker([location.lat, location.lng])
+        .addTo(deliveryMap)
+        .bindPopup(`<strong>${location.nombre}</strong><br>${location.detalle}`)
+        .openPopup();
+      deliveryMap.setView([location.lat, location.lng], 19, { animate: true });
+      status.textContent = `${location.nombre} · ${location.tipo}`;
+    });
   } catch (error) {
-    content.innerHTML = '<h2 class="section-card-title">Dato gastronómico</h2><p class="section-card-copy">No se pudo cargar Wikipedia por ahora, pero el mapa sigue funcionando.</p>';
+    select.innerHTML = '<option value="">Ubicaciones no disponibles</option>';
+    status.textContent = 'No fue posible consultar los puntos de entrega.';
   }
 }
+
 /**
  * INICIALIZAR PÁGINA DE MENÚ
  */
@@ -403,10 +442,11 @@ function procesarPedido() {
     return;
   }
   
-  const ubicacion = document.getElementById('ubicacion-entrega')?.value;
+  const ubicacionId = document.getElementById('ubicacion-entrega')?.value;
+  const ubicacion = campusLocationsCache?.find(location => location.id === ubicacionId);
   const instrucciones = document.getElementById('instrucciones')?.value;
   
-  if (!ubicacion) {
+  if (!ubicacionId || !ubicacion) {
     showToast('Selecciona un punto de entrega', 'error');
     return;
   }
@@ -422,7 +462,9 @@ function procesarPedido() {
       id: Date.now(),
       fecha: new Date().toISOString(),
       items: cart,
-      ubicacion: ubicacion,
+      ubicacion: ubicacion.nombre,
+      ubicacionId: ubicacion.id,
+      coordenadas: { lat: ubicacion.lat, lng: ubicacion.lng },
       instrucciones: instrucciones,
       total: cart.reduce((sum, item) => sum + (item.precio * item.cantidad), 0) + 10,
       estado: 'confirmado'
@@ -655,6 +697,7 @@ comidaToastStyles.textContent = `
 // Exportar funciones
 window.initTiendasPage = initTiendasPage;
 window.initCampusFoodMap = initCampusFoodMap;
+window.initCartDeliveryMap = initCartDeliveryMap;
 window.cargarProductos = cargarProductos;
 window.cargarTiendas = cargarTiendas;
 window.initMenuPage = initMenuPage;

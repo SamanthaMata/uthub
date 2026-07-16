@@ -12,8 +12,8 @@ app.use(express.json());
 
 
 
-// Servir archivos estáticos (frontend)
-app.use(express.static(path.join(__dirname, '../uthub')));
+// Servir el frontend ubicado en la raiz del proyecto
+app.use(express.static(path.join(__dirname, '..')));
 
 // Rutas
 app.use('/api/auth', require('./routes/auth'));
