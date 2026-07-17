@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -17,10 +17,10 @@
       <nav class="nav">
         <ul class="nav-list">
           <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
-          <li><a href="../comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
-          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
-          <li><a href="catalogo.html" class="nav-link active">📖 Libros</a></li>
-          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
+          <li><a href="../comida/tiendas.html" class="nav-link">ðŸ” Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">ðŸ“š TutorÃ­as</a></li>
+          <li><a href="catalogo.html" class="nav-link active">ðŸ“– Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">ðŸ’¼ Servicios</a></li>
         </ul>
       </nav>
       <div class="header-actions">
@@ -52,7 +52,8 @@
 
   <script src="../../js/protect.js"></script>
   <script src="../../js/validation.js"></script>
-  <script src="../../js/auth.js"></script>
+  <script src="../../js/config.js"></script>
+<script src="../../js/auth.js"></script>
   <script src="../../js/main.js"></script>
   <script src="../../js/libros.js"></script>
   <script>
@@ -62,7 +63,7 @@
       const root = document.getElementById('libro-root');
 
       if (!libro) {
-        root.innerHTML = `<div style="text-align:center;padding:80px;"><div style="font-size:48px">📚</div><h2 style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;margin:12px 0 8px;">Libro no encontrado</h2><a href="catalogo.html" style="color:#F5841F;">← Volver al catálogo</a></div>`;
+        root.innerHTML = `<div style="text-align:center;padding:80px;"><div style="font-size:48px">ðŸ“š</div><h2 style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;margin:12px 0 8px;">Libro no encontrado</h2><a href="catalogo.html" style="color:#F5841F;">â† Volver al catÃ¡logo</a></div>`;
         return;
       }
 
@@ -71,7 +72,7 @@
 
       const desc = LibrosUI.descuento(libro.precio, libro.precioNuevo);
       const estadoLabel = LibrosUI.estadoLabel(libro.estado);
-      const waMsg = encodeURIComponent(`Hola ${libro.vendedor.nombre.split(' ')[0]}, vi tu libro *"${libro.titulo}"* en UThub y me interesa comprarlo. ¿Sigue disponible?`);
+      const waMsg = encodeURIComponent(`Hola ${libro.vendedor.nombre.split(' ')[0]}, vi tu libro *"${libro.titulo}"* en UThub y me interesa comprarlo. Â¿Sigue disponible?`);
 
       root.innerHTML = `
         <div class="libro-detail-layout">
@@ -89,7 +90,7 @@
               </div>
               <h3 style="font-family:'Syne',sans-serif;font-size:15px;font-weight:800;margin-bottom:12px;">Detalles del libro</h3>
               <table class="libro-info-table">
-                <tr><td>Edición</td><td>${libro.edicion}</td></tr>
+                <tr><td>EdiciÃ³n</td><td>${libro.edicion}</td></tr>
                 <tr><td>ISBN</td><td><code style="font-size:12px;">${libro.isbn}</code></td></tr>
                 <tr><td>Carrera</td><td>${libro.carrera}</td></tr>
                 <tr><td>Semestre</td><td>${libro.semestre}</td></tr>
@@ -120,34 +121,34 @@
                 <span style="font-size:16px;color:#9CA3AF;text-decoration:line-through;">$${libro.precioNuevo}</span>
               </div>
               <div style="display:inline-flex;align-items:center;gap:6px;background:#DCFCE7;color:#16A34A;padding:5px 12px;border-radius:100px;font-size:12px;font-weight:700;margin-bottom:20px;">
-                🎉 Ahorras $${libro.precioNuevo - libro.precio} (${desc}% de descuento)
+                ðŸŽ‰ Ahorras $${libro.precioNuevo - libro.precio} (${desc}% de descuento)
               </div>
 
               <a href="https://wa.me/52${libro.vendedor.whatsapp || '8112345678'}?text=${waMsg}" target="_blank" class="btn-contactar">
-                📱 Contactar por WhatsApp
+                ðŸ“± Contactar por WhatsApp
               </a>
-              <button onclick="LibrosUI.librosToast('¡Guardado en favoritos!','success')" style="display:block;width:100%;padding:12px;background:#F7F4F0;color:#1A1A2E;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:16px;transition:all .2s;" onmouseover="this.style.background='#EDE8E0'" onmouseout="this.style.background='#F7F4F0'">
-                ♡ Guardar en favoritos
+              <button onclick="LibrosUI.librosToast('Â¡Guardado en favoritos!','success')" style="display:block;width:100%;padding:12px;background:#F7F4F0;color:#1A1A2E;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:16px;transition:all .2s;" onmouseover="this.style.background='#EDE8E0'" onmouseout="this.style.background='#F7F4F0'">
+                â™¡ Guardar en favoritos
               </button>
 
               <div style="border-top:1px solid #F0EDE8;padding-top:16px;">
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px;color:#6B6B80;">
-                  <span>✅</span> Contacto seguro dentro del campus
+                  <span>âœ…</span> Contacto seguro dentro del campus
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px;color:#6B6B80;">
-                  <span>🏫</span> Entrega en UTSC, Santa Catarina
+                  <span>ðŸ«</span> Entrega en UTSC, Santa Catarina
                 </div>
                 <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#6B6B80;">
-                  <span>🤝</span> Trato directo entre estudiantes
+                  <span>ðŸ¤</span> Trato directo entre estudiantes
                 </div>
               </div>
             </div>
 
-            <!-- Más libros del mismo vendedor -->
+            <!-- MÃ¡s libros del mismo vendedor -->
             <div style="background:white;border-radius:16px;padding:20px;margin-top:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);">
-              <p style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:12px;">Más de ${libro.vendedor.nombre.split(' ')[0]}</p>
-              <p style="font-size:12px;color:#6B6B80;">Contacta al vendedor para ver si tiene más libros disponibles.</p>
-              <a href="catalogo.html" style="display:inline-block;margin-top:10px;font-size:13px;color:#F5841F;font-weight:600;">Ver catálogo completo →</a>
+              <p style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:12px;">MÃ¡s de ${libro.vendedor.nombre.split(' ')[0]}</p>
+              <p style="font-size:12px;color:#6B6B80;">Contacta al vendedor para ver si tiene mÃ¡s libros disponibles.</p>
+              <a href="catalogo.html" style="display:inline-block;margin-top:10px;font-size:13px;color:#F5841F;font-weight:600;">Ver catÃ¡logo completo â†’</a>
             </div>
           </div>
         </div>`;
@@ -155,3 +156,4 @@
   </script>
 </body>
 </html>
+

@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: uthub-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: PUBLIC_URL
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: DB_SSL
+        value: false
+      - key: JWT_SECRET
+        sync: false

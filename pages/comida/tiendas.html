@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -27,10 +27,10 @@
       <nav class="nav" id="nav-menu">
         <ul class="nav-list">
           <li><a href="../dashboard.html" class="nav-link">Dashboard</a></li>
-          <li><a href="tiendas.html" class="nav-link active">🍔 Comida</a></li>
-          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
-          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
-          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
+          <li><a href="tiendas.html" class="nav-link active">ðŸ” Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">ðŸ“š TutorÃ­as</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">ðŸ“– Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">ðŸ’¼ Servicios</a></li>
         </ul>
       </nav>
       
@@ -101,7 +101,7 @@
                 <polyline points="16 17 21 12 16 7"></polyline>
                 <line x1="21" y1="12" x2="9" y2="12"></line>
               </svg>
-              Cerrar Sesión
+              Cerrar SesiÃ³n
             </a>
           </div>
         </div>
@@ -127,8 +127,8 @@
       <!-- Header Section -->
       <div class="page-header">
         <div class="page-header-content">
-          <h1 class="page-title">🍔 Tiendas de Comida</h1>
-          <p class="page-subtitle">Descubre emprendimientos estudiantiles y pide comida directo a tu salón</p>
+          <h1 class="page-title">ðŸ” Tiendas de Comida</h1>
+          <p class="page-subtitle">Descubre emprendimientos estudiantiles y pide comida directo a tu salÃ³n</p>
         </div>
         <div class="page-header-actions">
           <a href="mi-tienda.html" class="btn-primary">
@@ -141,7 +141,7 @@
         </div>
       </div>
 
-      <!-- Filtros y Búsqueda -->
+      <!-- Filtros y BÃºsqueda -->
       <div class="filters-section">
         <div class="search-bar-large">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -158,7 +158,7 @@
               <option value="">Todos</option>
               <option value="mexicana">Mexicana</option>
               <option value="italiana">Italiana</option>
-              <option value="rapida">Comida Rápida</option>
+              <option value="rapida">Comida RÃ¡pida</option>
               <option value="saludable">Saludable</option>
               <option value="postres">Postres</option>
               <option value="bebidas">Bebidas</option>
@@ -176,7 +176,7 @@
               <option value="Docencia 2">Docencia 2</option>
               <option value="Mediateca">Mediateca</option>
               <option value="CI">CI</option>
-              <option value="Cafeteria">Cafetería</option>
+              <option value="Cafeteria">CafeterÃ­a</option>
             </select>
           </div>
 
@@ -191,18 +191,18 @@
           </div>
 
           <div class="filter-group">
-            <label class="filter-label">Calificación</label>
+            <label class="filter-label">CalificaciÃ³n</label>
             <select id="filter-calificacion" class="filter-select">
               <option value="">Todas</option>
-              <option value="4">4+ ⭐</option>
-              <option value="4.5">4.5+ ⭐</option>
-              <option value="4.8">4.8+ ⭐</option>
+              <option value="4">4+ â­</option>
+              <option value="4.5">4.5+ â­</option>
+              <option value="4.8">4.8+ â­</option>
             </select>
           </div>
         </div>
 
         <div class="active-filters" id="active-filters" style="display: none;">
-          <!-- Filtros activos aparecerán aquí -->
+          <!-- Filtros activos aparecerÃ¡n aquÃ­ -->
         </div>
       </div>
 
@@ -226,9 +226,9 @@
 
       <!-- Empty State (oculto por defecto) -->
       <div class="empty-state" id="empty-state" style="display: none;">
-        <div class="empty-icon">🔍</div>
+        <div class="empty-icon">ðŸ”</div>
         <h3>No se encontraron tiendas</h3>
-        <p>Intenta ajustar los filtros o buscar con otros términos</p>
+        <p>Intenta ajustar los filtros o buscar con otros tÃ©rminos</p>
         <button class="btn-secondary" onclick="clearFilters()">Limpiar filtros</button>
       </div>
 
@@ -242,7 +242,7 @@
         <p>&copy; 2026 UThub - UTSC. Todos los derechos reservados.</p>
         <div class="footer-links-inline">
           <a href="../ayuda.html">Ayuda</a>
-          <a href="../terminos.html">Términos</a>
+          <a href="../terminos.html">TÃ©rminos</a>
           <a href="#">Privacidad</a>
         </div>
       </div>
@@ -253,6 +253,7 @@
   <script src="../../js/protect.js"></script>
 <script src="../../js/main.js"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="../../js/config.js"></script>
 <script src="../../js/comida.js"></script>
 <script src="../../js/wiki-assistant.js"></script>
 
@@ -265,3 +266,4 @@
 </script>
 </body>
 </html>
+

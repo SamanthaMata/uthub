@@ -1,8 +1,8 @@
-/* ============================================
-   UTHUB - AUTENTICACIÓN
+﻿/* ============================================
+   UTHUB - AUTENTICACIÃ“N
    ============================================ */
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = window.UTHUB_CONFIG?.API_BASE_URL || 'https://uthub.onrender.com/api';
 
 function initLoginForm() {
   const form = document.getElementById('login-form');
@@ -42,12 +42,12 @@ function initLoginForm() {
       if (response.ok) {
         localStorage.setItem('uthub_token', data.token);
         localStorage.setItem('uthub_user', JSON.stringify(data.usuario));
-        showMessage('¡Bienvenido de nuevo!', 'success');
+        showMessage('Â¡Bienvenido de nuevo!', 'success');
         setTimeout(() => {
           window.location.href = '../dashboard.html';
         }, 1000);
       } else {
-        showMessage(data.error || 'Error al iniciar sesión', 'error');
+        showMessage(data.error || 'Error al iniciar sesiÃ³n', 'error');
         setLoading(submitBtn, false);
       }
     } catch (error) {
@@ -126,7 +126,7 @@ function initRegisterForm() {
       if (response.ok) {
         localStorage.setItem('uthub_token', data.token);
         localStorage.setItem('uthub_user', JSON.stringify(data.usuario));
-        showMessage('¡Cuenta creada exitosamente!', 'success');
+        showMessage('Â¡Cuenta creada exitosamente!', 'success');
         setTimeout(() => {
           window.location.href = '../dashboard.html';
         }, 1500);
@@ -156,7 +156,7 @@ function initResetForm() {
 
     const emailValid = UThubValidation.validateField(emailInput, ['required', 'emailUTSC']);
     if (!emailValid) {
-      showMessage('Por favor ingresa un correo válido', 'error');
+      showMessage('Por favor ingresa un correo vÃ¡lido', 'error');
       return;
     }
 
@@ -187,7 +187,7 @@ function initResetForm() {
 function initDashboard() {
   const token = localStorage.getItem('uthub_token');
   if (!token) {
-    window.location.href = 'pages/auth/login.html';
+    window.location.href = `${window.location.origin}/pages/auth/login.html`;
     return;
   }
 
@@ -218,11 +218,11 @@ function initDashboard() {
 }
 
 function logout() {
-  if (confirm('¿Estás seguro de cerrar sesión?')) {
+  if (confirm('Â¿EstÃ¡s seguro de cerrar sesiÃ³n?')) {
     localStorage.removeItem('uthub_token');
     localStorage.removeItem('uthub_user');
 
-   window.location.href = `${window.location.origin}/UThub/pages/auth/login.html`;
+   window.location.href = `${window.location.origin}/pages/auth/login.html`;
   }
 }
 
@@ -267,3 +267,7 @@ window.initDashboard = initDashboard;
 window.logout = logout;
 window.isAuthenticated = isAuthenticated;
 window.getCurrentUser = getCurrentUser;
+
+
+
+

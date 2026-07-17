@@ -1,550 +1,53 @@
-/* ============================================
-   UTHUB - MÓDULO DE COMIDA
+﻿/* ============================================
+   UTHUB - MÃ“DULO DE COMIDA (FRONTEND)
    ============================================ */
 
-// Carrito (guardar en localStorage)
+const API_URL = window.UTHUB_CONFIG?.API_BASE_URL || 'https://uthub.onrender.com/api';
+
+// ðŸ›’ carrito
 let cart = JSON.parse(localStorage.getItem('uthub_cart')) || [];
 let tiendaActual = '';
+const IMG_DEFAULT = 'https://images.unsplash.com/photo-1605152276897-4f618f831968?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
-/**
- * INICIALIZAR PÁGINA DE TIENDAS
- */
-function initTiendasPage() {
-  const searchInput = document.getElementById('tiendas-search');
-  const filterTipo = document.getElementById('filter-tipo');
-  const filterEdificio = document.getElementById('filter-edificio');
-  const filterPrecio = document.getElementById('filter-precio');
-  const filterCalificacion = document.getElementById('filter-calificacion');
-  
-  // Búsqueda
-  if (searchInput) {
-    searchInput.addEventListener('input', filterTiendas);
-  }
-  
-  // Filtros
-  [filterTipo, filterEdificio, filterPrecio, filterCalificacion].forEach(filter => {
-    if (filter) {
-      filter.addEventListener('change', filterTiendas);
-    }
-  });
-  
-  // Actualizar contador del carrito
-  updateCartCount();
-  initCampusFoodMap();
-}
+/* ============================================
+   ðŸª TIENDAS
+   ============================================ */
 
-/**
- * FILTRAR TIENDAS
- */
-function filterTiendas() {
-  const searchValue = document.getElementById('tiendas-search')?.value.toLowerCase() || '';
-  const tipoValue = document.getElementById('filter-tipo')?.value || '';
-  const edificioValue = document.getElementById('filter-edificio')?.value || '';
-  const calificacionValue = parseFloat(document.getElementById('filter-calificacion')?.value) || 0;
-  
-  const tiendas = document.querySelectorAll('.tienda-card');
-  let visibleCount = 0;
-  
-  tiendas.forEach(tienda => {
-    const tipo = tienda.getAttribute('data-tipo');
-    const edificio = tienda.getAttribute('data-edificio');
-    const calificacion = parseFloat(tienda.getAttribute('data-calificacion'));
-    const nombre = tienda.querySelector('.tienda-name')?.textContent.toLowerCase() || '';
-    const descripcion = tienda.querySelector('.tienda-description')?.textContent.toLowerCase() || '';
-    
-    // Aplicar filtros
-    const matchesSearch = nombre.includes(searchValue) || descripcion.includes(searchValue);
-    const matchesTipo = !tipoValue || tipo === tipoValue;
-    const matchesEdificio = !edificioValue || edificio === edificioValue;
-    const matchesCalificacion = !calificacionValue || calificacion >= calificacionValue;
-    
-    if (matchesSearch && matchesTipo && matchesEdificio && matchesCalificacion) {
-      tienda.style.display = 'block';
-      visibleCount++;
-    } else {
-      tienda.style.display = 'none';
-    }
-  });
-  
-  // Mostrar empty state si no hay resultados
-  const emptyState = document.getElementById('empty-state');
-  const tiendasGrid = document.getElementById('tiendas-grid');
-  
-  syncCampusMapWithFilters();
-  if (visibleCount === 0) {
-    if (emptyState) emptyState.style.display = 'block';
-    if (tiendasGrid) tiendasGrid.style.display = 'none';
-  } else {
-    if (emptyState) emptyState.style.display = 'none';
-    if (tiendasGrid) tiendasGrid.style.display = 'grid';
-  }
-}
-
-/**
- * LIMPIAR FILTROS
- */
-function clearFilters() {
-  document.getElementById('tiendas-search').value = '';
-  document.getElementById('filter-tipo').value = '';
-  document.getElementById('filter-edificio').value = '';
-  document.getElementById('filter-precio').value = '';
-  document.getElementById('filter-calificacion').value = '';
-  filterTiendas();
-}
-
-
-let campusLocationsCache = null;
-let campusFoodMap = null;
-let campusFoodMarkers = [];
-
-async function fetchCampusLocations() {
-  if (campusLocationsCache) return campusLocationsCache;
-
-  const response = await fetch(`${API_URL}/comida/ubicaciones`);
-  if (!response.ok) throw new Error('No se pudieron cargar las ubicaciones del campus');
-  campusLocationsCache = await response.json();
-  return campusLocationsCache;
-}
-
-async function initCampusFoodMap() {
-  const mapEl = document.getElementById('campus-food-map');
-  const pointsEl = document.getElementById('campus-map-points');
-  if (!mapEl || !pointsEl || campusFoodMap) return;
-
-  let locations;
-  try {
-    locations = await fetchCampusLocations();
-  } catch (error) {
-    mapEl.innerHTML = '<div style="padding:24px;color:#6B6B80;">No se pudieron cargar las ubicaciones del campus.</div>';
-    return;
-  }
-
-  pointsEl.innerHTML = locations.map(point => `
-    <button class="campus-point-btn" type="button" data-point-id="${point.id}">
-      <span class="campus-point-name">${point.nombre}</span>
-      <span class="campus-point-meta">${point.tipo}</span>
-    </button>
-  `).join('');
-
-  if (typeof L === 'undefined') {
-    mapEl.innerHTML = '<div style="padding:24px;color:#6B6B80;">No se pudo cargar el mapa. Revisa tu conexión e intenta de nuevo.</div>';
-    return;
-  }
-
-  campusFoodMap = L.map(mapEl, { scrollWheelZoom: false }).setView([25.69012, -100.51155], 17);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(campusFoodMap);
-
-  campusFoodMarkers = locations.map(point => {
-    const marker = L.marker([point.lat, point.lng]).addTo(campusFoodMap);
-    marker.bindPopup(`<strong>${point.nombre}</strong><br>${point.detalle}`);
-    return { ...point, marker };
-  });
-
-  pointsEl.querySelectorAll('.campus-point-btn').forEach(button => {
-    button.addEventListener('click', () => {
-      const item = campusFoodMarkers.find(point => point.id === button.dataset.pointId);
-      if (!item) return;
-      pointsEl.querySelectorAll('.campus-point-btn').forEach(btn => btn.classList.remove('active'));
-      button.classList.add('active');
-      campusFoodMap.setView([item.lat, item.lng], 18, { animate: true });
-      item.marker.openPopup();
-    });
-  });
-
-  setTimeout(() => campusFoodMap.invalidateSize(), 200);
-}
-
-function syncCampusMapWithFilters() {
-  if (!campusFoodMap) return;
-  setTimeout(() => campusFoodMap.invalidateSize(), 50);
-}
-
-let deliveryMap = null;
-let deliveryMarker = null;
-
-async function initCartDeliveryMap() {
-  const select = document.getElementById('ubicacion-entrega');
-  const mapEl = document.getElementById('delivery-location-map');
-  const status = document.getElementById('delivery-map-status');
-  if (!select || !mapEl) return;
-
-  select.disabled = true;
-
-  try {
-    const locations = await fetchCampusLocations();
-    select.innerHTML = '<option value="">Selecciona tu ubicación</option>';
-    locations.forEach(location => {
-      const option = document.createElement('option');
-      option.value = location.id;
-      option.textContent = location.nombre;
-      select.appendChild(option);
-    });
-    select.disabled = false;
-
-    if (typeof L === 'undefined') {
-      status.textContent = 'No se pudo cargar el mapa. Revisa tu conexión.';
-      return;
-    }
-
-    deliveryMap = L.map(mapEl, { scrollWheelZoom: false });
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(deliveryMap);
-
-    const bounds = L.latLngBounds(locations.map(location => [location.lat, location.lng]));
-    deliveryMap.fitBounds(bounds, { padding: [28, 28], maxZoom: 17 });
-    setTimeout(() => deliveryMap.invalidateSize(), 200);
-
-    select.addEventListener('change', () => {
-      const location = locations.find(item => item.id === select.value);
-      if (!location) {
-        if (deliveryMarker) {
-          deliveryMap.removeLayer(deliveryMarker);
-          deliveryMarker = null;
-        }
-        deliveryMap.fitBounds(bounds, { padding: [28, 28], maxZoom: 17 });
-        status.textContent = 'Selecciona un punto para mostrar la entrega en el mapa.';
-        return;
-      }
-
-      if (deliveryMarker) deliveryMap.removeLayer(deliveryMarker);
-      deliveryMarker = L.marker([location.lat, location.lng])
-        .addTo(deliveryMap)
-        .bindPopup(`<strong>${location.nombre}</strong><br>${location.detalle}`)
-        .openPopup();
-      deliveryMap.setView([location.lat, location.lng], 19, { animate: true });
-      status.textContent = `${location.nombre} · ${location.tipo}`;
-    });
-  } catch (error) {
-    select.innerHTML = '<option value="">Ubicaciones no disponibles</option>';
-    status.textContent = 'No fue posible consultar los puntos de entrega.';
-  }
-}
-
-/**
- * INICIALIZAR PÁGINA DE MENÚ
- */
-function initMenuPage() {
-  // Scroll smooth a categorías
-  const categoryLinks = document.querySelectorAll('.category-link');
-  categoryLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetId = link.getAttribute('href');
-      const targetElement = document.querySelector(targetId);
-      
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
-        // Actualizar active
-        categoryLinks.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-      }
-    });
-  });
-  
-  // Actualizar contador del carrito
-  updateCartCount();
-}
-
-/**
- * AGREGAR AL CARRITO
- */
-function addToCart(nombre, precio, id) {
-  // Verificar si ya existe en el carrito
-  const existingItem = cart.find(item => item.id === id);
-  
-  if (existingItem) {
-    existingItem.cantidad++;
-  } else {
-    cart.push({
-      id: id,
-      nombre: nombre,
-      precio: precio,
-      cantidad: 1,
-      tienda: tiendaActual
-    });
-  }
-  
-  // Guardar en localStorage
-  localStorage.setItem('uthub_cart', JSON.stringify(cart));
-  
-  // Actualizar UI
-  updateCartCount();
-  updateCartDisplay();
-  showCartFloat();
-  
-  // Mostrar feedback
-  showToast(`${nombre} agregado al carrito`, 'success');
-}
-
-/**
- * ACTUALIZAR CONTADOR DEL CARRITO
- */
-function updateCartCount() {
-  const cartCount = document.getElementById('cart-count');
-  if (cartCount) {
-    const totalItems = cart.reduce((sum, item) => sum + item.cantidad, 0);
-    cartCount.textContent = totalItems;
-    cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
-  }
-}
-
-/**
- * ACTUALIZAR DISPLAY DEL CARRITO
- */
-function updateCartDisplay() {
-  const cartFloat = document.getElementById('cart-float');
-  const cartFloatCount = document.getElementById('cart-float-count');
-  const cartFloatTotal = document.getElementById('cart-float-total');
-  
-  if (cart.length > 0) {
-    const totalItems = cart.reduce((sum, item) => sum + item.cantidad, 0);
-    const totalPrice = cart.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-    
-    if (cartFloatCount) cartFloatCount.textContent = `${totalItems} producto${totalItems > 1 ? 's' : ''}`;
-    if (cartFloatTotal) cartFloatTotal.textContent = `$${totalPrice}`;
-  }
-}
-
-/**
- * MOSTRAR CARRITO FLOTANTE
- */
-function showCartFloat() {
-  const cartFloat = document.getElementById('cart-float');
-  if (cartFloat && cart.length > 0) {
-    cartFloat.style.display = 'block';
-    
-    // Auto-ocultar después de 5 segundos
-    setTimeout(() => {
-      // cartFloat.style.display = 'none';
-    }, 5000);
-  }
-}
-
-/**
- * REMOVER DEL CARRITO
- */
-function removeFromCart(id) {
-  cart = cart.filter(item => item.id !== id);
-  localStorage.setItem('uthub_cart', JSON.stringify(cart));
-  
-  // Recargar página de carrito
-  if (window.location.pathname.includes('carrito.html')) {
-    loadCartItems();
-  }
-  
-  updateCartCount();
-  showToast('Producto eliminado del carrito', 'info');
-}
-
-/**
- * ACTUALIZAR CANTIDAD
- */
-function updateQuantity(id, change) {
-  const item = cart.find(item => item.id === id);
-  
-  if (item) {
-    item.cantidad += change;
-    
-    if (item.cantidad <= 0) {
-      removeFromCart(id);
-      return;
-    }
-    
-    localStorage.setItem('uthub_cart', JSON.stringify(cart));
-    
-    // Recargar página de carrito
-    if (window.location.pathname.includes('carrito.html')) {
-      loadCartItems();
-    }
-    
-    updateCartCount();
-  }
-}
-
-/**
- * CARGAR ITEMS DEL CARRITO (para página carrito.html)
- */
-function loadCartItems() {
-  const cartItemsContainer = document.getElementById('cart-items');
-  const cartEmpty = document.getElementById('cart-empty');
-  const cartSummary = document.getElementById('cart-summary');
-  
-  if (cart.length === 0) {
-    if (cartEmpty) cartEmpty.style.display = 'block';
-    if (cartItemsContainer) cartItemsContainer.style.display = 'none';
-    if (cartSummary) cartSummary.style.display = 'none';
-    return;
-  }
-  
-  if (cartEmpty) cartEmpty.style.display = 'none';
-  if (cartItemsContainer) cartItemsContainer.style.display = 'block';
-  if (cartSummary) cartSummary.style.display = 'block';
-  
-  // Generar HTML de items
-  if (cartItemsContainer) {
-    const html = cart.map(item => `
-      <div class="cart-item">
-        <div class="cart-item-info">
-          <h3 class="cart-item-name">${item.nombre}</h3>
-          <p class="cart-item-tienda">${item.tienda}</p>
-        </div>
-        <div class="cart-item-quantity">
-          <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-          <span class="qty-value">${item.cantidad}</span>
-          <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-        </div>
-        <div class="cart-item-price">$${item.precio * item.cantidad}</div>
-        <button class="cart-item-remove" onclick="removeFromCart(${item.id})">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="3 6 5 6 21 6"></polyline>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-          </svg>
-        </button>
-      </div>
-    `).join('');
-    
-    cartItemsContainer.innerHTML = html;
-  }
-  
-  // Actualizar resumen
-  updateCartSummary();
-}
-
-/**
- * ACTUALIZAR RESUMEN DEL CARRITO
- */
-function updateCartSummary() {
-  const subtotal = cart.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
-  const delivery = 10; // Cargo fijo de delivery
-  const total = subtotal + delivery;
-  
-  const subtotalEl = document.getElementById('cart-subtotal');
-  const deliveryEl = document.getElementById('cart-delivery');
-  const totalEl = document.getElementById('cart-total');
-  
-  if (subtotalEl) subtotalEl.textContent = `$${subtotal}`;
-  if (deliveryEl) deliveryEl.textContent = `$${delivery}`;
-  if (totalEl) totalEl.textContent = `$${total}`;
-}
-
-/**
- * PROCESAR PEDIDO
- */
-function procesarPedido() {
-  if (cart.length === 0) {
-    showToast('Tu carrito está vacío', 'error');
-    return;
-  }
-  
-  const ubicacionId = document.getElementById('ubicacion-entrega')?.value;
-  const ubicacion = campusLocationsCache?.find(location => location.id === ubicacionId);
-  const instrucciones = document.getElementById('instrucciones')?.value;
-  
-  if (!ubicacionId || !ubicacion) {
-    showToast('Selecciona un punto de entrega', 'error');
-    return;
-  }
-  
-  // Simular procesamiento
-  showToast('Procesando pedido...', 'info');
-  
-  setTimeout(() => {
-    // Guardar pedido en localStorage
-    const pedidos = JSON.parse(localStorage.getItem('uthub_pedidos')) || [];
-    
-    const nuevoPedido = {
-      id: Date.now(),
-      fecha: new Date().toISOString(),
-      items: cart,
-      ubicacion: ubicacion.nombre,
-      ubicacionId: ubicacion.id,
-      coordenadas: { lat: ubicacion.lat, lng: ubicacion.lng },
-      instrucciones: instrucciones,
-      total: cart.reduce((sum, item) => sum + (item.precio * item.cantidad), 0) + 10,
-      estado: 'confirmado'
-    };
-    
-    pedidos.push(nuevoPedido);
-    localStorage.setItem('uthub_pedidos', JSON.stringify(pedidos));
-    
-    // Limpiar carrito
-    cart = [];
-    localStorage.setItem('uthub_cart', JSON.stringify(cart));
-    
-    // Redirigir a pedidos
-    showToast('¡Pedido realizado con éxito!', 'success');
-    
-    setTimeout(() => {
-      window.location.href = 'pedidos.html';
-    }, 1500);
-  }, 1000);
-}
-
-/**
- * MOSTRAR TOAST NOTIFICATION
- */
-function showToast(message, type = 'info') {
-  // Remover toast anterior si existe
-  const existingToast = document.querySelector('.toast-notification');
-  if (existingToast) {
-    existingToast.remove();
-  }
-  
-  // Crear toast
-  const toast = document.createElement('div');
-  toast.className = `toast-notification toast-${type}`;
-  toast.textContent = message;
-  
-  document.body.appendChild(toast);
-  
-  // Animar entrada
-  setTimeout(() => toast.classList.add('show'), 100);
-  
-  // Remover después de 3 segundos
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
-}
-const API_URL = 'http://localhost:3000/api';
 async function cargarTiendas() {
   try {
     const res = await fetch(`${API_URL}/comida/tiendas`);
     const tiendas = await res.json();
 
     const contenedor = document.getElementById('tiendas-grid');
-
     if (!contenedor) return;
 
     contenedor.innerHTML = tiendas.map(t => `
-  <div class="tienda-card">
+      <div class="tienda-card">
+        <img 
+          src="${t.imagen || IMG_DEFAULT}"
+          onerror="this.onerror=null;this.src='${IMG_DEFAULT}'"
+        >
 
-    <div class="tienda-image">
-      <img src="${t.imagen || 'https://via.placeholder.com/400'}">
-    </div>
+        <div class="tienda-content">
+          <h3 class="tienda-name">${t.nombre}</h3>
+          <p class="tienda-description">${t.descripcion}</p>
 
-    <div class="tienda-content">
-      <h3 class="tienda-name">${t.nombre}</h3>
-      <p class="tienda-description">${t.descripcion}</p>
-
-      <a href="menu.html?id=${t.id}" class="btn-tienda">
-        Ver Menú
-      </a>
-    </div>
-
-  </div>
-`).join('');
+          <a href="menu.html?id=${t.id}" class="btn-tienda">
+            Ver MenÃº
+          </a>
+        </div>
+      </div>
+    `).join('');
 
   } catch (error) {
     console.error('Error cargando tiendas:', error);
   }
 }
+
+/* ============================================
+   ðŸ” PRODUCTOS
+   ============================================ */
+
 async function cargarProductos() {
   try {
     const params = new URLSearchParams(window.location.search);
@@ -556,42 +59,46 @@ async function cargarProductos() {
     const productos = await res.json();
 
     const contenedor = document.getElementById('productos-container');
-
     if (!contenedor) return;
 
     contenedor.innerHTML = productos.map(p => `
-  <div class="producto-card">
-    
-    <div class="producto-image">
-      <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=300&fit=crop" alt="${p.nombre}">
-      <div class="producto-badge">Popular</div>
-    </div>
+      <div class="producto-card">
+        
+        <div class="producto-image">
+          <img 
+            src="${p.imagen || IMG_DEFAULT}"
+            onerror="this.onerror=null;this.src='${IMG_DEFAULT}'"
+          >
+          <div class="producto-badge">Popular</div>
+        </div>
 
-    <div class="producto-content">
-      <h3 class="producto-name">${p.nombre}</h3>
-      <p class="producto-description">${p.descripcion || 'Delicioso producto disponible'}</p>
+        <div class="producto-content">
+          <h3 class="producto-name">${p.nombre}</h3>
+          <p class="producto-description">
+            ${p.descripcion || 'Delicioso producto disponible'}
+          </p>
 
-      <div class="producto-footer">
-        <div class="producto-price">$${p.precio}</div>
+          <div class="producto-footer">
+            <div class="producto-price">$${p.precio}</div>
 
-        <button class="btn-add-cart" onclick="addToCart('${p.nombre}', ${p.precio}, ${p.id})">
-          Agregar
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-          </svg>
-        </button>
+            <button class="btn-add-cart"
+              onclick="addToCart('${p.nombre}', ${p.precio}, ${p.id})">
+              Agregar
+            </button>
+          </div>
+        </div>
 
       </div>
-    </div>
-
-  </div>
-`).join('');
+    `).join('');
 
   } catch (error) {
     console.error('Error cargando productos:', error);
   }
 }
+
+/* ============================================
+   ðŸª INFO DE TIENDA
+   ============================================ */
 
 async function cargarInfoTienda() {
   try {
@@ -603,111 +110,185 @@ async function cargarInfoTienda() {
     const res = await fetch(`${API_URL}/comida/tienda/${tiendaId}`);
     const tienda = await res.json();
 
-    // 👉 guardar nombre para carrito
     tiendaActual = tienda.nombre;
 
-    // 🧠 NOMBRE
-    const nombreEl = document.querySelector('.tienda-detail-name');
-    if (nombreEl) nombreEl.textContent = tienda.nombre;
+    // nombre
+    document.querySelector('.tienda-detail-name').textContent = tienda.nombre;
 
-    // 🧠 DESCRIPCIÓN
-    const descEl = document.querySelector('.tienda-detail-description');
-    if (descEl) descEl.textContent = tienda.descripcion;
+    // descripcion
+    document.querySelector('.tienda-detail-description').textContent = tienda.descripcion;
 
-    // 🧠 BREADCRUMB
-    const breadcrumb = document.querySelector('.breadcrumb-item.active');
-    if (breadcrumb) breadcrumb.textContent = tienda.nombre;
+    // breadcrumb
+    document.querySelector('.breadcrumb-item.active').textContent = tienda.nombre;
 
-    // 🧠 IMAGEN (usa una default si no tienes en BD)
-    const banner = document.querySelector('.tienda-detail-banner');
-    if (banner) {
-      banner.innerHTML = `
-        <img src="${tienda.imagen || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200'}" alt="${tienda.nombre}">
-      `;
-    }
+    // titulo pestaÃ±a
+    document.title = `MenÃº - ${tienda.nombre} - UThub`;
 
-    // 🧠 LOGO (emoji simple)
-    const logo = document.querySelector('.tienda-logo');
-    if (logo) {
-      logo.textContent = tienda.logo || '🍔';
-    }
-
-    // 🧠 RATING (fake por ahora si no tienes en BD)
-    const rating = document.querySelector('.rating-value');
-    if (rating) rating.textContent = tienda.rating || '4.5';
-
-    const stars = document.querySelector('.stars');
-    if (stars) stars.textContent = '★★★★★';
-
-    const reviews = document.querySelector('.rating-count');
-    if (reviews) reviews.textContent = '(50 reseñas)';
-
-    // 🧠 META
-    const metas = document.querySelectorAll('.meta-text');
-    if (metas[0]) metas[0].textContent = tienda.tipo || 'Comida';
-    if (metas[1]) metas[1].textContent = tienda.ubicacion || 'UT';
-
-    // 🧠 STATUS
-    const status = document.querySelector('.status-dot');
-    if (status) status.style.background = 'green';
-
-    const hours = document.querySelector('.status-hours');
-    if (hours) hours.textContent = tienda.horario || '9:00 AM - 6:00 PM';
+    // imagen
+    document.querySelector('.tienda-detail-banner').innerHTML = `
+    <img 
+      src="${tienda.imagen || IMG_DEFAULT}"
+      onerror="this.onerror=null;this.src='${IMG_DEFAULT}'"
+    >
+    `;
 
   } catch (error) {
     console.error('Error cargando tienda:', error);
   }
 }
 
-// Estilos para toast
-var comidaToastStyles = document.getElementById('toast-styles');
-if (!comidaToastStyles) {
-  comidaToastStyles = document.createElement('style');
-  comidaToastStyles.id = 'toast-styles';
-  document.head.appendChild(comidaToastStyles);
+/* ============================================
+   âž• CREAR TIENDA
+   ============================================ */
+
+async function crearTienda() {
+  const nombre = document.getElementById('nombre').value;
+  const descripcion = document.getElementById('descripcion').value;
+  const imagen = document.getElementById('imagen').value;
+
+  const res = await fetch(`${API_URL}/comida/tienda`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ nombre, descripcion, imagen })
+  });
+
+  const data = await res.json();
+  console.log(data);
+
+  alert('Tienda creada');
 }
 
-comidaToastStyles.textContent = `
-  .toast-notification {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    background: var(--ut-dark);
-    color: white;
-    padding: 14px 24px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 500;
-    z-index: 10000;
-    opacity: 0;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+async function hacerPedido() {
+  try {
+    if (cart.length === 0) {
+      alert('Tu carrito estÃ¡ vacÃ­o');
+      return;
+    }
+
+    const ubicacion = prompt('Â¿DÃ³nde quieres recibir tu pedido? (ej: SalÃ³n B-201)');
+    if (!ubicacion) return;
+
+    const token = localStorage.getItem('uthub_token');
+
+    const res = await fetch(`${API_URL}/comida/pedido`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        items: cart,
+        ubicacion
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || 'Error al hacer pedido');
+      return;
+    }
+
+    // ðŸ”¥ limpiar carrito
+    cart = [];
+    localStorage.removeItem('uthub_cart');
+    updateCartCount();
+    updateCartDisplay();
+
+    alert('âœ… Pedido realizado con Ã©xito');
+
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Error al enviar pedido');
+  }
+}
+
+/* ============================================
+   âž• CREAR PRODUCTO
+   ============================================ */
+
+async function crearProducto() {
+  const nombre = document.getElementById('prod-nombre').value;
+  const precio = document.getElementById('prod-precio').value;
+  const descripcion = document.getElementById('prod-desc').value;
+  const imagen = document.getElementById('prod-img').value;
+  const tienda_id = document.getElementById('tienda-id').value;
+
+  const res = await fetch(`${API_URL}/comida/producto`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      nombre,
+      precio,
+      descripcion,
+      imagen,
+      tienda_id
+    })
+  });
+
+  const data = await res.json();
+  console.log(data);
+
+  alert('Producto creado');
+}
+
+/* ============================================
+   ðŸ›’ CARRITO
+   ============================================ */
+
+function addToCart(nombre, precio, id) {
+  const item = cart.find(i => i.id === id);
+
+  if (item) {
+    item.cantidad++;
+  } else {
+    cart.push({
+      id,
+      nombre,
+      precio,
+      cantidad: 1,
+      tienda: tiendaActual
+    });
   }
 
-  .toast-notification.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
+  localStorage.setItem('uthub_cart', JSON.stringify(cart));
+  updateCartCount();
+  updateCartDisplay();
+}
 
-  .toast-success { background: #22C55E; }
-  .toast-error { background: #FF4F5E; }
-  .toast-info { background: #60A5FA; }
-`;
-// Exportar funciones
-window.initTiendasPage = initTiendasPage;
-window.initCampusFoodMap = initCampusFoodMap;
-window.initCartDeliveryMap = initCartDeliveryMap;
-window.cargarProductos = cargarProductos;
+function updateCartCount() {
+  const el = document.getElementById('cart-count');
+  if (!el) return;
+
+  const total = cart.reduce((sum, i) => sum + i.cantidad, 0);
+  el.textContent = total;
+}
+
+function updateCartDisplay() {
+  const total = cart.reduce((sum, i) => sum + (i.precio * i.cantidad), 0);
+
+  const totalEl = document.getElementById('cart-float-total');
+  const countEl = document.getElementById('cart-float-count');
+
+  if (totalEl) totalEl.textContent = `$${total}`;
+  if (countEl) countEl.textContent = `${cart.length} productos`;
+}
+
+/* ============================================
+   ðŸš€ INIT
+   ============================================ */
+
 window.cargarTiendas = cargarTiendas;
-window.initMenuPage = initMenuPage;
+window.cargarProductos = cargarProductos;
 window.cargarInfoTienda = cargarInfoTienda;
+window.crearTienda = crearTienda;
+window.crearProducto = crearProducto;
 window.addToCart = addToCart;
-window.removeFromCart = removeFromCart;
-window.updateQuantity = updateQuantity;
-window.loadCartItems = loadCartItems;
-window.procesarPedido = procesarPedido;
-window.clearFilters = clearFilters;
 window.updateCartDisplay = updateCartDisplay;
 
-console.log('✅ Módulo de Comida inicializado');
+console.log('âœ… comida.js listo');
+

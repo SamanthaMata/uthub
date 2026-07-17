@@ -1,15 +1,15 @@
-/* ============================================
+﻿/* ============================================
    UTHUB - JAVASCRIPT PRINCIPAL
-   Universidad Tecnológica Santa Catarina
+   Universidad TecnolÃ³gica Santa Catarina
    ============================================ */
 
-// ──── VARIABLES GLOBALES ────
+// â”€â”€â”€â”€ VARIABLES GLOBALES â”€â”€â”€â”€
 const header = document.getElementById('header');
 const navToggle = document.getElementById('nav-toggle');
 const navMenu = document.getElementById('nav-menu');
 const searchInput = document.getElementById('global-search');
 
-// ──── HEADER SCROLL EFFECT ────
+// â”€â”€â”€â”€ HEADER SCROLL EFFECT â”€â”€â”€â”€
 window.addEventListener('scroll', () => {
   if (window.scrollY > 50) {
     header.classList.add('header-scrolled');
@@ -27,7 +27,7 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// ──── MENÚ MÓVIL TOGGLE ────
+// â”€â”€â”€â”€ MENÃš MÃ“VIL TOGGLE â”€â”€â”€â”€
 if (navToggle) {
   navToggle.addEventListener('click', () => {
     navMenu.classList.toggle('nav-active');
@@ -36,7 +36,7 @@ if (navToggle) {
   });
 }
 
-// Cerrar menú al hacer click en un enlace
+// Cerrar menÃº al hacer click en un enlace
 const navLinks = document.querySelectorAll('.nav-link');
 navLinks.forEach(link => {
   link.addEventListener('click', () => {
@@ -46,7 +46,7 @@ navLinks.forEach(link => {
   });
 });
 
-// ──── BÚSQUEDA GLOBAL ────
+// â”€â”€â”€â”€ BÃšSQUEDA GLOBAL â”€â”€â”€â”€
 let searchTimeout;
 
 if (searchInput) {
@@ -76,7 +76,7 @@ if (searchInput) {
 function realizarBusqueda(query) {
   console.log('Buscando:', query);
   
-  // Aquí irá la llamada al API cuando esté implementado
+  // AquÃ­ irÃ¡ la llamada al API cuando estÃ© implementado
   // Por ahora, mostramos resultados de ejemplo
   
   const resultadosEjemplo = [
@@ -84,21 +84,21 @@ function realizarBusqueda(query) {
       tipo: 'comida',
       titulo: 'Tacos El Profe',
       descripcion: 'Tacos de asada, pastor y pollo',
-      icono: '🍔',
+      icono: 'ðŸ”',
       url: 'pages/comida/menu.html?id=1'
     },
     {
       tipo: 'tutoria',
-      titulo: 'Carlos Mendoza - Cálculo',
-      descripcion: 'Tutor de matemáticas avanzadas',
-      icono: '📚',
+      titulo: 'Carlos Mendoza - CÃ¡lculo',
+      descripcion: 'Tutor de matemÃ¡ticas avanzadas',
+      icono: 'ðŸ“š',
       url: 'pages/tutorias/tutor.html?id=5'
     },
     {
       tipo: 'libro',
       titulo: 'Fundamentos de Base de Datos',
-      descripcion: 'Ramez Elmasri - 7ª edición',
-      icono: '📖',
+      descripcion: 'Ramez Elmasri - 7Âª ediciÃ³n',
+      icono: 'ðŸ“–',
       url: 'pages/libros/detalle.html?id=12'
     }
   ];
@@ -139,7 +139,7 @@ function ocultarResultados() {
   }
 }
 
-// Estilos para resultados de búsqueda
+// Estilos para resultados de bÃºsqueda
 const searchStyles = document.createElement('style');
 searchStyles.textContent = `
   .search-container {
@@ -216,7 +216,7 @@ searchStyles.textContent = `
 `;
 document.head.appendChild(searchStyles);
 
-// ──── ANIMACIONES DE SCROLL ────
+// â”€â”€â”€â”€ ANIMACIONES DE SCROLL â”€â”€â”€â”€
 const observerOptions = {
   threshold: 0.1,
   rootMargin: '0px 0px -50px 0px'
@@ -230,11 +230,11 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, observerOptions);
 
-// Observar elementos con animación
+// Observar elementos con animaciÃ³n
 const animatedElements = document.querySelectorAll('.modulo-card, .step-card, .testimonio-card');
 animatedElements.forEach(el => observer.observe(el));
 
-// Estilos de animación
+// Estilos de animaciÃ³n
 const animationStyles = document.createElement('style');
 animationStyles.textContent = `
   .modulo-card,
@@ -254,7 +254,7 @@ animationStyles.textContent = `
 `;
 document.head.appendChild(animationStyles);
 
-// ──── SMOOTH SCROLL PARA ENLACES INTERNOS ────
+// â”€â”€â”€â”€ SMOOTH SCROLL PARA ENLACES INTERNOS â”€â”€â”€â”€
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     const href = this.getAttribute('href');
@@ -281,7 +281,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
-// ──── MÓDULOS HOVER EFFECT ────
+// â”€â”€â”€â”€ MÃ“DULOS HOVER EFFECT â”€â”€â”€â”€
 const moduloCards = document.querySelectorAll('.modulo-card');
 
 moduloCards.forEach(card => {
@@ -295,7 +295,7 @@ moduloCards.forEach(card => {
   });
 });
 
-// ──── CONTADOR ANIMADO PARA STATS ────
+// â”€â”€â”€â”€ CONTADOR ANIMADO PARA STATS â”€â”€â”€â”€
 function animateCounter(element, target, duration = 2000) {
   let start = 0;
   const increment = target / (duration / 16);
@@ -326,7 +326,7 @@ document.querySelectorAll('.stat-number').forEach(stat => {
   statsObserver.observe(stat);
 });
 
-// ──── CARGAR PREFERENCIAS DEL USUARIO ────
+// â”€â”€â”€â”€ CARGAR PREFERENCIAS DEL USUARIO â”€â”€â”€â”€
 function cargarPreferencias() {
   const preferencias = localStorage.getItem('uthub_preferencias');
   
@@ -394,16 +394,13 @@ function initUserMenu() {
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
       localStorage.removeItem("uthub_user");
-      window.location.href = window.location.origin + '/UThub/pages/auth/login.html';
+      window.location.href = window.location.origin + '/pages/auth/login.html';
     });
   }
 }
 
 function redirigirLogin() {
-  const origin = window.location.origin;
-  const base = window.location.pathname.split('/UThub')[0] + '/UThub';
-
-  window.location.origin + '/UThub/pages/auth/login.html';
+  window.location.href = `${window.location.origin}/pages/auth/login.html`;
 }
 
 function protegerRuta() {
@@ -412,7 +409,7 @@ function protegerRuta() {
   const path = window.location.pathname;
   
 
-  // Rutas públicas (no requieren login)
+  // Rutas pÃºblicas (no requieren login)
   const rutasPublicas = [
     '/index.html',
     '/pages/auth/login.html',
@@ -422,12 +419,12 @@ function protegerRuta() {
 
   const esPublica = rutasPublicas.some(ruta => path.includes(ruta));
 
-  // Si NO es pública y NO hay sesión → redirigir
+  // Si NO es pÃºblica y NO hay sesiÃ³n â†’ redirigir
   if (!esPublica && (!token || !user)) {
-    window.location.href = `${window.location.origin}/UThub/pages/auth/login.html`;
+    window.location.href = `${window.location.origin}/pages/auth/login.html`;
   }
 }
-// ──── INICIALIZACIÓN ────
+// â”€â”€â”€â”€ INICIALIZACIÃ“N â”€â”€â”€â”€
 function cargarUsuarioGlobal() {
   const user = JSON.parse(localStorage.getItem('uthub_user') || '{}');
 
@@ -453,43 +450,43 @@ function cargarUsuarioGlobal() {
 
 document.addEventListener('DOMContentLoaded', () => {
   
-  console.log('🍊 UThub cargado correctamente');
+  console.log('ðŸŠ UThub cargado correctamente');
 
-  // 🔥 ESTO ES LO IMPORTANTE
+  // ðŸ”¥ ESTO ES LO IMPORTANTE
   initUserUI();
   initUserMenu();
   protegerRuta()
   // Cargar preferencias del usuario
   cargarPreferencias();
 
-  console.log('📍 Página actual:', window.location.pathname);
+  console.log('ðŸ“ PÃ¡gina actual:', window.location.pathname);
 
   const token = localStorage.getItem('uthub_token');
   if (token) {
-    console.log('✓ Usuario autenticado');
+    console.log('âœ“ Usuario autenticado');
   } else {
-    console.log('○ Usuario no autenticado');
+    console.log('â—‹ Usuario no autenticado');
   }
 });
 
-// ──── MANEJO DE ERRORES GLOBAL ────
+// â”€â”€â”€â”€ MANEJO DE ERRORES GLOBAL â”€â”€â”€â”€
 window.addEventListener('error', (e) => {
   console.error('Error en UThub:', e.message);
 });
 
-// ──── DETECCIÓN DE CONEXIÓN ────
+// â”€â”€â”€â”€ DETECCIÃ“N DE CONEXIÃ“N â”€â”€â”€â”€
 window.addEventListener('online', () => {
-  console.log('✓ Conexión restaurada');
-  mostrarNotificacion('Conexión restaurada', 'success');
+  console.log('âœ“ ConexiÃ³n restaurada');
+  mostrarNotificacion('ConexiÃ³n restaurada', 'success');
 });
 
 window.addEventListener('offline', () => {
-  console.log('✗ Sin conexión a internet');
-  mostrarNotificacion('Sin conexión a internet', 'error');
+  console.log('âœ— Sin conexiÃ³n a internet');
+  mostrarNotificacion('Sin conexiÃ³n a internet', 'error');
 });
 
 function mostrarNotificacion(mensaje, tipo = 'info') {
-  // Crear notificación toast
+  // Crear notificaciÃ³n toast
   const toast = document.createElement('div');
   toast.className = `toast toast-${tipo}`;
   toast.textContent = mensaje;
@@ -499,7 +496,7 @@ function mostrarNotificacion(mensaje, tipo = 'info') {
   // Animar entrada
   setTimeout(() => toast.classList.add('show'), 100);
   
-  // Remover después de 3 segundos
+  // Remover despuÃ©s de 3 segundos
   setTimeout(() => {
     toast.classList.remove('show');
     setTimeout(() => toast.remove(), 300);
@@ -544,30 +541,30 @@ toastStyles.textContent = `
 `;
 document.head.appendChild(toastStyles);
 
-// ──── ANALYTICS (OPCIONAL) ────
+// â”€â”€â”€â”€ ANALYTICS (OPCIONAL) â”€â”€â”€â”€
 function trackEvent(categoria, accion, etiqueta) {
   console.log(' Evento:', categoria, accion, etiqueta);
   
-  // Aquí se integraría Google Analytics o similar
+  // AquÃ­ se integrarÃ­a Google Analytics o similar
   // gtag('event', accion, { event_category: categoria, event_label: etiqueta });
 }
 
-// Trackear clicks en módulos
+// Trackear clicks en mÃ³dulos
 moduloCards.forEach(card => {
   card.addEventListener('click', () => {
     const modulo = card.getAttribute('data-module');
-    trackEvent('Módulos', 'Click', modulo);
+    trackEvent('MÃ³dulos', 'Click', modulo);
   });
 });
 
-// Trackear búsquedas
+// Trackear bÃºsquedas
 if (searchInput) {
   searchInput.addEventListener('search', (e) => {
-    trackEvent('Búsqueda', 'Query', e.target.value);
+    trackEvent('BÃºsqueda', 'Query', e.target.value);
   });
 }
 
-// ──── EXPORT FUNCIONES ÚTILES ────
+// â”€â”€â”€â”€ EXPORT FUNCIONES ÃšTILES â”€â”€â”€â”€
 window.UThub = {
   mostrarNotificacion,
   trackEvent,
@@ -575,3 +572,7 @@ window.UThub = {
 };
 
 console.log(' UThub JavaScript inicializado correctamente');
+
+
+
+

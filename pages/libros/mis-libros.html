@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -17,10 +17,10 @@
       <nav class="nav">
         <ul class="nav-list">
           <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
-          <li><a href="../comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
-          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
-          <li><a href="catalogo.html" class="nav-link active">📖 Libros</a></li>
-          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
+          <li><a href="../comida/tiendas.html" class="nav-link">ðŸ” Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">ðŸ“š TutorÃ­as</a></li>
+          <li><a href="catalogo.html" class="nav-link active">ðŸ“– Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">ðŸ’¼ Servicios</a></li>
         </ul>
       </nav>
       <div class="header-actions">
@@ -46,7 +46,7 @@
     <div class="container">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:28px;flex-wrap:wrap;">
         <div>
-          <h1 style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#1A1A2E;margin-bottom:6px;">📚 Mis libros publicados</h1>
+          <h1 style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#1A1A2E;margin-bottom:6px;">ðŸ“š Mis libros publicados</h1>
           <p style="font-size:15px;color:#6B6B80;">Administra tus publicaciones activas</p>
         </div>
         <a href="vender.html" style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;background:#F5841F;color:white;border-radius:12px;text-decoration:none;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;transition:all .2s;" onmouseover="this.style.background='#D96A08'" onmouseout="this.style.background='#F5841F'">
@@ -78,7 +78,8 @@
 
   <script src="../../js/protect.js"></script>
   <script src="../../js/validation.js"></script>
-  <script src="../../js/auth.js"></script>
+  <script src="../../js/config.js"></script>
+<script src="../../js/auth.js"></script>
   <script src="../../js/main.js"></script>
   <script src="../../js/libros.js"></script>
   <script>
@@ -93,8 +94,8 @@
       if (libros.length === 0) {
         list.innerHTML = `
           <div style="text-align:center;padding:60px;background:white;border-radius:20px;border:2px dashed #E8E4DE;">
-            <div style="font-size:48px;margin-bottom:16px;">📚</div>
-            <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#1A1A2E;margin-bottom:8px;">Aún no has publicado libros</h3>
+            <div style="font-size:48px;margin-bottom:16px;">ðŸ“š</div>
+            <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#1A1A2E;margin-bottom:8px;">AÃºn no has publicado libros</h3>
             <p style="color:#6B6B80;margin-bottom:20px;">Publica tu primer libro y empieza a ganar dinero</p>
             <a href="vender.html" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:#F5841F;color:white;border-radius:12px;text-decoration:none;font-family:'Syne',sans-serif;font-weight:700;">
               + Publicar mi primer libro
@@ -107,17 +108,17 @@
       list.innerHTML = libros.map(l => `
         <div class="mi-libro-row" id="row-${l.id}">
           <div class="mi-libro-icon" style="background:${l.color || '#FFF0E0'};">
-            <span style="font-size:28px;">${l.emoji || '📖'}</span>
+            <span style="font-size:28px;">${l.emoji || 'ðŸ“–'}</span>
           </div>
           <div class="mi-libro-info">
             <div class="mi-libro-titulo">${l.titulo}</div>
             <div class="mi-libro-meta">
               <span>${l.autor}</span>
-              <span>·</span>
+              <span>Â·</span>
               <span style="color:#F5841F;font-weight:700;">$${l.precio}</span>
-              <span>·</span>
+              <span>Â·</span>
               <span>${estadoLabel[l.estado] || l.estado}</span>
-              <span class="status-pill status-activo">● Activo</span>
+              <span class="status-pill status-activo">â— Activo</span>
             </div>
           </div>
           <div class="mi-libro-acciones">
@@ -128,7 +129,7 @@
     }
 
     function eliminarLibro(id) {
-      if (!confirm('¿Eliminar esta publicación?')) return;
+      if (!confirm('Â¿Eliminar esta publicaciÃ³n?')) return;
       LibrosDB.eliminarLibro(id);
       LibrosUI.librosToast('Libro eliminado', 'success');
       renderMisLibros();
@@ -138,3 +139,4 @@
   </script>
 </body>
 </html>
+
