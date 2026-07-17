@@ -400,33 +400,66 @@
   </main>
 
   <!-- JS -->
-  <script src="../../js/comida.js"></script>
+  <script src="../../js/config.js"></script>
+<script src="../../js/comida.js"></script>
   <script src="../../js/notifications.js"></script>
   <script>
+    const API_URL = window.UTHUB_CONFIG?.API_BASE_URL || 'https://uthub.onrender.com/api';
+
     const STATUS_MAP = {
-      confirmado:  { label: 'Confirmado',    css: 'status-confirmado',  step: 1, icon: '🟠' },
-      preparando:  { label: 'Preparando',    css: 'status-preparando',  step: 2, icon: '🟡' },
-      en_camino:   { label: 'En camino',     css: 'status-en-camino',   step: 3, icon: '🔵' },
-      entregado:   { label: 'Entregado',     css: 'status-entregado',   step: 4, icon: '🟢' },
-      cancelado:   { label: 'Cancelado',     css: 'status-cancelado',   step: 0, icon: '🔴' },
+      nuevo:      { label: 'Confirmado', css: 'status-confirmado', step: 1, icon: '??' },
+      preparando:  { label: 'Preparando', css: 'status-preparando', step: 2, icon: '??' },
+      listo:       { label: 'Listo', css: 'status-en-camino', step: 3, icon: '??' },
+      entregado:   { label: 'Entregado', css: 'status-entregado', step: 4, icon: '??' },
+      cancelado:   { label: 'Cancelado', css: 'status-cancelado', step: 0, icon: '??' }
     };
+
+    function getToken() {
+      return localStorage.getItem('uthub_token');
+    }
+
+    async function apiJson(url, options = {}) {
+      const response = await fetch(url, options);
+      let data = null;
+      try { data = await response.json(); } catch { data = null; }
+      if (!response.ok) {
+        throw new Error(data?.error || data?.message || `Error HTTP ${response.status}`);
+      }
+      return data;
+    }
+
+    async function fetchPedidos() {
+      const token = getToken();
+      if (!token) {
+        return JSON.parse(localStorage.getItem('uthub_pedidos')) || [];
+      }
+
+      try {
+        return await apiJson(`${API_URL}/comida/pedidos/mios`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      } catch (error) {
+        console.error('No se pudieron cargar los pedidos remotos:', error);
+        return JSON.parse(localStorage.getItem('uthub_pedidos')) || [];
+      }
+    }
 
     function formatDate(isoStr) {
       const d = new Date(isoStr);
       return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })
-           + ' · ' + d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+           + ' ? ' + d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
     }
 
     function renderProgressBar(step) {
-      const steps = ['📋','🍳','🛵','✅'];
-      const labels = ['Confirmado','Preparando','En camino','Entregado'];
+      const steps = ['??','??','??','?'];
+      const labels = ['Confirmado','Preparando','Listo','Entregado'];
       let html = '<div class="pedido-progress"><div class="progress-steps">';
       steps.forEach((emoji, i) => {
         const pos = i + 1;
         if (i > 0) {
           html += `<div class="progress-line ${pos <= step ? 'done' : ''}"></div>`;
         }
-        let cls = pos < step ? 'done' : pos === step ? 'active' : '';
+        const cls = pos < step ? 'done' : pos === step ? 'active' : '';
         html += `<div class="progress-step ${cls}">${pos <= step ? emoji : ''}</div>`;
       });
       html += '</div><div class="progress-labels">';
@@ -438,25 +471,23 @@
       return html;
     }
 
-    function renderPedido(pedido, index) {
-      const status = STATUS_MAP[pedido.estado] || STATUS_MAP.confirmado;
-      const itemsHtml = pedido.items.map(item => `
+    function renderPedido(pedido) {
+      const estado = pedido.estado || 'nuevo';
+      const status = STATUS_MAP[estado] || STATUS_MAP.nuevo;
+      const itemsHtml = (pedido.items || []).map(item => `
         <div class="pedido-item-row">
           <span class="pedido-item-name">${item.nombre}</span>
           <span class="pedido-item-qty">x${item.cantidad}</span>
-          <span class="pedido-item-price">$${item.precio * item.cantidad}</span>
+          <span class="pedido-item-price">$${(Number(item.precio) * Number(item.cantidad)).toFixed(2)}</span>
         </div>
       `).join('');
-
-      const deliveryFee = 10;
-      const subtotal = pedido.total - deliveryFee;
 
       return `
         <div class="pedido-card">
           <div class="pedido-card-header">
             <div>
               <div class="pedido-id">Pedido #${String(pedido.id).slice(-6)}</div>
-              <div class="pedido-fecha">${formatDate(pedido.fecha)}</div>
+              <div class="pedido-fecha">${formatDate(pedido.fecha || pedido.created_at)}</div>
             </div>
             <span class="pedido-status ${status.css}">
               <span class="status-dot"></span>
@@ -468,35 +499,31 @@
             ${itemsHtml}
           </div>
 
-          ${pedido.estado !== 'cancelado' ? renderProgressBar(status.step) : ''}
+          ${estado !== 'cancelado' ? renderProgressBar(status.step) : ''}
 
           <div class="pedido-card-footer">
-            <div class="pedido-location">
-              📍 ${pedido.ubicacion || 'Ubicación no especificada'}
-            </div>
+            <div class="pedido-location">?? ${pedido.ubicacion || 'Ubicaci?n no especificada'}</div>
             <div>
               <div class="pedido-total-label">Total pagado</div>
-              <div class="pedido-total">$${pedido.total}</div>
+              <div class="pedido-total">$${Number(pedido.total || 0).toFixed(2)}</div>
             </div>
           </div>
         </div>
       `;
     }
 
-    function loadPedidos() {
+    async function loadPedidos() {
       updateCartCount();
 
-      // Show success banner if came from checkout
       const params = new URLSearchParams(window.location.search);
       if (params.get('nuevo') === '1') {
         document.getElementById('success-banner').style.display = 'block';
-        // Remove param from URL without reload
         history.replaceState({}, '', window.location.pathname);
       }
 
-      const pedidos = JSON.parse(localStorage.getItem('uthub_pedidos')) || [];
+      const pedidos = await fetchPedidos();
 
-      if (pedidos.length === 0) {
+      if (!pedidos || pedidos.length === 0) {
         document.getElementById('pedidos-empty').style.display = 'block';
         document.getElementById('pedidos-list').style.display = 'none';
         return;
@@ -506,29 +533,38 @@
       document.getElementById('btn-clear').style.display = 'inline-block';
       document.getElementById('pedidos-stats').style.display = 'flex';
 
-      // Stats
-      const totalGastado = pedidos.reduce((s, p) => s + p.total, 0);
+      const totalGastado = pedidos.reduce((s, p) => s + Number(p.total || 0), 0);
       document.getElementById('stat-total').textContent = pedidos.length;
-      document.getElementById('stat-gastado').textContent = `$${totalGastado}`;
+      document.getElementById('stat-gastado').textContent = `$${totalGastado.toFixed(2)}`;
 
-      // "Tienda favorita" from items
       const tiendaCount = {};
       pedidos.forEach(p => {
-        p.items.forEach(i => {
-          const t = i.tienda || '—';
-          tiendaCount[t] = (tiendaCount[t] || 0) + 1;
-        });
+        const tienda = p.tienda_nombre || '?';
+        tiendaCount[tienda] = (tiendaCount[tienda] || 0) + 1;
       });
-      const favTienda = Object.entries(tiendaCount).sort((a,b) => b[1]-a[1])[0];
-      document.getElementById('stat-favorita').textContent = favTienda ? favTienda[0] : '—';
+      const favTienda = Object.entries(tiendaCount).sort((a, b) => b[1] - a[1])[0];
+      document.getElementById('stat-favorita').textContent = favTienda ? favTienda[0] : '?';
 
-      // Render in reverse (most recent first)
       const listEl = document.getElementById('pedidos-list');
-      listEl.innerHTML = [...pedidos].reverse().map((p, i) => renderPedido(p, i)).join('');
+      listEl.innerHTML = [...pedidos].reverse().map((p) => renderPedido(p)).join('');
+      listEl.style.display = 'block';
     }
 
-    function clearHistory() {
-      if (!confirm('¿Seguro que quieres limpiar el historial de pedidos?')) return;
+    async function clearHistory() {
+      if (!confirm('?Seguro que quieres limpiar el historial de pedidos?')) return;
+
+      const token = getToken();
+      if (token) {
+        try {
+          await apiJson(`${API_URL}/comida/pedidos/mios`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` }
+          });
+        } catch (error) {
+          console.warn('No se pudo limpiar el historial remoto:', error);
+        }
+      }
+
       localStorage.removeItem('uthub_pedidos');
       loadPedidos();
       showToast('Historial limpiado', 'info');
@@ -538,3 +574,4 @@
   </script>
 </body>
 </html>
+

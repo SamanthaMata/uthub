@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../../css/styles.css">
   <link rel="stylesheet" href="../../css/dashboard.css">
   <link rel="stylesheet" href="../../css/comida.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
   <style>
     /* ── CART PAGE ── */
@@ -148,6 +149,37 @@
       background: #F7F4F0;
       padding: 4px 12px;
       border-radius: 100px;
+    }
+
+    .delivery-map-card {
+      margin-top: 22px;
+      padding: 20px;
+      border: 1px solid rgba(26, 26, 46, .06);
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: 0 4px 20px rgba(0,0,0,.06);
+    }
+    .delivery-map-title {
+      margin: 0 0 5px;
+      color: var(--ut-dark, #1A1A2E);
+      font-family: 'Syne', sans-serif;
+      font-size: 17px;
+      font-weight: 800;
+    }
+    .delivery-map-status {
+      min-height: 20px;
+      margin: 0 0 14px;
+      color: var(--ut-text-s, #6B6B80);
+      font-size: 13px;
+    }
+    .delivery-location-map {
+      width: 100%;
+      min-height: 320px;
+      overflow: hidden;
+      border: 1px solid #E8E4DE;
+      border-radius: 15px;
+      background: #F7F4F0;
+      z-index: 1;
     }
 
     /* Summary card */
@@ -410,6 +442,12 @@
 
             <!-- Items are injected here by comida.js loadCartItems() -->
             <div class="cart-items-list" id="cart-items"></div>
+
+            <section class="delivery-map-card" aria-labelledby="delivery-map-title">
+              <h2 class="delivery-map-title" id="delivery-map-title">Ubicación de entrega</h2>
+              <p class="delivery-map-status" id="delivery-map-status">Selecciona un punto para mostrar la entrega en el mapa.</p>
+              <div class="delivery-location-map" id="delivery-location-map" role="img" aria-label="Mapa del punto de entrega seleccionado"></div>
+            </section>
           </div>
 
           <!-- RIGHT: Summary -->
@@ -424,23 +462,8 @@
             <!-- Delivery location -->
             <div class="delivery-section">
               <label class="delivery-label" for="ubicacion-entrega">Punto de entrega *</label>
-              <select class="delivery-select" id="ubicacion-entrega" required>
-                <option value="">Selecciona tu ubicación</option>
-                <option value="Salón A-101">Salón A-101</option>
-                <option value="Salón A-102">Salón A-102</option>
-                <option value="Salón A-201">Salón A-201</option>
-                <option value="Salón A-202">Salón A-202</option>
-                <option value="Salón B-101">Salón B-101</option>
-                <option value="Salón B-102">Salón B-102</option>
-                <option value="Salón B-201">Salón B-201</option>
-                <option value="Salón B-204">Salón B-204</option>
-                <option value="Salón C-101">Salón C-101</option>
-                <option value="Salón C-201">Salón C-201</option>
-                <option value="Área de descanso Edificio A">Área de descanso Edificio A</option>
-                <option value="Área de descanso Edificio B">Área de descanso Edificio B</option>
-                <option value="Cafetería Central">Cafetería Central</option>
-                <option value="Biblioteca">Biblioteca</option>
-                <option value="Laboratorio de Cómputo">Laboratorio de Cómputo</option>
+              <select class="delivery-select" id="ubicacion-entrega" required disabled>
+                <option value="">Cargando ubicaciones...</option>
               </select>
 
               <label class="delivery-label" for="instrucciones" style="margin-top:14px;">
@@ -471,8 +494,8 @@
             </div>
 
             <!-- CTA -->
-            <button onclick="hacerPedido()" class="btn-checkout">
-            Hacer Pedido
+            <button class="btn-checkout" onclick="procesarPedido()">
+              Confirmar Pedido →
             </button>
             <a href="tiendas.html" class="btn-continue-shopping">
               ← Seguir comprando
@@ -493,14 +516,16 @@
   <!-- JS -->
   <script src="../../js/protect.js"></script>
   <script src="../../js/main.js"></script>
-  <script src="../../js/comida.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../../js/config.js"></script>
+<script src="../../js/comida.js"></script>
   <script>
     // Initialize cart page
     document.addEventListener('DOMContentLoaded', () => {
-      updateCartDisplay();
       loadCartItems();
       protegerRuta()
       updateCartCount();
+      initCartDeliveryMap();
 
       // Show empty or filled state
       const cart = JSON.parse(localStorage.getItem('uthub_cart')) || [];
@@ -538,3 +563,4 @@
   </script>
 </body>
 </html>
+
