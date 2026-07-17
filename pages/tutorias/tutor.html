@@ -49,9 +49,9 @@
       <nav class="nav">
         <ul class="nav-list">
           <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
-          <li><a href="../comida/tiendas.html" class="nav-link">?? Comida</a></li>
-          <li><a href="buscar.html" class="nav-link active">?? Tutor�as</a></li>
-          <li><a href="../libros/catalogo.html" class="nav-link">?? Libros</a></li>
+          <li><a href="../comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
+          <li><a href="buscar.html" class="nav-link active">📚 Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
         </ul>
       </nav>
       <div class="header-actions">
@@ -69,7 +69,7 @@
   <nav aria-label="breadcrumb" class="breadcrumb-nav">
     <div class="container">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="buscar.html">Tutor�as</a></li>
+        <li class="breadcrumb-item"><a href="buscar.html">Tutorías</a></li>
         <li class="breadcrumb-item active" id="bc-nombre" aria-current="page">Tutor</li>
       </ol>
     </div>
@@ -85,14 +85,14 @@
   <script>
   const { getTutores, crearReserva } = TutoriasDB;
   const { renderStars, modalidadLabel, horarioTexto, tutoriasToast } = TutoriasUI;
-  const DIAS = ['Lun','Mar','Mi�','Jue','Vie','S�b','Dom'];
+  const DIAS = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
 
   document.addEventListener('DOMContentLoaded', () => {
     const id = parseInt(new URLSearchParams(location.search).get('id'));
     const tutor = getTutores().find(t => t.id === id);
     const root = document.getElementById('profile-root');
     if (!tutor) {
-      root.innerHTML = '<div style="text-align:center;padding:80px;"><div style="font-size:48px">??</div><h2 style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;margin:12px 0 8px;">Tutor no encontrado</h2><a href="buscar.html" style="color:#F5841F;">? Volver al cat�logo</a></div>';
+      root.innerHTML = '<div style="text-align:center;padding:80px;"><div style="font-size:48px">📚</div><h2 style="font-family:Syne,sans-serif;font-size:20px;font-weight:800;margin:12px 0 8px;">Tutor no encontrado</h2><a href="buscar.html" style="color:#F5841F;">← Volver al catálogo</a></div>';
       return;
     }
     document.title = tutor.nombre + ' - UThub';
@@ -131,14 +131,14 @@
         </div>
         <div class="form-group">
           <label class="form-label">Notas adicionales (opcional)</label>
-          <textarea class="form-control" id="book-notas" rows="2" placeholder="Tema espec�fico, dudas, etc."></textarea>
+          <textarea class="form-control" id="book-notas" rows="2" placeholder="Tema específico, dudas, etc."></textarea>
         </div>
-        <button class="btn-reservar" onclick="reservar(${tutor.id})">Solicitar Sesi�n ?</button>
+        <button class="btn-reservar" onclick="reservar(${tutor.id})">Solicitar Sesión →</button>
         <p style="font-size:11px;color:#9CA3AF;text-align:center;margin-top:6px;">
-          El tutor confirmar� tu solicitud. Al aceptar, recibir�s su contacto de WhatsApp.
+          El tutor confirmará tu solicitud. Al aceptar, recibirás su contacto de WhatsApp.
         </p>
       </div>` :
-      '<div class="cupo-lleno">?? Este tutor no tiene disponibilidad por el momento.<br><a href="buscar.html" style="color:#F5841F;font-size:12px;margin-top:6px;display:inline-block;">Ver otros tutores</a></div>';
+      '<div class="cupo-lleno">🔴 Este tutor no tiene disponibilidad por el momento.<br><a href="buscar.html" style="color:#F5841F;font-size:12px;margin-top:6px;display:inline-block;">Ver otros tutores</a></div>';
 
     root.innerHTML = `
       <div>
@@ -147,7 +147,7 @@
             <div class="profile-avatar" style="background:${tutor.color}">${fotoHtml}</div>
             <div style="flex:1">
               <div class="profile-name">${tutor.nombre}</div>
-              <div class="profile-carrera">${tutor.carrera} � ${tutor.semestre} semestre</div>
+              <div class="profile-carrera">${tutor.carrera} · ${tutor.semestre} semestre</div>
               <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
                 <span style="color:#F5841F;font-size:15px;">${renderStars(tutor.calificacion)}</span>
                 <span style="font-weight:700;font-size:14px;">${tutor.calificacion}</span>
@@ -159,24 +159,24 @@
               <div class="stat-item"><div class="stat-val">${tutor.sesiones}</div><div class="stat-lbl">Sesiones</div></div>
             </div>
           </div>
-          <h3 class="section-title">Sobre m�</h3>
+          <h3 class="section-title">Sobre mí</h3>
           <p style="font-size:14px;color:#6B6B80;line-height:1.7;margin-bottom:20px;">${tutor.descripcion}</p>
-          <h3 class="section-title">Materias que ense�o</h3>
+          <h3 class="section-title">Materias que enseño</h3>
           <div class="materias-list">${materiasHtml}</div>
           <h3 class="section-title">Disponibilidad</h3>
           <div class="horario-dias">${diasHtml}</div>
           <p style="font-size:13px;color:#6B6B80;margin-bottom:20px;">${horarioTexto(tutor.horario)}</p>
           <div style="display:flex;gap:16px;flex-wrap:wrap;">
-            <div style="font-size:13px;color:#6B6B80;">?? ${tutor.ubicacion}</div>
+            <div style="font-size:13px;color:#6B6B80;">📍 ${tutor.ubicacion}</div>
             <div style="font-size:13px;color:#6B6B80;">${modalidadLabel(tutor.modalidad)}</div>
-            <div style="font-size:13px;color:#6B6B80;">?? ${tutor.idioma}</div>
+            <div style="font-size:13px;color:#6B6B80;">🌐 ${tutor.idioma}</div>
           </div>
         </div>
       </div>
       <div>
         <div class="booking-card">
           <div class="booking-price">$${tutor.precio}<span>/hora</span></div>
-          <div style="font-size:13px;color:#6B6B80;">Sesi�n de 1 hora � Coordinas por WhatsApp al confirmar</div>
+          <div style="font-size:13px;color:#6B6B80;">Sesión de 1 hora · Coordinas por WhatsApp al confirmar</div>
           ${bookingSection}
         </div>
       </div>`;
@@ -191,7 +191,7 @@
     if (!fecha)   { tutoriasToast('Selecciona una fecha', 'error'); return; }
     if (!hora)    { tutoriasToast('Selecciona una hora', 'error'); return; }
     crearReserva(tutorId, fecha, hora, materia, notas);
-    tutoriasToast('�Solicitud enviada! El tutor confirmar� pronto.', 'success');
+    tutoriasToast('¡Solicitud enviada! El tutor confirmará pronto.', 'success');
     setTimeout(() => location.href = 'mis-sesiones.html', 1800);
   }
   </script>
