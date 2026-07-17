@@ -14,7 +14,7 @@
     launcher.setAttribute('aria-controls', 'wiki-assistant-modal');
     launcher.innerHTML = `
       <span class="wiki-assistant-launcher-icon" aria-hidden="true">W</span>
-      <span class="wiki-assistant-launcher-text">Pregúntale a Wiki</span>
+      <span class="wiki-assistant-launcher-text">Preg�ntale a Wiki</span>
     `;
 
     const overlay = document.createElement('div');
@@ -24,14 +24,14 @@
       <section class="wiki-assistant-modal" id="wiki-assistant-modal" role="dialog" aria-modal="true" aria-labelledby="wiki-assistant-title">
         <header class="wiki-assistant-header">
           <span class="wiki-assistant-eyebrow">Wikipedia REST API</span>
-          <h2 class="wiki-assistant-title" id="wiki-assistant-title">¿Tienes preguntas? ¡Resuélvelas con Wiki!</h2>
+          <h2 class="wiki-assistant-title" id="wiki-assistant-title">�Tienes preguntas? �Resu�lvelas con Wiki!</h2>
           <p class="wiki-assistant-description">Escribe un tema y consulta un resumen de Wikipedia sin salir de UThub.</p>
           <button class="wiki-assistant-close" type="button" aria-label="Cerrar asistente">&times;</button>
         </header>
         <div class="wiki-assistant-body">
           <form class="wiki-assistant-form" id="wiki-assistant-form">
             <label class="sr-only" for="wiki-assistant-input">Tema para buscar en Wikipedia</label>
-            <input class="wiki-assistant-input" id="wiki-assistant-input" type="search" placeholder="Ej. cálculo diferencial, nutrición, JavaScript..." autocomplete="off" required>
+            <input class="wiki-assistant-input" id="wiki-assistant-input" type="search" placeholder="Ej. c�lculo diferencial, nutrici�n, JavaScript..." autocomplete="off" required>
             <button class="wiki-assistant-submit" type="submit">Buscar</button>
           </form>
           <p class="wiki-assistant-status" id="wiki-assistant-status" role="status" aria-live="polite">Busca cualquier tema para comenzar.</p>
@@ -88,7 +88,7 @@
       link.href = data.content_urls?.desktop?.page || `https://es.wikipedia.org/wiki/${encodeURIComponent(data.title || '')}`;
       link.target = '_blank';
       link.rel = 'noopener noreferrer';
-      link.textContent = 'Leer artículo completo en Wikipedia';
+      link.textContent = 'Leer art�culo completo en Wikipedia';
 
       result.append(title, copy, link);
       result.classList.add('is-visible');
@@ -134,14 +134,14 @@
       try {
         const data = await searchWikipedia(query);
         if (!data) {
-          status.textContent = 'No encontramos resultados. Prueba con un término más específico.';
+          status.textContent = 'No encontramos resultados. Prueba con un t�rmino m�s espec�fico.';
           result.innerHTML = '';
           return;
         }
         renderResult(data);
         status.textContent = 'Resultado encontrado.';
       } catch (error) {
-        status.textContent = 'Wikipedia no está disponible en este momento. Intenta nuevamente.';
+        status.textContent = 'Wikipedia no est� disponible en este momento. Intenta nuevamente.';
         result.innerHTML = '';
       } finally {
         submit.disabled = false;

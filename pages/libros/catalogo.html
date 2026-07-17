@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -18,10 +18,10 @@
       <nav class="nav" id="nav-menu">
         <ul class="nav-list">
           <li><a href="../dashboard.html" class="nav-link">Dashboard</a></li>
-          <li><a href="../comida/tiendas.html" class="nav-link">ðŸ” Comida</a></li>
-          <li><a href="../tutorias/buscar.html" class="nav-link">ðŸ“š TutorÃ­as</a></li>
-          <li><a href="catalogo.html" class="nav-link active">ðŸ“– Libros</a></li>
-          <li><a href="../servicios/explorar.html" class="nav-link">ðŸ’¼ Servicios</a></li>
+          <li><a href="../comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
+          <li><a href="catalogo.html" class="nav-link active">📖 Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
         </ul>
       </nav>
       <div class="header-actions">
@@ -54,7 +54,7 @@
       <!-- Page header -->
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:28px;flex-wrap:wrap;">
         <div>
-          <h1 style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#1A1A2E;margin-bottom:6px;">ðŸ“– Libros de Segunda Mano</h1>
+          <h1 style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#1A1A2E;margin-bottom:6px;">📖 Libros de Segunda Mano</h1>
           <p style="font-size:15px;color:#6B6B80;">Ahorra hasta un 70% comprando libros usados entre estudiantes UTSC</p>
         </div>
         <a href="vender.html" style="display:inline-flex;align-items:center;gap:8px;padding:12px 22px;background:#F5841F;color:white;border-radius:12px;text-decoration:none;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;white-space:nowrap;transition:all .2s;" onmouseover="this.style.background='#D96A08'" onmouseout="this.style.background='#F5841F'">
@@ -66,15 +66,15 @@
       <div class="libros-toolbar">
         <div class="filter-search-wrap" style="flex:3;">
           <svg class="filter-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-          <input type="text" id="busqueda" class="filter-input" placeholder="Buscar por tÃ­tulo, autor, carrera...">
+          <input type="text" id="busqueda" class="filter-input" placeholder="Buscar por título, autor, carrera...">
         </div>
         <div class="filter-group">
           <label>Carrera</label>
           <select id="filtro-carrera" class="filter-select">
             <option value="">Todas las carreras</option>
             <option value="Ing. en Sistemas">Ing. en Sistemas</option>
-            <option value="Ing. en MecatrÃ³nica">Ing. en MecatrÃ³nica</option>
-            <option value="Ing. en GestiÃ³n Empresarial">Ing. en GestiÃ³n Emp.</option>
+            <option value="Ing. en Mecatrónica">Ing. en Mecatrónica</option>
+            <option value="Ing. en Gestión Empresarial">Ing. en Gestión Emp.</option>
             <option value="Todas las carreras">General</option>
           </select>
         </div>
@@ -89,9 +89,9 @@
           </select>
         </div>
         <div class="filter-group" style="min-width:120px;">
-          <label>Precio mÃ¡x.</label>
+          <label>Precio máx.</label>
           <select id="filtro-precio" class="filter-select">
-            <option value="">Sin lÃ­mite</option>
+            <option value="">Sin límite</option>
             <option value="100">$100</option>
             <option value="150">$150</option>
             <option value="200">$200</option>
@@ -105,7 +105,7 @@
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
         <p style="font-size:14px;color:#6B6B80;" id="resultado-count">Cargando...</p>
         <div style="display:flex;align-items:center;gap:8px;">
-          <a href="mis-libros.html" style="font-size:13px;color:#F5841F;font-weight:600;text-decoration:none;">Mis publicaciones â†’</a>
+          <a href="mis-libros.html" style="font-size:13px;color:#F5841F;font-weight:600;text-decoration:none;">Mis publicaciones →</a>
         </div>
       </div>
 
@@ -125,7 +125,7 @@
 <script src="../../js/libros.js"></script>
 <script src="../../js/wiki-assistant.js"></script>
 <script>
-  // el cÃ³digo de filtros que ya tienes arriba...
+  // el código de filtros que ya tienes arriba...
   document.addEventListener('DOMContentLoaded', () => {
     protegerRuta()
     renderGrid(LibrosDB.getLibros());
@@ -139,7 +139,7 @@
       if (libros.length === 0) {
         grid.innerHTML = `
           <div style="grid-column:1/-1;text-align:center;padding:60px;background:white;border-radius:20px;border:2px dashed #E8E4DE;">
-            <div style="font-size:48px;margin-bottom:16px;">ðŸ“­</div>
+            <div style="font-size:48px;margin-bottom:16px;">📭</div>
             <h3 style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#1A1A2E;margin-bottom:8px;">No se encontraron libros</h3>
             <p style="color:#6B6B80;">Intenta con otros filtros o <a href="vender.html" style="color:#F5841F;">publica el primero</a></p>
           </div>`;

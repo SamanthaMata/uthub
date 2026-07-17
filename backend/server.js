@@ -1,4 +1,4 @@
-﻿const express = require('express');
+const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
@@ -84,7 +84,7 @@ app.get('/sitemap.xml', (req, res) => {
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Algo salió mal' });
+  res.status(500).json({ error: 'Algo sali� mal' });
 });
 
 const PORT = process.env.PORT || 3000;

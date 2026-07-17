@@ -1,9 +1,9 @@
 /* ============================================
    UTHUB - ESTILOS PRINCIPALES
-   Universidad Tecnológica Santa Catarina
+   Universidad Tecnol�gica Santa Catarina
    ============================================ */
 
-/* ──── VARIABLES CSS ──── */
+/* ---- VARIABLES CSS ---- */
 :root {
   /* Colores Primarios */
   --ut-orange:    #F5841F;
@@ -30,7 +30,7 @@
   --ut-warning:   #FBBF24;
   --ut-info:      #60A5FA;
   
-  /* Tipografía */
+  /* Tipograf�a */
   --font-display: 'Syne', sans-serif;
   --font-body:    'DM Sans', sans-serif;
   
@@ -56,7 +56,7 @@
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
 }
 
-/* ──── RESET & BASE ──── */
+/* ---- RESET & BASE ---- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -97,14 +97,14 @@ button {
   background: none;
 }
 
-/* ──── CONTENEDORES ──── */
+/* ---- CONTENEDORES ---- */
 .container {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0 var(--space-md);
 }
 
-/* ──── HEADER ──── */
+/* ---- HEADER ---- */
 .header {
   position: fixed;
   top: 0;
@@ -144,7 +144,7 @@ button {
   color: var(--ut-dark);
 }
 
-/* Navegación */
+/* Navegaci�n */
 .nav-list {
   display: flex;
   gap: var(--space-lg);
@@ -280,7 +280,7 @@ button {
   transition: all 0.3s ease;
 }
 
-/* ──── HERO SECTION ──── */
+/* ---- HERO SECTION ---- */
 .hero {
   margin-top: 80px;
   min-height: calc(100vh - 80px);
@@ -484,7 +484,7 @@ button {
   transform: translate(-50%, -50%);
 }
 
-/* ──── SECCIONES GENERALES ──── */
+/* ---- SECCIONES GENERALES ---- */
 .section-header {
   text-align: center;
   margin-bottom: var(--space-2xl);
@@ -518,7 +518,7 @@ button {
   line-height: 1.7;
 }
 
-/* ──── MÓDULOS SECTION ──── */
+/* ---- M�DULOS SECTION ---- */
 .modulos {
   padding: var(--space-3xl) 0;
 }
@@ -596,7 +596,7 @@ button {
   gap: 12px;
 }
 
-/* ──── CÓMO FUNCIONA ──── */
+/* ---- C�MO FUNCIONA ---- */
 .como-funciona {
   padding: var(--space-3xl) 0;
   background: var(--ut-white);
@@ -643,7 +643,7 @@ button {
   line-height: 1.6;
 }
 
-/* ──── TESTIMONIOS ──── */
+/* ---- TESTIMONIOS ---- */
 .testimonios {
   padding: var(--space-3xl) 0;
 }
@@ -702,7 +702,7 @@ button {
   color: var(--ut-text-s);
 }
 
-/* ──── CTA SECTION ──── */
+/* ---- CTA SECTION ---- */
 .cta-section {
   background: var(--ut-dark);
   padding: var(--space-3xl) 0;
@@ -723,7 +723,7 @@ button {
   margin-bottom: var(--space-lg);
 }
 
-/* ──── FOOTER ──── */
+/* ---- FOOTER ---- */
 .footer {
   background: var(--ut-slate);
   color: rgba(255, 255, 255, 0.7);
@@ -812,7 +812,7 @@ button {
   margin: 4px 0;
 }
 
-/* ──── RESPONSIVE ──── */
+/* ---- RESPONSIVE ---- */
 @media (max-width: 1024px) {
   .hero-container {
     grid-template-columns: 1fr;

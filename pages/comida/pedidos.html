@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="../../css/comida.css">
 
   <style>
-    /* â”€â”€ PEDIDOS PAGE â”€â”€ */
+    /* ── PEDIDOS PAGE ── */
 
     /* Success banner (only when redirected from checkout) */
     .pedido-success-banner {
@@ -296,10 +296,10 @@
       <nav class="nav" id="nav-menu">
         <ul class="nav-list">
           <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
-          <li><a href="tiendas.html" class="nav-link active">ðŸ” Comida</a></li>
-          <li><a href="../tutorias/buscar.html" class="nav-link">ðŸ“š TutorÃ­as</a></li>
-          <li><a href="../libros/catalogo.html" class="nav-link">ðŸ“– Libros</a></li>
-          <li><a href="../servicios/explorar.html" class="nav-link">ðŸ’¼ Servicios</a></li>
+          <li><a href="tiendas.html" class="nav-link active">🍔 Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
         </ul>
       </nav>
 
@@ -346,10 +346,10 @@
       <!-- Success banner (shown when arriving from checkout) -->
       <div id="success-banner" style="display:none;">
         <div class="pedido-success-banner">
-          <div class="success-check">âœ…</div>
+          <div class="success-check">✅</div>
           <div>
-            <div class="success-title">Â¡Pedido confirmado!</div>
-            <div class="success-desc">Tu pedido fue recibido. El vendedor lo prepararÃ¡ en breve.</div>
+            <div class="success-title">¡Pedido confirmado!</div>
+            <div class="success-desc">Tu pedido fue recibido. El vendedor lo preparará en breve.</div>
           </div>
         </div>
       </div>
@@ -357,11 +357,11 @@
       <!-- Page header -->
       <div class="pedidos-header">
         <div>
-          <h1>ðŸ“¦ Mis Pedidos</h1>
+          <h1>📦 Mis Pedidos</h1>
           <p>Historial de todos tus pedidos en UThub</p>
         </div>
         <button class="btn-clear-history" onclick="clearHistory()" id="btn-clear" style="display:none;">
-          ðŸ—‘ Limpiar historial
+          🗑 Limpiar historial
         </button>
       </div>
 
@@ -376,7 +376,7 @@
           <div class="stat-chip-label">Total gastado</div>
         </div>
         <div class="stat-chip">
-          <div class="stat-chip-value" id="stat-favorita">â€”</div>
+          <div class="stat-chip-value" id="stat-favorita">—</div>
           <div class="stat-chip-label">Tienda favorita</div>
         </div>
       </div>
@@ -384,8 +384,8 @@
       <!-- Empty state -->
       <div id="pedidos-empty" style="display:none;">
         <div class="pedidos-empty">
-          <div class="pedidos-empty-icon">ðŸ“¦</div>
-          <div class="pedidos-empty-title">No tienes pedidos aÃºn</div>
+          <div class="pedidos-empty-icon">📦</div>
+          <div class="pedidos-empty-title">No tienes pedidos aún</div>
           <div class="pedidos-empty-desc">Explora las tiendas disponibles y haz tu primer pedido</div>
           <a href="tiendas.html" style="display:inline-block; padding:12px 28px; background:var(--ut-orange,#F5841F); color:white; border-radius:12px; text-decoration:none; font-family:'Syne',sans-serif; font-weight:700;">
             Explorar Tiendas
@@ -405,21 +405,21 @@
   <script src="../../js/notifications.js"></script>
   <script>
     const STATUS_MAP = {
-      confirmado:  { label: 'Confirmado',    css: 'status-confirmado',  step: 1, icon: 'ðŸŸ ' },
-      preparando:  { label: 'Preparando',    css: 'status-preparando',  step: 2, icon: 'ðŸŸ¡' },
-      en_camino:   { label: 'En camino',     css: 'status-en-camino',   step: 3, icon: 'ðŸ”µ' },
-      entregado:   { label: 'Entregado',     css: 'status-entregado',   step: 4, icon: 'ðŸŸ¢' },
-      cancelado:   { label: 'Cancelado',     css: 'status-cancelado',   step: 0, icon: 'ðŸ”´' },
+      confirmado:  { label: 'Confirmado',    css: 'status-confirmado',  step: 1, icon: '🟠' },
+      preparando:  { label: 'Preparando',    css: 'status-preparando',  step: 2, icon: '🟡' },
+      en_camino:   { label: 'En camino',     css: 'status-en-camino',   step: 3, icon: '🔵' },
+      entregado:   { label: 'Entregado',     css: 'status-entregado',   step: 4, icon: '🟢' },
+      cancelado:   { label: 'Cancelado',     css: 'status-cancelado',   step: 0, icon: '🔴' },
     };
 
     function formatDate(isoStr) {
       const d = new Date(isoStr);
       return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' })
-           + ' Â· ' + d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+           + ' · ' + d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
     }
 
     function renderProgressBar(step) {
-      const steps = ['ðŸ“‹','ðŸ³','ðŸ›µ','âœ…'];
+      const steps = ['📋','🍳','🛵','✅'];
       const labels = ['Confirmado','Preparando','En camino','Entregado'];
       let html = '<div class="pedido-progress"><div class="progress-steps">';
       steps.forEach((emoji, i) => {
@@ -473,7 +473,7 @@
 
           <div class="pedido-card-footer">
             <div class="pedido-location">
-              ðŸ“ ${pedido.ubicacion || 'UbicaciÃ³n no especificada'}
+              📍 ${pedido.ubicacion || 'Ubicación no especificada'}
             </div>
             <div>
               <div class="pedido-total-label">Total pagado</div>
@@ -516,12 +516,12 @@
       const tiendaCount = {};
       pedidos.forEach(p => {
         p.items.forEach(i => {
-          const t = i.tienda || 'â€”';
+          const t = i.tienda || '—';
           tiendaCount[t] = (tiendaCount[t] || 0) + 1;
         });
       });
       const favTienda = Object.entries(tiendaCount).sort((a,b) => b[1]-a[1])[0];
-      document.getElementById('stat-favorita').textContent = favTienda ? favTienda[0] : 'â€”';
+      document.getElementById('stat-favorita').textContent = favTienda ? favTienda[0] : '—';
 
       // Render in reverse (most recent first)
       const listEl = document.getElementById('pedidos-list');
@@ -529,7 +529,7 @@
     }
 
     function clearHistory() {
-      if (!confirm('Â¿Seguro que quieres limpiar el historial de pedidos?')) return;
+      if (!confirm('¿Seguro que quieres limpiar el historial de pedidos?')) return;
       localStorage.removeItem('uthub_pedidos');
       loadPedidos();
       showToast('Historial limpiado', 'info');

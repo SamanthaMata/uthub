@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
   <style>
-    /* â”€â”€ CART PAGE â”€â”€ */
+    /* ── CART PAGE ── */
     .cart-page-layout {
       display: grid;
       grid-template-columns: 1fr 360px;
@@ -365,10 +365,10 @@
       <nav class="nav" id="nav-menu">
         <ul class="nav-list">
           <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
-          <li><a href="tiendas.html" class="nav-link active">ðŸ” Comida</a></li>
-          <li><a href="../tutorias/buscar.html" class="nav-link">ðŸ“š TutorÃ­as</a></li>
-          <li><a href="../libros/catalogo.html" class="nav-link">ðŸ“– Libros</a></li>
-          <li><a href="../servicios/explorar.html" class="nav-link">ðŸ’¼ Servicios</a></li>
+          <li><a href="tiendas.html" class="nav-link active">🍔 Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
         </ul>
       </nav>
 
@@ -413,16 +413,16 @@
     <div class="container">
 
       <div class="cart-page-header">
-        <h1>ðŸ›’ Tu Carrito</h1>
+        <h1>🛒 Tu Carrito</h1>
         <p>Revisa tus productos y confirma tu pedido</p>
       </div>
 
       <!-- EMPTY STATE -->
       <div id="cart-empty" style="display:none;">
         <div class="cart-empty-state">
-          <div class="cart-empty-icon">ðŸ›’</div>
-          <div class="cart-empty-title">Tu carrito estÃ¡ vacÃ­o</div>
-          <div class="cart-empty-desc">Agrega productos desde el menÃº de tus tiendas favoritas</div>
+          <div class="cart-empty-icon">🛒</div>
+          <div class="cart-empty-title">Tu carrito está vacío</div>
+          <div class="cart-empty-desc">Agrega productos desde el menú de tus tiendas favoritas</div>
           <a href="tiendas.html" class="btn btn-primary" style="display:inline-block; padding:12px 28px; background:var(--ut-orange,#F5841F); color:white; border-radius:12px; text-decoration:none; font-family:'Syne',sans-serif; font-weight:700;">
             Ver Tiendas
           </a>
@@ -444,7 +444,7 @@
             <div class="cart-items-list" id="cart-items"></div>
 
             <section class="delivery-map-card" aria-labelledby="delivery-map-title">
-              <h2 class="delivery-map-title" id="delivery-map-title">UbicaciÃ³n de entrega</h2>
+              <h2 class="delivery-map-title" id="delivery-map-title">Ubicación de entrega</h2>
               <p class="delivery-map-status" id="delivery-map-status">Selecciona un punto para mostrar la entrega en el mapa.</p>
               <div class="delivery-location-map" id="delivery-location-map" role="img" aria-label="Mapa del punto de entrega seleccionado"></div>
             </section>
@@ -456,7 +456,7 @@
 
             <!-- Free delivery promo -->
             <div class="free-delivery-tag">
-              âœ… Entrega dentro del campus
+              ✅ Entrega dentro del campus
             </div>
 
             <!-- Delivery location -->
@@ -495,16 +495,16 @@
 
             <!-- CTA -->
             <button class="btn-checkout" onclick="procesarPedido()">
-              Confirmar Pedido â†’
+              Confirmar Pedido →
             </button>
             <a href="tiendas.html" class="btn-continue-shopping">
-              â† Seguir comprando
+              ← Seguir comprando
             </a>
 
             <!-- Security badges -->
             <div class="security-badges">
-              <div class="security-badge">ðŸ”’ Pago seguro</div>
-              <div class="security-badge">ðŸ“ Entrega en campus</div>
+              <div class="security-badge">🔒 Pago seguro</div>
+              <div class="security-badge">📍 Entrega en campus</div>
             </div>
           </div>
         </div>

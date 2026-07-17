@@ -1,5 +1,5 @@
 /* ============================================
-   UTHUB - VALIDACIÓN DE FORMULARIOS
+   UTHUB - VALIDACI�N DE FORMULARIOS
    ============================================ */
 
 // Expresiones regulares
@@ -9,26 +9,26 @@ const REGEX = {
   password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/,
   matricula: /^[0-9]{5}$/,
   phone: /^[0-9]{10}$/,
-  onlyLetters: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
+  onlyLetters: /^[a-zA-Z������������\s]+$/,
   onlyNumbers: /^[0-9]+$/,
 };
 
 // Mensajes de error
 const ERROR_MESSAGES = {
   required: 'Este campo es obligatorio',
-  email: 'Ingresa un correo electrónico válido',
-  emailUTSC: 'Debes usar tu correo institucional (matrícula@virtual.utsc.edu.mx)',
-  password: 'La contraseña debe tener al menos 8 caracteres, una mayúscula y un número',
-  passwordMatch: 'Las contraseñas no coinciden',
-  matricula: 'La matrícula debe tener 5 dígitos',
-  phone: 'El teléfono debe tener 10 dígitos',
-  terms: 'Debes aceptar los términos y condiciones',
+  email: 'Ingresa un correo electr�nico v�lido',
+  emailUTSC: 'Debes usar tu correo institucional (matr�cula@virtual.utsc.edu.mx)',
+  password: 'La contrase�a debe tener al menos 8 caracteres, una may�scula y un n�mero',
+  passwordMatch: 'Las contrase�as no coinciden',
+  matricula: 'La matr�cula debe tener 5 d�gitos',
+  phone: 'El tel�fono debe tener 10 d�gitos',
+  terms: 'Debes aceptar los t�rminos y condiciones',
   onlyLetters: 'Solo se permiten letras',
-  onlyNumbers: 'Solo se permiten números',
+  onlyNumbers: 'Solo se permiten n�meros',
 };
 
 /**
- * Validar que el correo coincida con la matrícula
+ * Validar que el correo coincida con la matr�cula
  */
 function validateEmailMatchesMatricula(emailInput, matriculaInput) {
   const email = emailInput.value.trim();
@@ -41,7 +41,7 @@ function validateEmailMatchesMatricula(emailInput, matriculaInput) {
     errorElement.classList.remove('active');
   }
   
-  // Si la matrícula está completa, verificar que el correo coincida
+  // Si la matr�cula est� completa, verificar que el correo coincida
   if (matricula.length === 5 && REGEX.onlyNumbers.test(matricula)) {
     const expectedEmail = `${matricula}@virtual.utsc.edu.mx`;
     
@@ -56,7 +56,7 @@ function validateEmailMatchesMatricula(emailInput, matriculaInput) {
 }
 
 /**
- * Auto-generar correo desde matrícula
+ * Auto-generar correo desde matr�cula
  */
 function autoGenerateEmail(matriculaInput, emailInput) {
   const matricula = matriculaInput.value.trim();
@@ -129,13 +129,13 @@ function validateField(input, rules = []) {
     }
   }
   
-  // Si pasó todas las validaciones
+  // Si pas� todas las validaciones
   input.classList.add('success');
   return true;
 }
 
 /**
- * Validar contraseñas coincidentes
+ * Validar contrase�as coincidentes
  */
 function validatePasswordMatch(password, passwordConfirm) {
   const errorElement = document.getElementById('password-confirm-error');
@@ -156,7 +156,7 @@ function validatePasswordMatch(password, passwordConfirm) {
 }
 
 /**
- * Validar checkbox de términos
+ * Validar checkbox de t�rminos
  */
 function validateTerms(checkbox) {
   const errorElement = document.getElementById('terms-error');
@@ -212,7 +212,7 @@ function validateForm(formId, validations) {
 }
 
 /**
- * Toggle mostrar/ocultar contraseña
+ * Toggle mostrar/ocultar contrase�a
  */
 function initPasswordToggles() {
   const toggleButtons = document.querySelectorAll('.password-toggle');
@@ -252,7 +252,7 @@ function sanitizeInput(input) {
 }
 
 /**
- * Validación en tiempo real
+ * Validaci�n en tiempo real
  */
 function enableLiveValidation(input, rules) {
   input.addEventListener('blur', () => {
@@ -271,7 +271,7 @@ function enableLiveValidation(input, rules) {
   });
 }
 
-// Inicializar toggles de contraseña al cargar
+// Inicializar toggles de contrase�a al cargar
 document.addEventListener('DOMContentLoaded', () => {
   initPasswordToggles();
 });

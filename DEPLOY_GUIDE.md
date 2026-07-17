@@ -6,7 +6,7 @@ Este proyecto ya quedo preparado para esta estructura:
 - `Render` corre el backend en Node.js.
 - `Alwaysdata` guarda la base de datos MySQL.
 
-## Dónde debe ir cada cosa
+## D�nde debe ir cada cosa
 
 - El repositorio principal debe ser `UTHUB`.
 - El frontend debe quedar en la raiz del repo.
@@ -22,7 +22,7 @@ En Netlify configura el sitio asi:
 - `Build command`: vacio
 - `Publish directory`: `.`
 
-Si Netlify te enseña campos que no te deja borrar, lo importante es que el repo apunte a la raiz correcta. Si el proyecto ya tiene `netlify.toml`, ese archivo manda.
+Si Netlify te ense�a campos que no te deja borrar, lo importante es que el repo apunte a la raiz correcta. Si el proyecto ya tiene `netlify.toml`, ese archivo manda.
 
 El archivo `netlify.toml` ya deja esto listo:
 

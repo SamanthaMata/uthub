@@ -1,5 +1,5 @@
 /* ============================================
-   UTHUB - MÓDULO TUTORÍAS
+   UTHUB - M�DULO TUTOR�AS
    ============================================ */
 
 :root {
@@ -16,7 +16,7 @@
   --error: #FF4F5E;
 }
 
-/* ── TUTOR CARD ── */
+/* -- TUTOR CARD -- */
 .tutor-card {
   background: var(--white);
   border-radius: 20px;
@@ -101,7 +101,7 @@
   background: currentColor;
 }
 
-/* ── TUTORES GRID ── */
+/* -- TUTORES GRID -- */
 .tutores-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -109,7 +109,7 @@
   margin-top: 24px;
 }
 
-/* ── FILTERS SECTION ── */
+/* -- FILTERS SECTION -- */
 .filters-bar {
   background: var(--white);
   border-radius: 16px;
@@ -161,7 +161,7 @@
 }
 .filter-select:focus { border-color: var(--teal); }
 
-/* ── PERFIL DE TUTOR ── */
+/* -- PERFIL DE TUTOR -- */
 .perfil-layout {
   display: grid;
   grid-template-columns: 1fr 360px;
@@ -270,7 +270,7 @@
 .slot-hour.selected { background: var(--teal); border-color: var(--teal); color: white; }
 .slot-hour.ocupado { background: #F3F4F6; color: #C0BBBB; cursor: not-allowed; border-color: #E8E4DE; }
 
-/* ── RESERVA SIDEBAR ── */
+/* -- RESERVA SIDEBAR -- */
 .reserva-card {
   background: white;
   border-radius: 20px;
@@ -333,7 +333,7 @@
 .btn-reservar:hover { background: var(--teal-d); transform: translateY(-1px); }
 .btn-reservar:active { transform: translateY(0); }
 
-/* ── SESIONES / MIS TUTORÍAS ── */
+/* -- SESIONES / MIS TUTOR�AS -- */
 .sesion-card {
   background: white;
   border-radius: 16px;
@@ -414,7 +414,7 @@
 .estado-rechazada  { background: #FFE8EA; color: #FF4F5E; }
 .estado-completada { background: #F0F4FF; color: #4F46E5; }
 
-/* ── SER TUTOR FORM ── */
+/* -- SER TUTOR FORM -- */
 .ser-tutor-wrapper {
   max-width: 680px;
   margin: 0 auto;
@@ -495,7 +495,7 @@
   background: transparent;
 }
 
-/* ── MIS TUTORÍAS (tutor panel) ── */
+/* -- MIS TUTOR�AS (tutor panel) -- */
 .tutor-panel-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -516,7 +516,7 @@
 }
 .tutor-stat-label { font-size: 12px; color: var(--text-s); margin-top: 2px; }
 
-/* ── RESPONSIVE ── */
+/* -- RESPONSIVE -- */
 @media (max-width: 960px) {
   .perfil-layout { grid-template-columns: 1fr; }
   .reserva-card { position: static; }

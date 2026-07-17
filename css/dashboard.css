@@ -7,7 +7,7 @@
   min-height: 100vh;
 }
 
-/* ──── BREADCRUMB ──── */
+/* ---- BREADCRUMB ---- */
 .breadcrumb-nav {
   background: var(--ut-white);
   padding: 16px 0;
@@ -55,7 +55,7 @@
   font-weight: 500;
 }
 
-/* ──── HEADER MODIFICACIONES ──── */
+/* ---- HEADER MODIFICACIONES ---- */
 .dashboard-page .header {
   background: var(--ut-white);
 }
@@ -196,7 +196,7 @@
   background: #E5E7EB;
 }
 
-/* ──── MAIN CONTENT ──── */
+/* ---- MAIN CONTENT ---- */
 .dashboard-main {
   padding: 40px 0 80px;
 }
@@ -588,7 +588,7 @@
   color: var(--ut-orange);
 }
 
-/* ──── RESPONSIVE ──── */
+/* ---- RESPONSIVE ---- */
 @media (max-width: 968px) {
   .dashboard-grid {
     grid-template-columns: 1fr;

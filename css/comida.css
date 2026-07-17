@@ -1,14 +1,14 @@
 /* ============================================
-   UTHUB - MÓDULO DE COMIDA
+   UTHUB - M�DULO DE COMIDA
    ============================================ */
 
-/* ──── PÁGINA GENERAL ──── */
+/* ---- P�GINA GENERAL ---- */
 .main-content {
   padding: 40px 0 80px;
   min-height: calc(100vh - 200px);
 }
 
-/* ──── PAGE HEADER ──── */
+/* ---- PAGE HEADER ---- */
 .page-header {
   display: flex;
   justify-content: space-between;
@@ -33,7 +33,7 @@
   margin: 0;
 }
 
-/* ──── FILTROS ──── */
+/* ---- FILTROS ---- */
 .filters-section {
   background: var(--ut-white);
   padding: 24px;
@@ -104,7 +104,7 @@
   border-color: var(--ut-orange);
 }
 
-/* ──── TIENDAS GRID ──── */
+/* ---- TIENDAS GRID ---- */
 .tiendas-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -265,7 +265,7 @@
   pointer-events: none;
 }
 
-/* ──── TIENDA DETAIL ──── */
+/* ---- TIENDA DETAIL ---- */
 .tienda-detail-header {
   background: var(--ut-white);
   border-radius: 16px;
@@ -385,7 +385,7 @@
   color: var(--ut-text-s);
 }
 
-/* ──── MENÚ ──── */
+/* ---- MEN� ---- */
 .menu-container {
   display: grid;
   grid-template-columns: 250px 1fr;
@@ -445,7 +445,7 @@
   border-bottom: 2px solid var(--ut-orange);
 }
 
-/* ──── PRODUCTOS ──── */
+/* ---- PRODUCTOS ---- */
 .productos-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -558,7 +558,7 @@
   transform: scale(1.05);
 }
 
-/* ──── CARRITO FLOTANTE ──── */
+/* ---- CARRITO FLOTANTE ---- */
 .cart-float {
   position: fixed;
   bottom: 24px;
@@ -617,7 +617,7 @@
   background: var(--ut-orange-d);
 }
 
-/* ──── CART BUTTON ──── */
+/* ---- CART BUTTON ---- */
 .cart-btn {
   position: relative;
 }
@@ -770,7 +770,7 @@
 
 .leaflet-popup-content-wrapper { border-radius: 14px; }
 .leaflet-popup-content { font-family: var(--font-body); color: var(--ut-text); }
-/* ──── EMPTY STATE ──── */
+/* ---- EMPTY STATE ---- */
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -795,7 +795,7 @@
   margin-bottom: 24px;
 }
 
-/* ──── RESPONSIVE ──── */
+/* ---- RESPONSIVE ---- */
 @media (max-width: 968px) {
   .food-campus-section { grid-template-columns: 1fr; }
   .wiki-food-card { order: 2; }

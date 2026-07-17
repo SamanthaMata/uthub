@@ -1,18 +1,18 @@
 /* ============================================
    UTHUB - SISTEMA DE NOTIFICACIONES
-   Módulo reutilizable para todas las páginas
+   M�dulo reutilizable para todas las p�ginas
    ============================================ */
 
 const UThubNotifications = (() => {
 
-  /* ── DATOS DE EJEMPLO (demo sin backend) ── */
+  /* -- DATOS DE EJEMPLO (demo sin backend) -- */
   const NOTIFICACIONES_DEMO = [
     {
       id: 1,
       tipo: 'pedido_nuevo',
-      icono: '📦',
+      icono: '??',
       titulo: 'Pedido recibido',
-      mensaje: 'Alguien pidió Orden de Tacos x3 en tu tienda',
+      mensaje: 'Alguien pidi� Orden de Tacos x3 en tu tienda',
       tiempo: Date.now() - 1000 * 60 * 3,  // 3 min ago
       leida: false,
       url: 'pages/comida/mi-tienda.html'
@@ -20,9 +20,9 @@ const UThubNotifications = (() => {
     {
       id: 2,
       tipo: 'tutoria',
-      icono: '📚',
-      titulo: 'Sesión confirmada',
-      mensaje: 'Carlos M. confirmó tu tutoría de Álgebra para mañana 9am',
+      icono: '??',
+      titulo: 'Sesi�n confirmada',
+      mensaje: 'Carlos M. confirm� tu tutor�a de �lgebra para ma�ana 9am',
       tiempo: Date.now() - 1000 * 60 * 18, // 18 min ago
       leida: false,
       url: 'pages/tutorias/mis-sesiones.html'
@@ -30,8 +30,8 @@ const UThubNotifications = (() => {
     {
       id: 3,
       tipo: 'libro',
-      icono: '📖',
-      titulo: 'Interés en tu libro',
+      icono: '??',
+      titulo: 'Inter�s en tu libro',
       mensaje: 'Un estudiante quiere comprar tu Fundamentos de BD',
       tiempo: Date.now() - 1000 * 60 * 45, // 45 min ago
       leida: false,
@@ -40,9 +40,9 @@ const UThubNotifications = (() => {
     {
       id: 4,
       tipo: 'sistema',
-      icono: '⭐',
-      titulo: 'Nueva reseña',
-      mensaje: 'Recibiste una calificación de 5 estrellas en tu tienda',
+      icono: '?',
+      titulo: 'Nueva rese�a',
+      mensaje: 'Recibiste una calificaci�n de 5 estrellas en tu tienda',
       tiempo: Date.now() - 1000 * 60 * 60 * 2, // 2h ago
       leida: true,
       url: 'pages/comida/mi-tienda.html'
@@ -50,16 +50,16 @@ const UThubNotifications = (() => {
     {
       id: 5,
       tipo: 'pedido_estado',
-      icono: '🛵',
-      titulo: 'Tu pedido está en camino',
-      mensaje: 'Tu pedido #83921 de Café Express está siendo entregado',
+      icono: '??',
+      titulo: 'Tu pedido est� en camino',
+      mensaje: 'Tu pedido #83921 de Caf� Express est� siendo entregado',
       tiempo: Date.now() - 1000 * 60 * 60 * 3, // 3h ago
       leida: true,
       url: 'pages/comida/pedidos.html'
     }
   ];
 
-  /* ── STORAGE ── */
+  /* -- STORAGE -- */
   function getAll() {
     const saved = localStorage.getItem('uthub_notificaciones');
     if (!saved) {
@@ -108,7 +108,7 @@ const UThubNotifications = (() => {
     showToastNotif(notif.titulo, notif.mensaje, notif.icono);
   }
 
-  /* ── RELATIVE TIME ── */
+  /* -- RELATIVE TIME -- */
   function timeAgo(timestamp) {
     const diff = Date.now() - timestamp;
     const mins = Math.floor(diff / 60000);
@@ -120,7 +120,7 @@ const UThubNotifications = (() => {
     return `Hace ${days}d`;
   }
 
-  /* ── TYPE COLOR ── */
+  /* -- TYPE COLOR -- */
   function typeColor(tipo) {
     const map = {
       pedido_nuevo: '#F5841F',
@@ -132,7 +132,7 @@ const UThubNotifications = (() => {
     return map[tipo] || '#6B6B80';
   }
 
-  /* ── PANEL HTML ── */
+  /* -- PANEL HTML -- */
   let panel = null;
   let btn   = null;
 
@@ -177,17 +177,17 @@ const UThubNotifications = (() => {
       <div style="padding:18px 20px 14px;border-bottom:1px solid #F0EDE8;display:flex;align-items:center;justify-content:space-between;">
         <div>
           <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#1A1A2E;">Notificaciones</div>
-          ${unread > 0 ? `<div style="font-size:11px;color:#F5841F;font-weight:600;margin-top:1px;">${unread} sin leer</div>` : `<div style="font-size:11px;color:#6B6B80;margin-top:1px;">Todo leído</div>`}
+          ${unread > 0 ? `<div style="font-size:11px;color:#F5841F;font-weight:600;margin-top:1px;">${unread} sin leer</div>` : `<div style="font-size:11px;color:#6B6B80;margin-top:1px;">Todo le�do</div>`}
         </div>
-        ${unread > 0 ? `<button onclick="UThubNotifications.markAllAsRead()" style="font-size:11px;font-weight:600;color:#F5841F;background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;" onmouseover="this.style.background='#FFF0E0'" onmouseout="this.style.background='none'">Marcar todo leído</button>` : ''}
+        ${unread > 0 ? `<button onclick="UThubNotifications.markAllAsRead()" style="font-size:11px;font-weight:600;color:#F5841F;background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;" onmouseover="this.style.background='#FFF0E0'" onmouseout="this.style.background='none'">Marcar todo le�do</button>` : ''}
       </div>
 
       <div style="overflow-y:auto;flex:1;max-height:420px;">
         ${notifs.length === 0 ? `
           <div style="text-align:center;padding:48px 24px;">
-            <div style="font-size:40px;margin-bottom:10px;">🔔</div>
+            <div style="font-size:40px;margin-bottom:10px;">??</div>
             <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#1A1A2E;margin-bottom:4px;">Sin notificaciones</div>
-            <div style="font-size:12px;color:#6B6B80;">Las actividades de UThub aparecerán aquí</div>
+            <div style="font-size:12px;color:#6B6B80;">Las actividades de UThub aparecer�n aqu�</div>
           </div>` : notifs.map(n => `
           <div onclick="UThubNotifications.markAsRead(${n.id})" style="
             display:flex;align-items:flex-start;gap:12px;
@@ -216,7 +216,7 @@ const UThubNotifications = (() => {
     `;
   }
 
-  /* ── BADGE ── */
+  /* -- BADGE -- */
   function updateBadge() {
     const count = getUnreadCount();
     const badges = document.querySelectorAll('#notif-badge');
@@ -226,7 +226,7 @@ const UThubNotifications = (() => {
     });
   }
 
-  /* ── OPEN / CLOSE ── */
+  /* -- OPEN / CLOSE -- */
   function open() {
     if (!panel) { createPanel(); }
     renderPanel();
@@ -249,8 +249,8 @@ const UThubNotifications = (() => {
     }
   }
 
-  /* ── TOAST NOTIFICATION (push style) ── */
-  function showToastNotif(titulo, mensaje, icono = '🔔') {
+  /* -- TOAST NOTIFICATION (push style) -- */
+  function showToastNotif(titulo, mensaje, icono = '??') {
     const t = document.createElement('div');
     t.style.cssText = `
       position:fixed;top:80px;right:20px;
@@ -272,7 +272,7 @@ const UThubNotifications = (() => {
         <div style="font-size:13px;font-weight:700;color:#1A1A2E;margin-bottom:2px;">${titulo}</div>
         <div style="font-size:11px;color:#6B6B80;line-height:1.4;">${mensaje}</div>
       </div>
-      <button onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;color:#B0ACAC;font-size:16px;padding:0;line-height:1;">×</button>
+      <button onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;color:#B0ACAC;font-size:16px;padding:0;line-height:1;">�</button>
     `;
     document.body.appendChild(t);
     requestAnimationFrame(() => { t.style.transform = 'translateX(0)'; });
@@ -282,7 +282,7 @@ const UThubNotifications = (() => {
     }, 4000);
   }
 
-  /* ── INIT: inject button wiring ── */
+  /* -- INIT: inject button wiring -- */
   function init() {
     // Wire up any existing notifications button
     const notifBtn = document.getElementById('notifications-btn');
@@ -308,9 +308,9 @@ const UThubNotifications = (() => {
 
   document.addEventListener('DOMContentLoaded', init);
 
-  /* ── PUBLIC API ── */
+  /* -- PUBLIC API -- */
   return { toggle, open, close, markAsRead, markAllAsRead, addNotification, updateBadge, getUnreadCount };
 })();
 
 window.UThubNotifications = UThubNotifications;
-console.log('🔔 Sistema de notificaciones inicializado');
+console.log('?? Sistema de notificaciones inicializado');

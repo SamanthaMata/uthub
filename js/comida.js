@@ -1,16 +1,16 @@
-﻿/* ============================================
-   UTHUB - MÃ“DULO DE COMIDA (FRONTEND)
+/* ============================================
+   UTHUB - MÓDULO DE COMIDA (FRONTEND)
    ============================================ */
 
 const API_URL = window.UTHUB_CONFIG?.API_BASE_URL || 'https://uthub.onrender.com/api';
 
-// ðŸ›’ carrito
+// 🛒 carrito
 let cart = JSON.parse(localStorage.getItem('uthub_cart')) || [];
 let tiendaActual = '';
 const IMG_DEFAULT = 'https://images.unsplash.com/photo-1605152276897-4f618f831968?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 
 /* ============================================
-   ðŸª TIENDAS
+   🏪 TIENDAS
    ============================================ */
 
 async function cargarTiendas() {
@@ -33,7 +33,7 @@ async function cargarTiendas() {
           <p class="tienda-description">${t.descripcion}</p>
 
           <a href="menu.html?id=${t.id}" class="btn-tienda">
-            Ver MenÃº
+            Ver Menú
           </a>
         </div>
       </div>
@@ -45,7 +45,7 @@ async function cargarTiendas() {
 }
 
 /* ============================================
-   ðŸ” PRODUCTOS
+   🍔 PRODUCTOS
    ============================================ */
 
 async function cargarProductos() {
@@ -97,7 +97,7 @@ async function cargarProductos() {
 }
 
 /* ============================================
-   ðŸª INFO DE TIENDA
+   🏪 INFO DE TIENDA
    ============================================ */
 
 async function cargarInfoTienda() {
@@ -121,8 +121,8 @@ async function cargarInfoTienda() {
     // breadcrumb
     document.querySelector('.breadcrumb-item.active').textContent = tienda.nombre;
 
-    // titulo pestaÃ±a
-    document.title = `MenÃº - ${tienda.nombre} - UThub`;
+    // titulo pestaña
+    document.title = `Menú - ${tienda.nombre} - UThub`;
 
     // imagen
     document.querySelector('.tienda-detail-banner').innerHTML = `
@@ -138,7 +138,7 @@ async function cargarInfoTienda() {
 }
 
 /* ============================================
-   âž• CREAR TIENDA
+   ➕ CREAR TIENDA
    ============================================ */
 
 async function crearTienda() {
@@ -163,11 +163,11 @@ async function crearTienda() {
 async function hacerPedido() {
   try {
     if (cart.length === 0) {
-      alert('Tu carrito estÃ¡ vacÃ­o');
+      alert('Tu carrito está vacío');
       return;
     }
 
-    const ubicacion = prompt('Â¿DÃ³nde quieres recibir tu pedido? (ej: SalÃ³n B-201)');
+    const ubicacion = prompt('¿Dónde quieres recibir tu pedido? (ej: Salón B-201)');
     if (!ubicacion) return;
 
     const token = localStorage.getItem('uthub_token');
@@ -191,13 +191,13 @@ async function hacerPedido() {
       return;
     }
 
-    // ðŸ”¥ limpiar carrito
+    // 🔥 limpiar carrito
     cart = [];
     localStorage.removeItem('uthub_cart');
     updateCartCount();
     updateCartDisplay();
 
-    alert('âœ… Pedido realizado con Ã©xito');
+    alert('✅ Pedido realizado con éxito');
 
   } catch (error) {
     console.error('Error:', error);
@@ -206,7 +206,7 @@ async function hacerPedido() {
 }
 
 /* ============================================
-   âž• CREAR PRODUCTO
+   ➕ CREAR PRODUCTO
    ============================================ */
 
 async function crearProducto() {
@@ -237,7 +237,7 @@ async function crearProducto() {
 }
 
 /* ============================================
-   ðŸ›’ CARRITO
+   🛒 CARRITO
    ============================================ */
 
 function addToCart(nombre, precio, id) {
@@ -279,7 +279,7 @@ function updateCartDisplay() {
 }
 
 /* ============================================
-   ðŸš€ INIT
+   🚀 INIT
    ============================================ */
 
 window.cargarTiendas = cargarTiendas;
@@ -290,5 +290,5 @@ window.crearProducto = crearProducto;
 window.addToCart = addToCart;
 window.updateCartDisplay = updateCartDisplay;
 
-console.log('âœ… comida.js listo');
+console.log('✅ comida.js listo');
 

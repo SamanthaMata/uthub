@@ -1,129 +1,129 @@
 /* ============================================
-   UTHUB - MÓDULO DE LIBROS
-   Lógica frontend con localStorage
+   UTHUB - M�DULO DE LIBROS
+   L�gica frontend con localStorage
    ============================================ */
 
 const LibrosDB = (() => {
 
-  /* ── Catálogo de libros demo ── */
+  /* -- Cat�logo de libros demo -- */
   const LIBROS_DEMO = [
     {
       id: 1, titulo: 'Fundamentos de Bases de Datos', autor: 'Ramez Elmasri & Navathe',
-      edicion: '7ª edición', isbn: '9780133970777',
+      edicion: '7� edici�n', isbn: '9780133970777',
       carrera: 'Ing. en Sistemas', semestre: '5to-6to',
       estado: 'muy-bueno', precio: 150, precioNuevo: 380,
-      emoji: '🗄️', color: '#FFF0E0',
-      descripcion: 'Libro en excelente estado. Sin rayones relevantes en páginas principales. Incluye acceso digital original no usado. Perfecto para la materia de Base de Datos.',
+      emoji: '???', color: '#FFF0E0',
+      descripcion: 'Libro en excelente estado. Sin rayones relevantes en p�ginas principales. Incluye acceso digital original no usado. Perfecto para la materia de Base de Datos.',
       vendedor: { id: 1, nombre: 'Carlos Mendoza', iniciales: 'CM', color: '#00C2A8' },
       fecha: '2026-03-10', vistas: 34, activo: true
     },
     {
-      id: 2, titulo: 'Introducción a los Algoritmos', autor: 'Cormen, Leiserson, Rivest',
-      edicion: '3ª edición', isbn: '9780262033848',
+      id: 2, titulo: 'Introducci�n a los Algoritmos', autor: 'Cormen, Leiserson, Rivest',
+      edicion: '3� edici�n', isbn: '9780262033848',
       carrera: 'Ing. en Sistemas', semestre: '3er-4to',
       estado: 'bueno', precio: 200, precioNuevo: 550,
-      emoji: '🧮', color: '#EDE9FE',
-      descripcion: 'Buen estado general. Algunas marcas de resaltador en los primeros 3 capítulos. El resto impecable. El libro de algoritmos más completo.',
-      vendedor: { id: 2, nombre: 'Ana Martínez', iniciales: 'AM', color: '#F5841F' },
+      emoji: '??', color: '#EDE9FE',
+      descripcion: 'Buen estado general. Algunas marcas de resaltador en los primeros 3 cap�tulos. El resto impecable. El libro de algoritmos m�s completo.',
+      vendedor: { id: 2, nombre: 'Ana Mart�nez', iniciales: 'AM', color: '#F5841F' },
       fecha: '2026-03-15', vistas: 28, activo: true
     },
     {
-      id: 3, titulo: 'Cálculo: Trascendentes Tempranas', autor: 'James Stewart',
-      edicion: '8ª edición', isbn: '9781285741550',
+      id: 3, titulo: 'C�lculo: Trascendentes Tempranas', autor: 'James Stewart',
+      edicion: '8� edici�n', isbn: '9781285741550',
       carrera: 'Todas las carreras', semestre: '1er-2do',
       estado: 'nuevo', precio: 300, precioNuevo: 680,
-      emoji: '📐', color: '#DCFCE7',
-      descripcion: 'Prácticamente nuevo. Solo abierto un par de veces. Lo compré pero cambié de carrera. Viene con el cuaderno de práctica incluido.',
-      vendedor: { id: 3, nombre: 'Diego Ramírez', iniciales: 'DR', color: '#6366F1' },
+      emoji: '??', color: '#DCFCE7',
+      descripcion: 'Pr�cticamente nuevo. Solo abierto un par de veces. Lo compr� pero cambi� de carrera. Viene con el cuaderno de pr�ctica incluido.',
+      vendedor: { id: 3, nombre: 'Diego Ram�rez', iniciales: 'DR', color: '#6366F1' },
       fecha: '2026-03-20', vistas: 52, activo: true
     },
     {
-      id: 4, titulo: 'Ingeniería de Software', autor: 'Ian Sommerville',
-      edicion: '10ª edición', isbn: '9780133943030',
+      id: 4, titulo: 'Ingenier�a de Software', autor: 'Ian Sommerville',
+      edicion: '10� edici�n', isbn: '9780133943030',
       carrera: 'Ing. en Sistemas', semestre: '7mo-8vo',
       estado: 'muy-bueno', precio: 180, precioNuevo: 460,
-      emoji: '💻', color: '#E0FAF6',
-      descripcion: 'Estado muy bueno. Usado en dos cuatrimestres. Algunas notas en lápiz borrables. Cubre scrum, ágil y metodologías modernas.',
-      vendedor: { id: 4, nombre: 'Sofía López', iniciales: 'SL', color: '#EC4899' },
+      emoji: '??', color: '#E0FAF6',
+      descripcion: 'Estado muy bueno. Usado en dos cuatrimestres. Algunas notas en l�piz borrables. Cubre scrum, �gil y metodolog�as modernas.',
+      vendedor: { id: 4, nombre: 'Sof�a L�pez', iniciales: 'SL', color: '#EC4899' },
       fecha: '2026-03-22', vistas: 19, activo: true
     },
     {
-      id: 5, titulo: 'Física Universitaria Vol. 1', autor: 'Sears & Zemansky',
-      edicion: '14ª edición', isbn: '9780133969290',
-      carrera: 'Ing. en Mecatrónica', semestre: '1er-2do',
+      id: 5, titulo: 'F�sica Universitaria Vol. 1', autor: 'Sears & Zemansky',
+      edicion: '14� edici�n', isbn: '9780133969290',
+      carrera: 'Ing. en Mecatr�nica', semestre: '1er-2do',
       estado: 'bueno', precio: 120, precioNuevo: 320,
-      emoji: '⚡', color: '#FEF9C3',
-      descripcion: 'Bien conservado. Algunas páginas con marcas de lápiz. Incluye acceso al Mastering Physics con código sin usar.',
+      emoji: '?', color: '#FEF9C3',
+      descripcion: 'Bien conservado. Algunas p�ginas con marcas de l�piz. Incluye acceso al Mastering Physics con c�digo sin usar.',
       vendedor: { id: 5, nombre: 'Luis Torres', iniciales: 'LT', color: '#10B981' },
       fecha: '2026-03-25', vistas: 41, activo: true
     },
     {
-      id: 6, titulo: 'Contabilidad Financiera', autor: 'Gerardo Guajardo Cantú',
-      edicion: '6ª edición', isbn: '9786071507044',
-      carrera: 'Ing. en Gestión Empresarial', semestre: '3er-4to',
+      id: 6, titulo: 'Contabilidad Financiera', autor: 'Gerardo Guajardo Cant�',
+      edicion: '6� edici�n', isbn: '9786071507044',
+      carrera: 'Ing. en Gesti�n Empresarial', semestre: '3er-4to',
       estado: 'muy-bueno', precio: 130, precioNuevo: 350,
-      emoji: '💰', color: '#FFF0E0',
-      descripcion: 'Muy buen estado. Solo los primeros capítulos tienen subrayado con marcatextos amarillo. Ideal para las materias de Contabilidad I y II.',
+      emoji: '??', color: '#FFF0E0',
+      descripcion: 'Muy buen estado. Solo los primeros cap�tulos tienen subrayado con marcatextos amarillo. Ideal para las materias de Contabilidad I y II.',
       vendedor: { id: 6, nombre: 'Valentina Cruz', iniciales: 'VC', color: '#F59E0B' },
       fecha: '2026-03-28', vistas: 22, activo: true
     },
     {
       id: 7, titulo: 'Redes de Computadoras', autor: 'Andrew S. Tanenbaum',
-      edicion: '5ª edición', isbn: '9780132126953',
+      edicion: '5� edici�n', isbn: '9780132126953',
       carrera: 'Ing. en Sistemas', semestre: '5to-6to',
       estado: 'regular', precio: 80, precioNuevo: 390,
-      emoji: '🌐', color: '#EDE9FE',
+      emoji: '??', color: '#EDE9FE',
       descripcion: 'Estado regular. Portada con desgaste, interiores bien. Precio refleja el estado. Contenido completo, excelente para aprender redes.',
       vendedor: { id: 1, nombre: 'Carlos Mendoza', iniciales: 'CM', color: '#00C2A8' },
       fecha: '2026-04-01', vistas: 13, activo: true
     },
     {
-      id: 8, titulo: 'Probabilidad y Estadística para Ing.', autor: 'Jay L. Devore',
-      edicion: '8ª edición', isbn: '9780538733526',
+      id: 8, titulo: 'Probabilidad y Estad�stica para Ing.', autor: 'Jay L. Devore',
+      edicion: '8� edici�n', isbn: '9780538733526',
       carrera: 'Todas las carreras', semestre: '3er-4to',
       estado: 'nuevo', precio: 250, precioNuevo: 520,
-      emoji: '📊', color: '#DCFCE7',
-      descripcion: 'Nuevo, sin usar. Lo adquirí por error (tenía otro libro de Estadística). Sellado de fábrica hasta la semana pasada.',
-      vendedor: { id: 2, nombre: 'Ana Martínez', iniciales: 'AM', color: '#F5841F' },
+      emoji: '??', color: '#DCFCE7',
+      descripcion: 'Nuevo, sin usar. Lo adquir� por error (ten�a otro libro de Estad�stica). Sellado de f�brica hasta la semana pasada.',
+      vendedor: { id: 2, nombre: 'Ana Mart�nez', iniciales: 'AM', color: '#F5841F' },
       fecha: '2026-04-02', vistas: 38, activo: true
     },
     {
-      id: 9, titulo: 'Diseño de Sistemas Digitales', autor: 'M. Morris Mano',
-      edicion: '5ª edición', isbn: '9780132774208',
-      carrera: 'Ing. en Mecatrónica', semestre: '5to-6to',
+      id: 9, titulo: 'Dise�o de Sistemas Digitales', autor: 'M. Morris Mano',
+      edicion: '5� edici�n', isbn: '9780132774208',
+      carrera: 'Ing. en Mecatr�nica', semestre: '5to-6to',
       estado: 'muy-bueno', precio: 160, precioNuevo: 410,
-      emoji: '🔌', color: '#E0FAF6',
-      descripcion: 'Muy buen estado. Algunos ejercicios resueltos a lápiz al final. Libro esencial para la materia de Electrónica Digital.',
-      vendedor: { id: 3, nombre: 'Diego Ramírez', iniciales: 'DR', color: '#6366F1' },
+      emoji: '??', color: '#E0FAF6',
+      descripcion: 'Muy buen estado. Algunos ejercicios resueltos a l�piz al final. Libro esencial para la materia de Electr�nica Digital.',
+      vendedor: { id: 3, nombre: 'Diego Ram�rez', iniciales: 'DR', color: '#6366F1' },
       fecha: '2026-04-03', vistas: 17, activo: true
     },
     {
-      id: 10, titulo: 'Administración de Empresas', autor: 'Stephen P. Robbins',
-      edicion: '14ª edición', isbn: '9786073227964',
-      carrera: 'Ing. en Gestión Empresarial', semestre: '1er-2do',
+      id: 10, titulo: 'Administraci�n de Empresas', autor: 'Stephen P. Robbins',
+      edicion: '14� edici�n', isbn: '9786073227964',
+      carrera: 'Ing. en Gesti�n Empresarial', semestre: '1er-2do',
       estado: 'bueno', precio: 100, precioNuevo: 280,
-      emoji: '🏢', color: '#FFF0E0',
-      descripcion: 'Buen estado. Algunas páginas dobladas como marcadores. Sin escritura. Muy completo para las bases de Administración.',
-      vendedor: { id: 4, nombre: 'Sofía López', iniciales: 'SL', color: '#EC4899' },
+      emoji: '??', color: '#FFF0E0',
+      descripcion: 'Buen estado. Algunas p�ginas dobladas como marcadores. Sin escritura. Muy completo para las bases de Administraci�n.',
+      vendedor: { id: 4, nombre: 'Sof�a L�pez', iniciales: 'SL', color: '#EC4899' },
       fecha: '2026-04-04', vistas: 25, activo: true
     },
     {
-      id: 11, titulo: 'Matemáticas Discretas', autor: 'Kenneth H. Rosen',
-      edicion: '7ª edición', isbn: '9780073383095',
+      id: 11, titulo: 'Matem�ticas Discretas', autor: 'Kenneth H. Rosen',
+      edicion: '7� edici�n', isbn: '9780073383095',
       carrera: 'Ing. en Sistemas', semestre: '3er-4to',
       estado: 'muy-bueno', precio: 140, precioNuevo: 360,
-      emoji: '🔢', color: '#EDE9FE',
-      descripcion: 'Buen estado. Resolví varios ejercicios pero con lápiz, todo borrable. Gran libro para Matemáticas Discretas y Lógica.',
+      emoji: '??', color: '#EDE9FE',
+      descripcion: 'Buen estado. Resolv� varios ejercicios pero con l�piz, todo borrable. Gran libro para Matem�ticas Discretas y L�gica.',
       vendedor: { id: 5, nombre: 'Luis Torres', iniciales: 'LT', color: '#10B981' },
       fecha: '2026-04-05', vistas: 30, activo: true
     },
     {
-      id: 12, titulo: 'Química General', autor: 'Petrucci, Herring, Madura',
-      edicion: '11ª edición', isbn: '9780132931281',
-      carrera: 'Ing. en Mecatrónica', semestre: '1er-2do',
+      id: 12, titulo: 'Qu�mica General', autor: 'Petrucci, Herring, Madura',
+      edicion: '11� edici�n', isbn: '9780132931281',
+      carrera: 'Ing. en Mecatr�nica', semestre: '1er-2do',
       estado: 'bueno', precio: 110, precioNuevo: 300,
-      emoji: '⚗️', color: '#FEF9C3',
-      descripcion: 'Buen estado. Guardado cuidadosamente. Algunas páginas con marcas leves de uso. Completo y bien organizado.',
+      emoji: '??', color: '#FEF9C3',
+      descripcion: 'Buen estado. Guardado cuidadosamente. Algunas p�ginas con marcas leves de uso. Completo y bien organizado.',
       vendedor: { id: 6, nombre: 'Valentina Cruz', iniciales: 'VC', color: '#F59E0B' },
       fecha: '2026-04-06', vistas: 14, activo: true
     }
@@ -197,7 +197,7 @@ const LibrosDB = (() => {
   return { getLibros, getMisLibros, agregarLibro, eliminarLibro, getLibroById, filtrarLibros };
 })();
 
-/* ── UI helpers ── */
+/* -- UI helpers -- */
 const LibrosUI = {
 
   estadoLabel(estado) {
@@ -224,7 +224,7 @@ const LibrosUI = {
         </div>
         <div class="libro-body">
           <div class="libro-titulo">${libro.titulo}</div>
-          <div class="libro-autor">${libro.autor} · ${libro.edicion}</div>
+          <div class="libro-autor">${libro.autor} � ${libro.edicion}</div>
           <span class="libro-carrera-tag">${libro.carrera}</span>
           <div class="libro-precios">
             <span class="precio-actual">$${libro.precio}</span>
@@ -236,7 +236,7 @@ const LibrosUI = {
               <div class="vendedor-avatar-mini" style="background:${libro.vendedor.color}">${libro.vendedor.iniciales}</div>
               ${libro.vendedor.nombre.split(' ')[0]}
             </div>
-            <button class="btn-ver-libro">Ver →</button>
+            <button class="btn-ver-libro">Ver ?</button>
           </div>
         </div>
       </div>`;

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -98,10 +98,10 @@
       <nav class="nav" id="nav-menu">
         <ul class="nav-list">
           <li><a href="../dashboard.html" class="nav-link">Dashboard</a></li>
-          <li><a href="../comida/tiendas.html" class="nav-link">ðŸ” Comida</a></li>
-          <li><a href="buscar.html" class="nav-link active">ðŸ“š TutorÃ­as</a></li>
-          <li><a href="../libros/catalogo.html" class="nav-link">ðŸ“– Libros</a></li>
-          <li><a href="../servicios/explorar.html" class="nav-link">ðŸ’¼ Servicios</a></li>
+          <li><a href="../comida/tiendas.html" class="nav-link">🍔 Comida</a></li>
+          <li><a href="buscar.html" class="nav-link active">📚 Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
         </ul>
       </nav>
       <div class="header-actions">
@@ -126,7 +126,7 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="../../index.html">Inicio</a></li>
         <li class="breadcrumb-item"><a href="../dashboard.html">Dashboard</a></li>
-        <li class="breadcrumb-item active" aria-current="page">TutorÃ­as</li>
+        <li class="breadcrumb-item active" aria-current="page">Tutorías</li>
       </ol>
     </div>
   </nav>
@@ -134,7 +134,7 @@
     <div class="container">
       <div class="page-header">
         <div>
-          <h1 class="page-title">ðŸ“š Encuentra tu Tutor</h1>
+          <h1 class="page-title">📚 Encuentra tu Tutor</h1>
           <p class="page-subtitle">Tutores verificados de tu mismo campus. Reserva en minutos.</p>
         </div>
         <div class="page-actions">
@@ -146,11 +146,11 @@
       <div class="filters-section">
         <div class="filters-heading">
           <div>
-            <div class="filters-eyebrow">BÃºsqueda inteligente</div>
-            <h2 class="filters-title">Encuentra la tutorÃ­a ideal para ti</h2>
+            <div class="filters-eyebrow">Búsqueda inteligente</div>
+            <h2 class="filters-title">Encuentra la tutoría ideal para ti</h2>
           </div>
           <button class="clear-filters" id="clear-filters" type="button" aria-label="Limpiar todos los filtros">
-            <span aria-hidden="true">â†»</span> Limpiar
+            <span aria-hidden="true">↻</span> Limpiar
           </button>
         </div>
         <div class="search-bar-large">
@@ -179,11 +179,11 @@
             </div>
           </div>
           <div class="filter-group">
-            <label class="filter-label" for="filter-precio">Precio mÃ¡ximo / hora</label>
+            <label class="filter-label" for="filter-precio">Precio máximo / hora</label>
             <div class="select-wrap">
               <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M16 8h-6a2 2 0 0 0 0 4h4a2 2 0 0 1 0 4H8"/><path d="M12 6v12"/></svg>
               <select class="filter-select" id="filter-precio">
-                <option value="">Sin lÃ­mite</option>
+                <option value="">Sin límite</option>
                 <option value="60">Hasta $60</option>
                 <option value="80">Hasta $80</option>
                 <option value="100">Hasta $100</option>
@@ -212,7 +212,7 @@
 
       <div class="tutores-grid" id="tutores-grid"></div>
       <div id="empty-state" class="empty-grid" style="display:none;">
-        <div style="font-size:48px;margin-bottom:12px;">ðŸ”</div>
+        <div style="font-size:48px;margin-bottom:12px;">🔍</div>
         <div style="font-family:Syne,sans-serif;font-size:18px;font-weight:800;color:#1A1A2E;margin-bottom:8px;">Sin resultados</div>
         <div style="font-size:14px;color:#6B6B80;">Prueba con otros filtros o busca otra materia</div>
       </div>
@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function() {
         +'<div class="tutor-card-top">'
           +'<div class="tutor-avatar" style="background:'+t.color+'">'+foto+'</div>'
           +'<div><div class="tutor-name">'+t.nombre+'</div>'
-          +'<div class="tutor-carrera">'+t.carrera+' Â· '+t.semestre+'</div></div>'
+          +'<div class="tutor-carrera">'+t.carrera+' · '+t.semestre+'</div></div>'
           +'<div style="margin-left:auto">'+disp+'</div>'
         +'</div>'
         +'<div class="tutor-body">'
@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
             +'<div class="tutor-precio">$'+t.precio+'<span>/hr</span></div>'
           +'</div>'
           +'<div class="tutor-desc">'+t.descripcion+'</div>'
-          +'<div class="tutor-modalidad">'+modalidadLabel(t.modalidad)+' Â· '+t.ubicacion+'</div>'
+          +'<div class="tutor-modalidad">'+modalidadLabel(t.modalidad)+' · '+t.ubicacion+'</div>'
           +(t.disponible
             ? '<a href="tutor.html?id='+t.id+'" class="btn-tienda">Ver perfil y reservar</a>'
             : '<span class="btn-tienda btn-disabled">Sin disponibilidad</span>')

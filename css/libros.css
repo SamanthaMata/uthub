@@ -1,9 +1,9 @@
 /* ============================================
-   UTHUB - MÓDULO DE LIBROS
-   Universidad Tecnológica Santa Catarina
+   UTHUB - M�DULO DE LIBROS
+   Universidad Tecnol�gica Santa Catarina
    ============================================ */
 
-/* ── Variables de módulo ── */
+/* -- Variables de m�dulo -- */
 :root {
   --lib-green:    #22C55E;
   --lib-green-l:  #DCFCE7;
@@ -13,7 +13,7 @@
   --lib-red-l:    #FFE8EA;
 }
 
-/* ── Barra de filtros ── */
+/* -- Barra de filtros -- */
 .libros-toolbar {
   background: var(--ut-white);
   border-radius: var(--radius-xl);
@@ -120,14 +120,14 @@
 }
 .btn-limpiar:hover { border-color: var(--ut-orange); color: var(--ut-orange); }
 
-/* ── Grilla de libros ── */
+/* -- Grilla de libros -- */
 .libros-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 22px;
 }
 
-/* ── Tarjeta de libro ── */
+/* -- Tarjeta de libro -- */
 .libro-card {
   background: var(--ut-white);
   border-radius: var(--radius-xl);
@@ -289,7 +289,7 @@
   color: white;
 }
 
-/* ── Página de detalle de libro ── */
+/* -- P�gina de detalle de libro -- */
 .libro-detail-layout {
   display: grid;
   grid-template-columns: 1fr 360px;
@@ -388,7 +388,7 @@
   box-shadow: 0 8px 20px rgba(245,132,31,.3);
 }
 
-/* ── Vender libro ── */
+/* -- Vender libro -- */
 .vender-layout {
   display: grid;
   grid-template-columns: 1fr 340px;
@@ -517,7 +517,7 @@
   box-shadow: 0 8px 20px rgba(245,132,31,.3);
 }
 
-/* ── Mis libros ── */
+/* -- Mis libros -- */
 .mis-libros-list {
   display: flex;
   flex-direction: column;
@@ -604,7 +604,7 @@
 .status-vendido  { background: #EDE9FE; color: #7C3AED; }
 .status-pausado  { background: #F3F4F6; color: #6B7280; }
 
-/* ── Responsive ── */
+/* -- Responsive -- */
 @media (max-width: 900px) {
   .libro-detail-layout { grid-template-columns: 1fr; }
   .vender-layout { grid-template-columns: 1fr; }

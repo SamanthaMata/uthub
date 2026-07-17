@@ -1,9 +1,9 @@
 /* ============================================
-   UTHUB - MÓDULO DE SERVICIOS FREELANCE
-   Universidad Tecnológica Santa Catarina
+   UTHUB - M�DULO DE SERVICIOS FREELANCE
+   Universidad Tecnol�gica Santa Catarina
    ============================================ */
 
-/* ── Hero del módulo ── */
+/* -- Hero del m�dulo -- */
 .servicios-hero {
   background: linear-gradient(135deg, var(--ut-dark) 0%, var(--ut-slate) 100%);
   border-radius: var(--radius-xl);
@@ -68,7 +68,7 @@
   box-shadow: 0 8px 20px rgba(245,132,31,.3);
 }
 
-/* ── Categorías ── */
+/* -- Categor�as -- */
 .categorias-strip {
   display: flex;
   gap: 10px;
@@ -107,14 +107,14 @@
   color: white;
 }
 
-/* ── Grilla de servicios ── */
+/* -- Grilla de servicios -- */
 .servicios-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 22px;
 }
 
-/* ── Tarjeta de servicio ── */
+/* -- Tarjeta de servicio -- */
 .servicio-card {
   background: var(--ut-white);
   border-radius: var(--radius-xl);
@@ -253,7 +253,7 @@
   color: var(--ut-text-s);
 }
 
-/* ── Detalle de servicio ── */
+/* -- Detalle de servicio -- */
 .servicio-detail-layout {
   display: grid;
   grid-template-columns: 1fr 360px;
@@ -356,7 +356,7 @@
   color: var(--ut-text-s);
 }
 
-/* ── Publicar servicio ── */
+/* -- Publicar servicio -- */
 .publicar-layout {
   display: grid;
   grid-template-columns: 1fr 320px;
@@ -408,7 +408,7 @@
   color: var(--ut-orange-d);
 }
 
-/* ── Mi perfil freelance ── */
+/* -- Mi perfil freelance -- */
 .perfil-layout {
   display: grid;
   grid-template-columns: 320px 1fr;
@@ -467,7 +467,7 @@
   letter-spacing: .08em;
 }
 
-/* ── Responsive ── */
+/* -- Responsive -- */
 @media (max-width: 900px) {
   .servicio-detail-layout { grid-template-columns: 1fr; }
   .publicar-layout { grid-template-columns: 1fr; }

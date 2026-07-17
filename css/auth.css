@@ -7,7 +7,7 @@
   background: var(--ut-mist);
 }
 
-/* ──── HEADER SIMPLE ──── */
+/* ---- HEADER SIMPLE ---- */
 .header-simple {
   padding: 20px 0;
   background: var(--ut-white);
@@ -20,7 +20,7 @@
   align-items: center;
 }
 
-/* ──── AUTH CONTAINER ──── */
+/* ---- AUTH CONTAINER ---- */
 .auth-container {
   min-height: calc(100vh - 80px);
   display: flex;
@@ -46,7 +46,7 @@
   grid-template-columns: 1fr;
 }
 
-/* ──── FORMULARIO SECTION ──── */
+/* ---- FORMULARIO SECTION ---- */
 .auth-form-section {
   padding: 60px;
   display: flex;
@@ -93,7 +93,7 @@
   line-height: 1.6;
 }
 
-/* ──── MENSAJES ──── */
+/* ---- MENSAJES ---- */
 .auth-message {
   padding: 14px 18px;
   border-radius: 10px;
@@ -123,7 +123,7 @@
   border: 1px solid #60A5FA;
 }
 
-/* ──── FORMULARIO ──── */
+/* ---- FORMULARIO ---- */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -299,7 +299,7 @@
   stroke-linecap: round;
 }
 
-/* ──── DIVIDER ──── */
+/* ---- DIVIDER ---- */
 .auth-divider {
   position: relative;
   text-align: center;
@@ -324,7 +324,7 @@
   color: var(--ut-text-s);
 }
 
-/* ──── SOCIAL LOGIN ──── */
+/* ---- SOCIAL LOGIN ---- */
 .social-login {
   display: flex;
   gap: 12px;
@@ -352,7 +352,7 @@
   background: var(--ut-orange-xl);
 }
 
-/* ──── FOOTER ──── */
+/* ---- FOOTER ---- */
 .auth-footer {
   text-align: center;
   margin-top: 24px;
@@ -365,7 +365,7 @@
   text-align: center;
 }
 
-/* ──── VISUAL SECTION ──── */
+/* ---- VISUAL SECTION ---- */
 .auth-visual-section {
   background: var(--ut-dark);
   padding: 60px;
@@ -537,7 +537,7 @@
   left: -80px;
 }
 
-/* ──── RESET SUCCESS ──── */
+/* ---- RESET SUCCESS ---- */
 .reset-success {
   text-align: center;
 }
@@ -581,7 +581,7 @@
   margin-bottom: 20px !important;
 }
 
-/* ──── RESPONSIVE ──── */
+/* ---- RESPONSIVE ---- */
 @media (max-width: 968px) {
   .auth-box {
     grid-template-columns: 1fr;
