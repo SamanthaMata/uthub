@@ -11,7 +11,6 @@
   <!-- CSS -->
   <link rel="stylesheet" href="../../css/styles.css">
   <link rel="stylesheet" href="../../css/dashboard.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="../../css/comida.css">
   <link rel="stylesheet" href="../../css/wiki-assistant.css">
 </head>
@@ -27,10 +26,10 @@
       <nav class="nav" id="nav-menu">
         <ul class="nav-list">
           <li><a href="../dashboard.html" class="nav-link">Dashboard</a></li>
-          <li><a href="tiendas.html" class="nav-link active">🍔 Comida</a></li>
-          <li><a href="../tutorias/buscar.html" class="nav-link">📚 Tutorías</a></li>
-          <li><a href="../libros/catalogo.html" class="nav-link">📖 Libros</a></li>
-          <li><a href="../servicios/explorar.html" class="nav-link">💼 Servicios</a></li>
+          <li><a href="tiendas.html" class="nav-link active">Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">Servicios</a></li>
         </ul>
       </nav>
       
@@ -127,7 +126,7 @@
       <!-- Header Section -->
       <div class="page-header">
         <div class="page-header-content">
-          <h1 class="page-title">🍔 Tiendas de Comida</h1>
+          <h1 class="page-title">Tiendas de Comida</h1>
           <p class="page-subtitle">Descubre emprendimientos estudiantiles y pide comida directo a tu salón</p>
         </div>
         <div class="page-header-actions">
@@ -194,9 +193,9 @@
             <label class="filter-label">Calificación</label>
             <select id="filter-calificacion" class="filter-select">
               <option value="">Todas</option>
-              <option value="4">4+ ⭐</option>
-              <option value="4.5">4.5+ ⭐</option>
-              <option value="4.8">4.8+ ⭐</option>
+              <option value="4">4+</option>
+              <option value="4.5">4.5+</option>
+              <option value="4.8">4.8+</option>
             </select>
           </div>
         </div>
@@ -211,7 +210,7 @@
         <div class="campus-map-card">
           <div class="section-card-header">
             <div>
-              <span class="section-kicker">Leaflet + OpenStreetMap</span>
+              <span class="section-kicker">Mapa del campus</span>
               <h2 class="section-card-title">Mapa del campus UTSC</h2>
               <p class="section-card-copy">Carr. Monterrey - Saltillo Km. 61.5, Bosques de Santa Catarina, Cdad. Santa Catarina, N.L.</p>
             </div>
@@ -226,10 +225,10 @@
 
       <!-- Empty State (oculto por defecto) -->
       <div class="empty-state" id="empty-state" style="display: none;">
-        <div class="empty-icon">🔍</div>
+        <div class="empty-icon">Buscar</div>
         <h3>No se encontraron tiendas</h3>
         <p>Intenta ajustar los filtros o buscar con otros términos</p>
-        <button class="btn-secondary" onclick="clearFilters()">Limpiar filtros</button>
+        <button class="btn-secondary" type="button" id="btn-clear-filters">Limpiar filtros</button>
       </div>
 
     </div>
@@ -243,7 +242,7 @@
         <div class="footer-links-inline">
           <a href="../ayuda.html">Ayuda</a>
           <a href="../terminos.html">Términos</a>
-          <a href="#">Privacidad</a>
+          <a href="../privacidad.html">Privacidad</a>
         </div>
       </div>
     </div>
@@ -252,18 +251,9 @@
   <!-- JavaScript -->
   <script src="../../js/protect.js"></script>
 <script src="../../js/main.js"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="../../js/config.js"></script>
 <script src="../../js/comida.js"></script>
 <script src="../../js/wiki-assistant.js"></script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    initTiendasPage();
-    protegerRuta();
-    cargarTiendas();
-  });
-</script>
 </body>
 </html>
 

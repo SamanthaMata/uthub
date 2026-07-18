@@ -51,7 +51,8 @@ app.use((req, res, next) => {
     "script-src 'self'; " +
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
     "font-src 'self' https://fonts.gstatic.com; " +
-    "img-src 'self' data:; " +
+    "connect-src 'self' https://*.wikipedia.org https://*.wikimedia.org https://www.wikidata.org; " +
+    "img-src 'self' data: https://images.unsplash.com https://imgs.search.brave.com https://upload.wikimedia.org https://*.wikimedia.org; " +
     "frame-ancestors 'none'; " +
     "form-action 'self'"
   );
@@ -84,7 +85,7 @@ app.get('/sitemap.xml', (req, res) => {
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).json({ error: 'Algo sali� mal' });
+  res.status(500).json({ error: 'Algo salió mal' });
 });
 
 const PORT = process.env.PORT || 3000;

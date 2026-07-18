@@ -1,19 +1,19 @@
-/* ============================================
-   UTHUB - M�DULO DE SERVICIOS FREELANCE
-   L�gica frontend con localStorage
+﻿/* ============================================
+   UTHUB - Mï¿½DULO DE SERVICIOS FREELANCE
+   Lï¿½gica frontend con localStorage
    ============================================ */
 
 const ServiciosDB = (() => {
 
   const SERVICIOS_DEMO = [
     {
-      id: 1, titulo: 'Dise�o de logotipos profesionales',
-      categoria: 'Dise�o', emoji: '??',
+      id: 1, titulo: 'Diseï¿½o de logotipos profesionales',
+      categoria: 'Diseï¿½o', emoji: '??',
       color: '#FFF0E0', colorDark: '#F5841F',
-      descripcion: 'Dise�o de identidad visual completa: logotipo, colores y tipograf�a. Entrego en AI, PDF y PNG. 2 revisiones incluidas. Ideal para emprendedores y proyectos universitarios.',
+      descripcion: 'Diseï¿½o de identidad visual completa: logotipo, colores y tipografï¿½a. Entrego en AI, PDF y PNG. 2 revisiones incluidas. Ideal para emprendedores y proyectos universitarios.',
       precio: 250, precioBasico: 150, precioPremium: 450,
-      entrega: '3 d�as', entregaBasico: '5 d�as', entregaPremium: '2 d�as',
-      calificacion: 4.9, rese�as: 24, trabajos: 31,
+      entrega: '3 dï¿½as', entregaBasico: '5 dï¿½as', entregaPremium: '2 dï¿½as',
+      calificacion: 4.9, resenas: 24, trabajos: 31,
       freelancer: { id: 1, nombre: 'Valentina Cruz', iniciales: 'VC', color: '#F59E0B', carrera: 'Ing. en Sistemas', semestre: '7mo' },
       habilidades: ['Illustrator', 'Figma', 'Branding', 'Identidad Visual'],
       whatsapp: '8116667788'
@@ -22,83 +22,83 @@ const ServiciosDB = (() => {
       id: 2, titulo: 'Desarrollo de sitios web en HTML/CSS/JS',
       categoria: 'Desarrollo', emoji: '??',
       color: '#E0FAF6', colorDark: '#009985',
-      descripcion: 'Creo tu sitio web desde cero: landing page, portafolio, blog. Responsive, r�pido y bien codificado. Incluyo formulario de contacto y hosting b�sico gratis por 6 meses.',
+      descripcion: 'Creo tu sitio web desde cero: landing page, portafolio, blog. Responsive, rï¿½pido y bien codificado. Incluyo formulario de contacto y hosting bï¿½sico gratis por 6 meses.',
       precio: 500, precioBasico: 300, precioPremium: 900,
-      entrega: '7 d�as', entregaBasico: '10 d�as', entregaPremium: '5 d�as',
-      calificacion: 4.8, rese�as: 18, trabajos: 22,
-      freelancer: { id: 2, nombre: 'Diego Ram�rez', iniciales: 'DR', color: '#6366F1', carrera: 'Ing. en Mecatr�nica', semestre: '9no' },
+      entrega: '7 dï¿½as', entregaBasico: '10 dï¿½as', entregaPremium: '5 dï¿½as',
+      calificacion: 4.8, resenas: 18, trabajos: 22,
+      freelancer: { id: 2, nombre: 'Diego Ramï¿½rez', iniciales: 'DR', color: '#6366F1', carrera: 'Ing. en Mecatrï¿½nica', semestre: '9no' },
       habilidades: ['HTML', 'CSS', 'JavaScript', 'PHP', 'MySQL'],
       whatsapp: '8115551234'
     },
     {
-      id: 3, titulo: 'Fotograf�a para eventos y retratos',
-      categoria: 'Fotograf�a', emoji: '??',
+      id: 3, titulo: 'Fotografï¿½a para eventos y retratos',
+      categoria: 'Fotografï¿½a', emoji: '??',
       color: '#EDE9FE', colorDark: '#7C3AED',
-      descripcion: 'Fotograf�a profesional para eventos universitarios, retratos para redes sociales, graduaciones y proyectos. Edici�n incluida con entrega en 24 horas.',
+      descripcion: 'Fotografï¿½a profesional para eventos universitarios, retratos para redes sociales, graduaciones y proyectos. Ediciï¿½n incluida con entrega en 24 horas.',
       precio: 400, precioBasico: 200, precioPremium: 700,
-      entrega: '1 d�a', entregaBasico: '2 d�as', entregaPremium: '24 hrs',
-      calificacion: 4.7, rese�as: 15, trabajos: 28,
-      freelancer: { id: 3, nombre: 'Ana Mart�nez', iniciales: 'AM', color: '#F5841F', carrera: 'Ing. en Sistemas', semestre: '7mo' },
+      entrega: '1 dï¿½a', entregaBasico: '2 dï¿½as', entregaPremium: '24 hrs',
+      calificacion: 4.7, resenas: 15, trabajos: 28,
+      freelancer: { id: 3, nombre: 'Ana Martï¿½nez', iniciales: 'AM', color: '#F5841F', carrera: 'Ing. en Sistemas', semestre: '7mo' },
       habilidades: ['Lightroom', 'Photoshop', 'Mirrorless', 'Retrato'],
       whatsapp: '8119876543'
     },
     {
-      id: 4, titulo: 'Redacci�n y correcci�n de documentos',
-      categoria: 'Redacci�n', emoji: '??',
+      id: 4, titulo: 'Redacciï¿½n y correcciï¿½n de documentos',
+      categoria: 'Redacciï¿½n', emoji: '??',
       color: '#DCFCE7', colorDark: '#16A34A',
-      descripcion: 'Redacto reportes, tesinas, ensayos y documentos acad�micos. Correcci�n ortogr�fica y de estilo. Normas APA 7. Entrega en Word o PDF. Total confidencialidad.',
+      descripcion: 'Redacto reportes, tesinas, ensayos y documentos acadï¿½micos. Correcciï¿½n ortogrï¿½fica y de estilo. Normas APA 7. Entrega en Word o PDF. Total confidencialidad.',
       precio: 150, precioBasico: 80, precioPremium: 300,
-      entrega: '2 d�as', entregaBasico: '4 d�as', entregaPremium: '1 d�a',
-      calificacion: 5.0, rese�as: 32, trabajos: 40,
-      freelancer: { id: 4, nombre: 'Sof�a L�pez', iniciales: 'SL', color: '#EC4899', carrera: 'Ing. en Gesti�n Empresarial', semestre: '6to' },
-      habilidades: ['APA 7', 'Word', 'Redacci�n Acad�mica', 'Ortograf�a'],
+      entrega: '2 dï¿½as', entregaBasico: '4 dï¿½as', entregaPremium: '1 dï¿½a',
+      calificacion: 5.0, resenas: 32, trabajos: 40,
+      freelancer: { id: 4, nombre: 'Sofï¿½a Lï¿½pez', iniciales: 'SL', color: '#EC4899', carrera: 'Ing. en Gestiï¿½n Empresarial', semestre: '6to' },
+      habilidades: ['APA 7', 'Word', 'Redacciï¿½n Acadï¿½mica', 'Ortografï¿½a'],
       whatsapp: '8113334455'
     },
     {
-      id: 5, titulo: 'Edici�n de video para YouTube y Reels',
+      id: 5, titulo: 'Ediciï¿½n de video para YouTube y Reels',
       categoria: 'Video', emoji: '??',
       color: '#FEF9C3', colorDark: '#92400E',
-      descripcion: 'Edito tus videos con transiciones, m�sica, subt�tulos y efectos. Formatos para YouTube, TikTok, Instagram Reels y Shorts. 1 ronda de revisi�n incluida.',
+      descripcion: 'Edito tus videos con transiciones, mï¿½sica, subtï¿½tulos y efectos. Formatos para YouTube, TikTok, Instagram Reels y Shorts. 1 ronda de revisiï¿½n incluida.',
       precio: 350, precioBasico: 200, precioPremium: 600,
-      entrega: '3 d�as', entregaBasico: '5 d�as', entregaPremium: '2 d�as',
-      calificacion: 4.6, rese�as: 11, trabajos: 16,
+      entrega: '3 dï¿½as', entregaBasico: '5 dï¿½as', entregaPremium: '2 dï¿½as',
+      calificacion: 4.6, resenas: 11, trabajos: 16,
       freelancer: { id: 5, nombre: 'Carlos Mendoza', iniciales: 'CM', color: '#00C2A8', carrera: 'Ing. en Sistemas', semestre: '8vo' },
-      habilidades: ['Premiere Pro', 'After Effects', 'DaVinci Resolve', 'Subt�tulos'],
+      habilidades: ['Premiere Pro', 'After Effects', 'DaVinci Resolve', 'Subtï¿½tulos'],
       whatsapp: '8112345678'
     },
     {
-      id: 6, titulo: 'Tutor�as de Excel y an�lisis de datos',
-      categoria: 'Educaci�n', emoji: '??',
+      id: 6, titulo: 'Tutorï¿½as de Excel y anï¿½lisis de datos',
+      categoria: 'Educaciï¿½n', emoji: '??',
       color: '#FFF0E0', colorDark: '#D96A08',
-      descripcion: 'Te ense�o Excel desde cero o nivel avanzado: tablas din�micas, f�rmulas, macros b�sicas y dashboards. Tambi�n Power BI para visualizaci�n de datos.',
+      descripcion: 'Te enseï¿½o Excel desde cero o nivel avanzado: tablas dinï¿½micas, fï¿½rmulas, macros bï¿½sicas y dashboards. Tambiï¿½n Power BI para visualizaciï¿½n de datos.',
       precio: 120, precioBasico: 80, precioPremium: 200,
-      entrega: '1 sesi�n', entregaBasico: '2 sesiones', entregaPremium: '5 sesiones',
-      calificacion: 4.9, rese�as: 20, trabajos: 25,
-      freelancer: { id: 4, nombre: 'Sof�a L�pez', iniciales: 'SL', color: '#EC4899', carrera: 'Ing. en Gesti�n Empresarial', semestre: '6to' },
-      habilidades: ['Excel', 'Power BI', 'Tablas Din�micas', 'Dashboards'],
+      entrega: '1 sesiï¿½n', entregaBasico: '2 sesiones', entregaPremium: '5 sesiones',
+      calificacion: 4.9, resenas: 20, trabajos: 25,
+      freelancer: { id: 4, nombre: 'Sofï¿½a Lï¿½pez', iniciales: 'SL', color: '#EC4899', carrera: 'Ing. en Gestiï¿½n Empresarial', semestre: '6to' },
+      habilidades: ['Excel', 'Power BI', 'Tablas Dinï¿½micas', 'Dashboards'],
       whatsapp: '8113334455'
     },
     {
-      id: 7, titulo: 'Producci�n musical y beats',
-      categoria: 'M�sica', emoji: '??',
+      id: 7, titulo: 'Producciï¿½n musical y beats',
+      categoria: 'Mï¿½sica', emoji: '??',
       color: '#EDE9FE', colorDark: '#7C3AED',
-      descripcion: 'Produzco beats y m�sica para tus proyectos: videos, podcasts, eventos. G�neros: trap, lo-fi, pop. Entrega en WAV y MP3. Derechos de uso incluidos.',
+      descripcion: 'Produzco beats y mï¿½sica para tus proyectos: videos, podcasts, eventos. Gï¿½neros: trap, lo-fi, pop. Entrega en WAV y MP3. Derechos de uso incluidos.',
       precio: 280, precioBasico: 150, precioPremium: 500,
-      entrega: '4 d�as', entregaBasico: '7 d�as', entregaPremium: '3 d�as',
-      calificacion: 4.5, rese�as: 8, trabajos: 12,
+      entrega: '4 dï¿½as', entregaBasico: '7 dï¿½as', entregaPremium: '3 dï¿½as',
+      calificacion: 4.5, resenas: 8, trabajos: 12,
       freelancer: { id: 6, nombre: 'Luis Torres', iniciales: 'LT', color: '#10B981', carrera: 'Ing. en Sistemas', semestre: '10mo' },
       habilidades: ['FL Studio', 'Ableton', 'Mezcla', 'Mastering'],
       whatsapp: '8117778899'
     },
     {
-      id: 8, titulo: 'Instalaci�n y soporte de computadoras',
-      categoria: 'Tecnolog�a', emoji: '??',
+      id: 8, titulo: 'Instalaciï¿½n y soporte de computadoras',
+      categoria: 'Tecnologï¿½a', emoji: '??',
       color: '#E0FAF6', colorDark: '#009985',
-      descripcion: 'Formateo, instalaci�n de Windows/Linux, configuraci�n de red, eliminaci�n de virus y mantenimiento. A domicilio en el campus. Diagn�stico gratuito.',
+      descripcion: 'Formateo, instalaciï¿½n de Windows/Linux, configuraciï¿½n de red, eliminaciï¿½n de virus y mantenimiento. A domicilio en el campus. Diagnï¿½stico gratuito.',
       precio: 150, precioBasico: 100, precioPremium: 250,
-      entrega: 'Mismo d�a', entregaBasico: '1 d�a', entregaPremium: '2 hrs',
-      calificacion: 4.8, rese�as: 27, trabajos: 35,
-      freelancer: { id: 2, nombre: 'Diego Ram�rez', iniciales: 'DR', color: '#6366F1', carrera: 'Ing. en Mecatr�nica', semestre: '9no' },
+      entrega: 'Mismo dï¿½a', entregaBasico: '1 dï¿½a', entregaPremium: '2 hrs',
+      calificacion: 4.8, resenas: 27, trabajos: 35,
+      freelancer: { id: 2, nombre: 'Diego Ramï¿½rez', iniciales: 'DR', color: '#6366F1', carrera: 'Ing. en Mecatrï¿½nica', semestre: '9no' },
       habilidades: ['Windows', 'Linux', 'Redes', 'Hardware'],
       whatsapp: '8115551234'
     }
@@ -128,7 +128,7 @@ const ServiciosDB = (() => {
     const mis = getMisServicios();
     servicio.id = Date.now();
     servicio.calificacion = 0;
-    servicio.rese�as = 0;
+    servicio.resenas = 0;
     servicio.trabajos = 0;
     servicio.freelancer = { id: 0, nombre: 'Samantha Mata', iniciales: 'SM', color: '#F5841F', carrera: 'Ing. en Sistemas', semestre: '8vo' };
     mis.push(servicio);
@@ -183,7 +183,7 @@ const ServiciosUI = {
           <div class="servicio-footer">
             <div class="servicio-rating">
               <span class="stars-s">${ServiciosUI.renderStars(s.calificacion)}</span>
-              <span>${s.calificacion > 0 ? s.calificacion.toFixed(1) : 'Nuevo'} (${s.rese�as})</span>
+              <span>${s.calificacion > 0 ? s.calificacion.toFixed(1) : 'Nuevo'} (${s.resenas})</span>
             </div>
             <div class="servicio-precio">$${s.precio}<span>/base</span></div>
           </div>
@@ -209,13 +209,14 @@ const ServiciosUI = {
   },
 
   CATEGORIAS: [
-    { nombre: 'Dise�o', emoji: '??' },
+    { nombre: 'Diseï¿½o', emoji: '??' },
     { nombre: 'Desarrollo', emoji: '??' },
-    { nombre: 'Fotograf�a', emoji: '??' },
-    { nombre: 'Redacci�n', emoji: '??' },
+    { nombre: 'Fotografï¿½a', emoji: '??' },
+    { nombre: 'Redacciï¿½n', emoji: '??' },
     { nombre: 'Video', emoji: '??' },
-    { nombre: 'M�sica', emoji: '??' },
-    { nombre: 'Educaci�n', emoji: '??' },
-    { nombre: 'Tecnolog�a', emoji: '??' }
+    { nombre: 'Mï¿½sica', emoji: '??' },
+    { nombre: 'Educaciï¿½n', emoji: '??' },
+    { nombre: 'Tecnologï¿½a', emoji: '??' }
   ]
 };
+

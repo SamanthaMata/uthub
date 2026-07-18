@@ -107,7 +107,8 @@
   position: relative;
 }
 
-.user-btn {
+.user-btn,
+.user-menu-btn {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -119,7 +120,8 @@
   transition: all 0.2s;
 }
 
-.user-btn:hover {
+.user-btn:hover,
+.user-menu-btn:hover {
   border-color: var(--ut-orange);
   background: var(--ut-orange-xl);
 }
@@ -170,12 +172,20 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
   padding: 12px 16px;
   font-size: 14px;
   color: var(--ut-text);
   text-decoration: none;
+  text-align: left;
   transition: all 0.2s;
   border-bottom: 1px solid #F0EDE8;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-body);
 }
 
 .dropdown-item:last-child {

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -433,15 +433,15 @@
       </a>
       <nav class="nav">
         <ul class="nav-list">
-          <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
-          <li><a href="tiendas.html" class="nav-link active">?? Comida</a></li>
-          <li><a href="../tutorias/buscar.html" class="nav-link">?? Tutor�as</a></li>
-          <li><a href="../libros/catalogo.html" class="nav-link">?? Libros</a></li>
-          <li><a href="../servicios/explorar.html" class="nav-link">?? Servicios</a></li>
+          <li><a href="../dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="tiendas.html" class="nav-link active">Comida</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">Tutorías</a></li>
+          <li><a href="../libros/catalogo.html" class="nav-link">Libros</a></li>
+          <li><a href="../servicios/explorar.html" class="nav-link">Servicios</a></li>
         </ul>
       </nav>
       <div class="header-actions">
-        <a href="tiendas.html" class="btn btn-ghost btn-sm">? Volver a Tiendas</a>
+        <a href="tiendas.html" class="btn btn-ghost btn-sm">Volver a Tiendas</a>
       </div>
     </div>
   </header>
@@ -452,32 +452,32 @@
     <!-- SIDEBAR -->
     <aside class="vendor-sidebar">
       <div class="sidebar-brand">
-        <div class="sidebar-brand-name" id="sb-tienda-nombre">?? Mi Tienda</div>
+        <div class="sidebar-brand-name" id="sb-tienda-nombre">UT Mi Tienda</div>
         <div class="sidebar-brand-status" id="sb-status">Abierta ahora</div>
       </div>
 
       <nav class="sidebar-nav">
         <div class="sidebar-section-label">Panel</div>
-        <a class="sidebar-link active" onclick="showPanel('resumen')">
+        <a class="sidebar-link active" href="#" data-panel="resumen">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           Resumen
         </a>
-        <a class="sidebar-link" onclick="showPanel('pedidos')">
+        <a class="sidebar-link" href="#" data-panel="pedidos">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
           Pedidos
           <span class="sidebar-badge" id="sb-pedidos-count" style="display:none;">0</span>
         </a>
-        <a class="sidebar-link" onclick="showPanel('productos')">
+        <a class="sidebar-link" href="#" data-panel="productos">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           Mis Productos
         </a>
 
-        <div class="sidebar-section-label">Configuraci�n</div>
-        <a class="sidebar-link" onclick="showPanel('config')">
+        <div class="sidebar-section-label">Configuración</div>
+        <a class="sidebar-link" href="#" data-panel="config">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
           Configurar Tienda
         </a>
-        <a class="sidebar-link" onclick="showPanel('horario')">
+        <a class="sidebar-link" href="#" data-panel="horario">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           Horario
         </a>
@@ -491,64 +491,64 @@
       <div class="panel active" id="panel-resumen">
         <div class="panel-header">
           <div>
-            <div class="panel-title">Buen d�a ??</div>
-            <div class="panel-subtitle">Aqu� est� el resumen de tu tienda hoy</div>
+            <div class="panel-title">Buen día</div>
+            <div class="panel-subtitle">Aquí está el resumen de tu tienda hoy</div>
           </div>
-          <button class="btn btn-primary" onclick="toggleTiendaStatus()" id="btn-toggle-status">
-            ?? Cerrar Tienda
+          <button class="btn btn-primary" type="button" id="btn-toggle-status">
+            Cerrar Tienda
           </button>
         </div>
 
         <div class="stats-row">
           <div class="stat-card">
-            <div class="stat-card-icon" style="background:#FFF0E0;">??</div>
+            <div class="stat-card-icon" style="background:#FFF0E0;">#</div>
             <div class="stat-card-value" id="stat-pedidos-hoy">0</div>
             <div class="stat-card-label">Pedidos hoy</div>
-            <div class="stat-card-trend trend-neutral">Total hist�rico: <span id="stat-pedidos-total">0</span></div>
+            <div class="stat-card-trend trend-neutral">Total histórico: <span id="stat-pedidos-total">0</span></div>
           </div>
           <div class="stat-card">
-            <div class="stat-card-icon" style="background:#DCFCE7;">??</div>
+            <div class="stat-card-icon" style="background:#DCFCE7;">$</div>
             <div class="stat-card-value" id="stat-ingresos">$0</div>
             <div class="stat-card-label">Ingresos totales</div>
             <div class="stat-card-trend trend-up" id="stat-ticket">Ticket prom. $0</div>
           </div>
           <div class="stat-card">
-            <div class="stat-card-icon" style="background:#DBEAFE;">?</div>
-            <div class="stat-card-value" id="stat-rating">�</div>
-            <div class="stat-card-label">Calificaci�n</div>
-            <div class="stat-card-trend trend-neutral" id="stat-resenas">Sin rese�as a�n</div>
+            <div class="stat-card-icon" style="background:#DBEAFE;">*</div>
+            <div class="stat-card-value" id="stat-rating"></div>
+            <div class="stat-card-label">Calificación</div>
+            <div class="stat-card-trend trend-neutral" id="stat-resenas">Sin reseñas aún</div>
           </div>
           <div class="stat-card">
-            <div class="stat-card-icon" style="background:#F0FDF4;">???</div>
+            <div class="stat-card-icon" style="background:#F0FDF4;">P</div>
             <div class="stat-card-value" id="stat-productos">0</div>
             <div class="stat-card-label">Productos activos</div>
-            <div class="stat-card-trend trend-neutral">en el men�</div>
+            <div class="stat-card-trend trend-neutral">en el menú</div>
           </div>
         </div>
 
         <!-- Pedidos pendientes -->
         <div class="card">
           <div class="card-header">
-            <span class="card-title">? Pedidos Pendientes</span>
-            <a class="btn btn-ghost btn-sm" onclick="showPanel('pedidos')">Ver todos</a>
+            <span class="card-title">Pedidos Pendientes</span>
+            <a class="btn btn-ghost btn-sm" href="#" data-panel="pedidos">Ver todos</a>
           </div>
           <div id="resumen-pedidos-pendientes">
             <div class="empty-state">
-              <div class="empty-state-icon">?</div>
-              <div class="empty-state-title">Todo al d�a</div>
+              <div class="empty-state-icon">OK</div>
+              <div class="empty-state-title">Todo al día</div>
               <div class="empty-state-desc">No hay pedidos pendientes por atender</div>
             </div>
           </div>
         </div>
 
-        <!-- Producto m�s vendido -->
+        <!-- Producto más vendido -->
         <div class="card">
           <div class="card-header">
-            <span class="card-title">?? M�s vendidos</span>
+            <span class="card-title">Más vendidos</span>
           </div>
           <div class="card-body" id="mas-vendidos">
             <div style="text-align:center;padding:20px;color:var(--text-s);font-size:13px;">
-              Los productos m�s pedidos aparecer�n aqu� conforme recibas pedidos.
+              Los productos más pedidos aparecerán aquí conforme recibas pedidos.
             </div>
           </div>
         </div>
@@ -558,11 +558,11 @@
       <div class="panel" id="panel-pedidos">
         <div class="panel-header">
           <div>
-            <div class="panel-title">?? Pedidos Recibidos</div>
+            <div class="panel-title">Pedidos Recibidos</div>
             <div class="panel-subtitle">Gestiona los pedidos de tus clientes</div>
           </div>
           <div style="display:flex;gap:8px;align-items:center;">
-            <select class="status-select" id="filtro-estado-pedidos" onchange="renderPedidosTable()">
+            <select class="status-select" id="filtro-estado-pedidos">
               <option value="">Todos los estados</option>
               <option value="nuevo">Nuevo</option>
               <option value="preparando">Preparando</option>
@@ -575,9 +575,9 @@
         <div class="card">
           <div id="pedidos-table-container">
             <div class="empty-state">
-              <div class="empty-state-icon">??</div>
-              <div class="empty-state-title">Sin pedidos a�n</div>
-              <div class="empty-state-desc">Cuando los estudiantes hagan pedidos en tu tienda, aparecer�n aqu�</div>
+              <div class="empty-state-icon">Pedidos</div>
+              <div class="empty-state-title">Sin pedidos aún</div>
+              <div class="empty-state-desc">Cuando los estudiantes hagan pedidos en tu tienda, aparecerán aquí</div>
             </div>
           </div>
         </div>
@@ -587,10 +587,10 @@
       <div class="panel" id="panel-productos">
         <div class="panel-header">
           <div>
-            <div class="panel-title">??? Mis Productos</div>
-            <div class="panel-subtitle">Administra tu cat�logo de productos</div>
+            <div class="panel-title">Mis Productos</div>
+            <div class="panel-subtitle">Administra tu catálogo de productos</div>
           </div>
-          <button class="btn btn-primary" onclick="openAddProductModal()">
+          <button class="btn btn-primary" type="button" id="btn-open-add-product">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Agregar Producto
           </button>
@@ -603,13 +603,13 @@
       <div class="panel" id="panel-config">
         <div class="panel-header">
           <div>
-            <div class="panel-title">?? Configurar Tienda</div>
-            <div class="panel-subtitle">Informaci�n p�blica de tu tienda</div>
+            <div class="panel-title">Configurar Tienda</div>
+            <div class="panel-subtitle">Información pública de tu tienda</div>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-header"><span class="card-title">Informaci�n General</span></div>
+          <div class="card-header"><span class="card-title">Información General</span></div>
           <div class="card-body">
             <div class="form-grid">
               <div class="form-group">
@@ -621,28 +621,32 @@
                 <select class="form-select" id="cfg-tipo">
                   <option value="mexicana">Mexicana</option>
                   <option value="italiana">Italiana</option>
-                  <option value="rapida">Comida R�pida</option>
+                  <option value="rapida">Comida Rápida</option>
                   <option value="saludable">Saludable</option>
                   <option value="postres">Postres</option>
-                  <option value="bebidas">Caf� & Bebidas</option>
+                  <option value="bebidas">Café & Bebidas</option>
                   <option value="otro">Otro</option>
                 </select>
               </div>
               <div class="form-group">
-                <label class="form-label">Edificio / Ubicaci�n</label>
-                <input class="form-input" id="cfg-edificio" type="text" placeholder="Ej: Edificio Pesado 1, Sal�n B-204">
+                <label class="form-label">Edificio / Ubicación</label>
+                <input class="form-input" id="cfg-edificio" type="text" placeholder="Ej: Edificio Pesado 1, Salón B-204">
               </div>
               <div class="form-group">
-                <label class="form-label">Emoji / �cono</label>
-                <input class="form-input" id="cfg-emoji" type="text" placeholder="??" maxlength="4">
+                <label class="form-label">Emoji / Icono</label>
+                <input class="form-input" id="cfg-emoji" type="text" placeholder="UT" maxlength="4">
               </div>
               <div class="form-group full">
-                <label class="form-label">Descripci�n</label>
+                <label class="form-label">URL de Imagen de la Tienda</label>
+                <input class="form-input" id="cfg-img" type="url" placeholder="https://images.unsplash.com/...">
+              </div>
+              <div class="form-group full">
+                <label class="form-label">Descripción</label>
                 <textarea class="form-textarea" id="cfg-desc" placeholder="Describe tu tienda en 1-2 oraciones..."></textarea>
               </div>
             </div>
             <div style="margin-top:20px;text-align:right;">
-              <button class="btn btn-primary" onclick="saveConfig()">Guardar Cambios</button>
+              <button class="btn btn-primary" type="button" id="btn-save-config">Guardar Cambios</button>
             </div>
           </div>
         </div>
@@ -652,13 +656,13 @@
       <div class="panel" id="panel-horario">
         <div class="panel-header">
           <div>
-            <div class="panel-title">?? Horario de Atenci�n</div>
-            <div class="panel-subtitle">Configura cu�ndo est� disponible tu tienda</div>
+            <div class="panel-title">Horario de Atención</div>
+            <div class="panel-subtitle">Configura cuándo está disponible tu tienda</div>
           </div>
         </div>
 
         <div class="card">
-          <div class="card-header"><span class="card-title">D�as de Servicio</span></div>
+          <div class="card-header"><span class="card-title">Días de Servicio</span></div>
           <div class="card-body">
             <div class="horario-grid" id="horario-dias">
               <!-- Generated by JS -->
@@ -667,7 +671,7 @@
         </div>
 
         <div class="card">
-          <div class="card-header"><span class="card-title">Horas de Atenci�n</span></div>
+          <div class="card-header"><span class="card-title">Horas de Atención</span></div>
           <div class="card-body">
             <div class="form-grid">
               <div class="form-group">
@@ -680,7 +684,7 @@
               </div>
             </div>
             <div style="margin-top:20px;text-align:right;">
-              <button class="btn btn-primary" onclick="saveHorario()">Guardar Horario</button>
+              <button class="btn btn-primary" type="button" id="btn-save-horario">Guardar Horario</button>
             </div>
           </div>
         </div>
@@ -692,7 +696,7 @@
   <!-- -- MODAL: AGREGAR PRODUCTO -- -->
   <div class="modal-overlay" id="modal-add-product">
     <div class="modal">
-      <div class="modal-title">? Agregar Producto</div>
+      <div class="modal-title">Agregar Producto</div>
       <div class="form-grid">
         <div class="form-group">
           <label class="form-label">Nombre del Producto</label>
@@ -703,15 +707,15 @@
           <input class="form-input" id="prod-precio" type="number" min="1" placeholder="45">
         </div>
         <div class="form-group">
-          <label class="form-label">Categor�a</label>
+          <label class="form-label">Categoría</label>
           <input class="form-input" id="prod-categoria" type="text" placeholder="Ej: Tacos, Bebidas, Postres">
         </div>
         <div class="form-group">
           <label class="form-label">Badge (opcional)</label>
-          <input class="form-input" id="prod-badge" type="text" placeholder="Popular, Especial, ??">
+          <input class="form-input" id="prod-badge" type="text" placeholder="Popular, Especial">
         </div>
         <div class="form-group full">
-          <label class="form-label">Descripci�n</label>
+          <label class="form-label">Descripción</label>
           <textarea class="form-textarea" id="prod-desc" placeholder="Describe el producto brevemente..."></textarea>
         </div>
         <div class="form-group full">
@@ -720,350 +724,16 @@
         </div>
       </div>
       <div class="modal-actions">
-        <button class="btn btn-ghost" onclick="closeAddProductModal()">Cancelar</button>
-        <button class="btn btn-primary" onclick="saveProduct()">Guardar Producto</button>
+        <button class="btn btn-ghost" type="button" id="btn-close-product-modal">Cancelar</button>
+        <button class="btn btn-primary" type="button" id="btn-save-product">Guardar Producto</button>
       </div>
     </div>
   </div>
 
-  <script>
-  /* ============================================================
-     MI TIENDA � L�GICA FRONTEND
-     Datos persistidos en localStorage bajo 'uthub_mi_tienda'
-  ============================================================ */
-
-  const DIAS = ['Lun','Mar','Mi�','Jue','Vie','S�b','Dom'];
-  const STATUS_LABELS = { nuevo:'Nuevo', preparando:'Preparando', listo:'Listo para entregar', entregado:'Entregado' };
-  const STATUS_CSS    = { nuevo:'pill-nuevo', preparando:'pill-preparando', listo:'pill-listo', entregado:'pill-entregado' };
-
-  /* -- STORE STATE -- */
-  function getStore() {
-    const defaults = {
-      nombre: 'Mi Tienda',
-      emoji: '???',
-      tipo: 'mexicana',
-      edificio: '',
-      desc: '',
-      abierto: true,
-      horario: { dias: [true,true,true,true,true,false,false], apertura: '07:00', cierre: '15:00' },
-      productos: []
-    };
-    const saved = localStorage.getItem('uthub_mi_tienda');
-    return saved ? { ...defaults, ...JSON.parse(saved) } : defaults;
-  }
-
-  function saveStore(data) {
-    localStorage.setItem('uthub_mi_tienda', JSON.stringify(data));
-  }
-
-  /* -- RECEIVED ORDERS (from estudiantes) -- */
-  function getPedidosRecibidos() {
-    // We piggyback on uthub_pedidos but filter by tienda name
-    const store = getStore();
-    const todos = JSON.parse(localStorage.getItem('uthub_pedidos')) || [];
-    // In demo: show all orders; in production Zoe's backend filters by vendedor
-    return todos.map(p => ({
-      ...p,
-      estadoVendedor: p.estadoVendedor || 'nuevo'
-    }));
-  }
-
-  function savePedidoEstado(pedidoId, nuevoEstado) {
-    const pedidos = JSON.parse(localStorage.getItem('uthub_pedidos')) || [];
-    const idx = pedidos.findIndex(p => p.id == pedidoId);
-    if (idx !== -1) {
-      pedidos[idx].estadoVendedor = nuevoEstado;
-      pedidos[idx].estado = nuevoEstado === 'listo' ? 'en_camino'
-                          : nuevoEstado === 'entregado' ? 'entregado'
-                          : nuevoEstado === 'preparando' ? 'preparando'
-                          : 'confirmado';
-      localStorage.setItem('uthub_pedidos', JSON.stringify(pedidos));
-    }
-  }
-
-  /* -- PANELS -- */
-  function showPanel(id) {
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-    document.getElementById('panel-' + id).classList.add('active');
-    event.currentTarget.classList.add('active');
-
-    if (id === 'pedidos') renderPedidosTable();
-    if (id === 'productos') renderProductos();
-    if (id === 'config') loadConfig();
-    if (id === 'horario') renderHorario();
-    if (id === 'resumen') renderResumen();
-  }
-
-  /* -- RESUMEN -- */
-  function renderResumen() {
-    const store = getStore();
-    const pedidos = getPedidosRecibidos();
-    const today = new Date().toDateString();
-    const pedidosHoy = pedidos.filter(p => new Date(p.fecha).toDateString() === today);
-    const ingresos = pedidos.reduce((s, p) => s + (p.total || 0), 0);
-    const ticketProm = pedidos.length ? Math.round(ingresos / pedidos.length) : 0;
-    const pendientes = pedidos.filter(p => p.estadoVendedor === 'nuevo' || p.estadoVendedor === 'preparando');
-
-    document.getElementById('stat-pedidos-hoy').textContent = pedidosHoy.length;
-    document.getElementById('stat-pedidos-total').textContent = pedidos.length;
-    document.getElementById('stat-ingresos').textContent = '$' + ingresos;
-    document.getElementById('stat-ticket').textContent = 'Ticket prom. $' + ticketProm;
-    document.getElementById('stat-productos').textContent = store.productos.length;
-
-    // Update sidebar
-    document.getElementById('sb-tienda-nombre').textContent = store.emoji + ' ' + store.nombre;
-    document.getElementById('sb-status').textContent = store.abierto ? 'Abierta ahora' : 'Cerrada';
-    document.getElementById('btn-toggle-status').textContent = store.abierto ? '?? Cerrar Tienda' : '?? Abrir Tienda';
-
-    // Badge on pedidos link
-    const badge = document.getElementById('sb-pedidos-count');
-    if (pendientes.length > 0) {
-      badge.textContent = pendientes.length;
-      badge.style.display = 'inline';
-    } else {
-      badge.style.display = 'none';
-    }
-
-    // Pendientes preview
-    const cont = document.getElementById('resumen-pedidos-pendientes');
-    if (pendientes.length === 0) {
-      cont.innerHTML = `<div class="empty-state"><div class="empty-state-icon">?</div><div class="empty-state-title">Todo al d�a</div><div class="empty-state-desc">No hay pedidos pendientes</div></div>`;
-    } else {
-      cont.innerHTML = `<table class="orders-table">
-        <thead><tr><th>Pedido</th><th>Productos</th><th>Total</th><th>Estado</th></tr></thead>
-        <tbody>${pendientes.slice(0, 5).map(p => `
-          <tr>
-            <td class="order-id">#${String(p.id).slice(-5)}</td>
-            <td class="order-items-preview">${p.items.map(i => i.nombre).join(', ')}</td>
-            <td><strong>$${p.total}</strong></td>
-            <td><span class="status-pill ${STATUS_CSS[p.estadoVendedor] || 'pill-nuevo'}">${STATUS_LABELS[p.estadoVendedor] || 'Nuevo'}</span></td>
-          </tr>`).join('')}
-        </tbody>
-      </table>`;
-    }
-
-    // M�s vendidos
-    const contMV = document.getElementById('mas-vendidos');
-    const productCount = {};
-    pedidos.forEach(p => p.items.forEach(i => {
-      productCount[i.nombre] = (productCount[i.nombre] || 0) + i.cantidad;
-    }));
-    const top = Object.entries(productCount).sort((a,b) => b[1]-a[1]).slice(0, 4);
-    if (top.length === 0) {
-      contMV.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-s);font-size:13px;">Los productos m�s pedidos aparecer�n aqu�.</div>`;
-    } else {
-      contMV.innerHTML = `<div style="display:flex;flex-direction:column;gap:10px;">${top.map(([nombre, qty], i) => `
-        <div style="display:flex;align-items:center;gap:12px;padding:10px;background:#FAFAF8;border-radius:10px;">
-          <span style="font-family:Syne,sans-serif;font-size:18px;font-weight:800;color:var(--orange);width:24px;">${i+1}</span>
-          <span style="flex:1;font-size:13px;font-weight:600;color:var(--dark);">${nombre}</span>
-          <span style="font-size:12px;color:var(--text-s);">${qty} vendidos</span>
-        </div>`).join('')}</div>`;
-    }
-  }
-
-  /* -- PEDIDOS TABLE -- */
-  function renderPedidosTable() {
-    const filtro = document.getElementById('filtro-estado-pedidos')?.value || '';
-    let pedidos = getPedidosRecibidos();
-    if (filtro) pedidos = pedidos.filter(p => (p.estadoVendedor || 'nuevo') === filtro);
-
-    const cont = document.getElementById('pedidos-table-container');
-    if (pedidos.length === 0) {
-      cont.innerHTML = `<div class="empty-state"><div class="empty-state-icon">??</div><div class="empty-state-title">Sin pedidos</div><div class="empty-state-desc">Cuando los estudiantes hagan pedidos aparecer�n aqu�</div></div>`;
-      return;
-    }
-
-    cont.innerHTML = `<div style="overflow-x:auto;">
-      <table class="orders-table">
-        <thead>
-          <tr>
-            <th>Pedido</th>
-            <th>Fecha</th>
-            <th>Productos</th>
-            <th>Entrega</th>
-            <th>Total</th>
-            <th>Estado</th>
-            <th>Acci�n</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${[...pedidos].reverse().map(p => {
-            const estadoActual = p.estadoVendedor || 'nuevo';
-            const fecha = new Date(p.fecha);
-            const fechaStr = fecha.toLocaleDateString('es-MX',{day:'numeric',month:'short'}) + ' ' + fecha.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-            return `<tr>
-              <td class="order-id">#${String(p.id).slice(-5)}</td>
-              <td style="font-size:12px;color:var(--text-s);">${fechaStr}</td>
-              <td class="order-items-preview">${p.items.map(i => `${i.nombre} x${i.cantidad}`).join(', ')}</td>
-              <td style="font-size:12px;">?? ${p.ubicacion || '�'}</td>
-              <td><strong style="color:var(--orange);">$${p.total}</strong></td>
-              <td><span class="status-pill ${STATUS_CSS[estadoActual] || 'pill-nuevo'}">${STATUS_LABELS[estadoActual] || estadoActual}</span></td>
-              <td>
-                <select class="status-select" onchange="changePedidoStatus(${p.id}, this.value)">
-                  <option value="nuevo" ${estadoActual==='nuevo'?'selected':''}>Nuevo</option>
-                  <option value="preparando" ${estadoActual==='preparando'?'selected':''}>Preparando</option>
-                  <option value="listo" ${estadoActual==='listo'?'selected':''}>Listo</option>
-                  <option value="entregado" ${estadoActual==='entregado'?'selected':''}>Entregado</option>
-                </select>
-              </td>
-            </tr>`;
-          }).join('')}
-        </tbody>
-      </table>
-    </div>`;
-  }
-
-  function changePedidoStatus(id, estado) {
-    savePedidoEstado(id, estado);
-    renderPedidosTable();
-    renderResumen();
-    mostrarToast('Estado actualizado: ' + STATUS_LABELS[estado], 'success');
-  }
-
-  /* -- PRODUCTS -- */
-  function renderProductos() {
-    const store = getStore();
-    const cont = document.getElementById('products-grid-container');
-    if (store.productos.length === 0) {
-      cont.innerHTML = `<div class="card"><div class="empty-state"><div class="empty-state-icon">???</div><div class="empty-state-title">Sin productos</div><div class="empty-state-desc">Agrega los productos que vendes en tu tienda</div><button class="btn btn-primary" style="margin-top:16px" onclick="openAddProductModal()">+ Agregar Producto</button></div></div>`;
-      return;
-    }
-    cont.innerHTML = `<div class="products-grid">
-      ${store.productos.map((p, i) => `
-        <div class="product-item-card">
-          <div class="product-item-img">
-            <img src="${p.img || 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop'}" alt="${p.nombre}" onerror="this.src='https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&h=300&fit=crop'">
-          </div>
-          <div class="product-item-body">
-            <div class="product-item-name">${p.nombre}</div>
-            <div style="font-size:11px;color:var(--text-s);margin:2px 0 6px;">${p.categoria || ''} ${p.badge ? '� ' + p.badge : ''}</div>
-            <div class="product-item-price">$${p.precio}</div>
-            <div class="product-item-actions">
-              <button class="btn btn-danger btn-sm" onclick="deleteProduct(${i})">Eliminar</button>
-            </div>
-          </div>
-        </div>`).join('')}
-    </div>`;
-  }
-
-  function openAddProductModal() {
-    document.getElementById('modal-add-product').classList.add('open');
-    ['prod-nombre','prod-precio','prod-categoria','prod-badge','prod-desc','prod-img'].forEach(id => {
-      document.getElementById(id).value = '';
-    });
-  }
-  function closeAddProductModal() {
-    document.getElementById('modal-add-product').classList.remove('open');
-  }
-  function saveProduct() {
-    const nombre = document.getElementById('prod-nombre').value.trim();
-    const precio = parseInt(document.getElementById('prod-precio').value);
-    if (!nombre || !precio) { mostrarToast('Nombre y precio son obligatorios', 'error'); return; }
-    const store = getStore();
-    store.productos.push({
-      nombre,
-      precio,
-      categoria: document.getElementById('prod-categoria').value.trim(),
-      badge: document.getElementById('prod-badge').value.trim(),
-      desc: document.getElementById('prod-desc').value.trim(),
-      img: document.getElementById('prod-img').value.trim()
-    });
-    saveStore(store);
-    closeAddProductModal();
-    renderProductos();
-    mostrarToast('Producto agregado correctamente', 'success');
-  }
-  function deleteProduct(idx) {
-    if (!confirm('�Eliminar este producto?')) return;
-    const store = getStore();
-    store.productos.splice(idx, 1);
-    saveStore(store);
-    renderProductos();
-    mostrarToast('Producto eliminado', 'info');
-  }
-
-  /* -- CONFIG -- */
-  function loadConfig() {
-    const store = getStore();
-    document.getElementById('cfg-nombre').value = store.nombre;
-    document.getElementById('cfg-tipo').value = store.tipo;
-    document.getElementById('cfg-edificio').value = store.edificio;
-    document.getElementById('cfg-emoji').value = store.emoji;
-    document.getElementById('cfg-desc').value = store.desc;
-  }
-  function saveConfig() {
-    const store = getStore();
-    store.nombre   = document.getElementById('cfg-nombre').value.trim() || store.nombre;
-    store.tipo     = document.getElementById('cfg-tipo').value;
-    store.edificio = document.getElementById('cfg-edificio').value.trim();
-    store.emoji    = document.getElementById('cfg-emoji').value || store.emoji;
-    store.desc     = document.getElementById('cfg-desc').value.trim();
-    saveStore(store);
-    document.getElementById('sb-tienda-nombre').textContent = store.emoji + ' ' + store.nombre;
-    mostrarToast('Tienda actualizada correctamente', 'success');
-  }
-
-  /* -- HORARIO -- */
-  function renderHorario() {
-    const store = getStore();
-    const cont = document.getElementById('horario-dias');
-    cont.innerHTML = DIAS.map((dia, i) => `
-      <div class="horario-day">
-        <label>
-          <span class="day-name">${dia}</span>
-          <input type="checkbox" id="dia-${i}" ${store.horario.dias[i] ? 'checked' : ''} onchange="updateDiaHorario(${i}, this.checked)">
-          <div class="day-toggle">${dia.slice(0,1)}</div>
-        </label>
-      </div>`).join('');
-    document.getElementById('hora-apertura').value = store.horario.apertura;
-    document.getElementById('hora-cierre').value = store.horario.cierre;
-  }
-  function updateDiaHorario(i, checked) {
-    const store = getStore();
-    store.horario.dias[i] = checked;
-    saveStore(store);
-  }
-  function saveHorario() {
-    const store = getStore();
-    store.horario.apertura = document.getElementById('hora-apertura').value;
-    store.horario.cierre   = document.getElementById('hora-cierre').value;
-    saveStore(store);
-    mostrarToast('Horario guardado', 'success');
-  }
-
-  /* -- TOGGLE STATUS -- */
-  function toggleTiendaStatus() {
-    const store = getStore();
-    store.abierto = !store.abierto;
-    saveStore(store);
-    document.getElementById('btn-toggle-status').textContent = store.abierto ? '?? Cerrar Tienda' : '?? Abrir Tienda';
-    document.getElementById('sb-status').textContent = store.abierto ? 'Abierta ahora' : 'Cerrada';
-    mostrarToast(store.abierto ? 'Tienda abierta ??' : 'Tienda cerrada ??', store.abierto ? 'success' : 'info');
-  }
-
-  /* -- TOAST -- */
-  function mostrarToast(msg, tipo='info') {
-    const t = document.createElement('div');
-    t.style.cssText = `position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:${tipo==='success'?'#22C55E':tipo==='error'?'#FF4F5E':'#60A5FA'};color:white;padding:12px 24px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:all .3s ease;font-family:DM Sans,sans-serif;`;
-    t.textContent = msg;
-    document.body.appendChild(t);
-    setTimeout(() => { t.style.transform = 'translateX(-50%) translateY(0)'; t.style.opacity = '1'; }, 50);
-    setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 2800);
-  }
-
-  /* -- INIT -- */
-  document.addEventListener('DOMContentLoaded', () => {
-    renderResumen();
-    protegerRuta()
-    renderHorario();
-
-    // Close modal on overlay click
-    document.getElementById('modal-add-product').addEventListener('click', (e) => {
-      if (e.target === e.currentTarget) closeAddProductModal();
-    });
-  });
-  </script>
+  <script src="../../js/protect.js"></script>
+  <script src="../../js/main.js"></script>
+  <script src="../../js/config.js"></script>
+  <script src="../../js/mi-tienda.js"></script>
   <script src="../../js/notifications.js"></script>
 </body>
 </html>

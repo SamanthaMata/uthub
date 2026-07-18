@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis Tutor�as - UThub</title>
+  <title>Mis Tutorï¿½as - UThub</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/styles.css">
   <link rel="stylesheet" href="../../css/dashboard.css">
@@ -52,9 +52,9 @@
     <div class="header-container">
       <a href="../../index.html" class="logo"><span class="logo-ut">UT</span><span class="logo-hub">hub</span></a>
       <nav class="nav"><ul class="nav-list">
-          <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="../dashboard.html" class="nav-link">Dashboard</a></li>
           <li><a href="../comida/tiendas.html" class="nav-link">?? Comida</a></li>
-          <li><a href="buscar.html" class="nav-link active">?? Tutor�as</a></li>
+          <li><a href="buscar.html" class="nav-link active">?? Tutorï¿½as</a></li>
           <li><a href="../libros/catalogo.html" class="nav-link">?? Libros</a></li>
       </ul></nav>
       <div class="header-actions">
@@ -74,29 +74,29 @@
       <div class="sb-profile">
         <div class="sb-avatar" id="sb-avatar">?</div>
         <div class="sb-name" id="sb-name">Mi Perfil</div>
-        <div class="sb-stats" id="sb-stats">0 sesiones � $0 ganados</div>
+        <div class="sb-stats" id="sb-stats">0 sesiones ï¿½ $0 ganados</div>
       </div>
       <a class="sb-link active" onclick="showTab('solicitudes',this)">?? Solicitudes <span class="sb-badge" id="badge-sol" style="display:none">0</span></a>
       <a class="sb-link" onclick="showTab('calendario',this)">?? Sesiones</a>
       <a class="sb-link" onclick="showTab('historial',this)">?? Historial</a>
       <a class="sb-link" onclick="showTab('perfil',this)">?? Mi Perfil</a>
-      <a class="sb-link" href="buscar.html" style="margin-top:16px;border-top:1px solid rgba(255,255,255,.08);padding-top:16px;">? Ver cat�logo</a>
+      <a class="sb-link" href="buscar.html" style="margin-top:16px;border-top:1px solid rgba(255,255,255,.08);padding-top:16px;">? Ver catï¿½logo</a>
     </aside>
     <main class="panel-main">
 
       <!-- Solicitudes -->
       <div class="panel active" id="panel-solicitudes">
-        <div class="ph"><div><h1>?? Solicitudes Nuevas</h1><p>Acepta o rechaza las solicitudes de sesi�n</p></div></div>
+        <div class="ph"><div><h1>?? Solicitudes Nuevas</h1><p>Acepta o rechaza las solicitudes de sesiï¿½n</p></div></div>
         <div id="solicitudes-cont"></div>
       </div>
 
       <!-- Calendario / sesiones confirmadas -->
       <div class="panel" id="panel-calendario">
-        <div class="ph"><div><h1>?? Sesiones Confirmadas</h1><p>Tus pr�ximas tutor�as aceptadas</p></div></div>
+        <div class="ph"><div><h1>?? Sesiones Confirmadas</h1><p>Tus prï¿½ximas tutorï¿½as aceptadas</p></div></div>
         <div class="stats-row">
           <div class="sc"><div class="sc-val" id="cal-total">0</div><div class="sc-lbl">Total sesiones</div></div>
           <div class="sc"><div class="sc-val" id="cal-ganado">$0</div><div class="sc-lbl">Total ganado</div></div>
-          <div class="sc"><div class="sc-val" id="cal-prox">0</div><div class="sc-lbl">Pr�ximas</div></div>
+          <div class="sc"><div class="sc-val" id="cal-prox">0</div><div class="sc-lbl">Prï¿½ximas</div></div>
         </div>
         <div id="calendario-cont"></div>
       </div>
@@ -109,7 +109,7 @@
 
       <!-- Perfil -->
       <div class="panel" id="panel-perfil">
-        <div class="ph"><div><h1>?? Mi Perfil como Tutor</h1><p>As� te ven los estudiantes</p></div></div>
+        <div class="ph"><div><h1>?? Mi Perfil como Tutor</h1><p>Asï¿½ te ven los estudiantes</p></div></div>
         <div id="perfil-cont"></div>
       </div>
 
@@ -140,7 +140,7 @@
     badge.textContent = sols.length; badge.style.display = sols.length ? 'inline' : 'none';
     const cont = document.getElementById('solicitudes-cont');
     if (!sols.length) {
-      cont.innerHTML = '<div class="empty-panel"><div style="font-size:40px">??</div><div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800;color:#1A1A2E;margin:10px 0 6px;">Sin solicitudes pendientes</div><div style="font-size:13px;color:#6B6B80;">Las nuevas solicitudes de los estudiantes aparecer�n aqu�</div></div>';
+      cont.innerHTML = '<div class="empty-panel"><div style="font-size:40px">??</div><div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800;color:#1A1A2E;margin:10px 0 6px;">Sin solicitudes pendientes</div><div style="font-size:13px;color:#6B6B80;">Las nuevas solicitudes de los estudiantes aparecerï¿½n aquï¿½</div></div>';
       return;
     }
     cont.innerHTML = sols.map(s => `
@@ -157,7 +157,7 @@
         </div>
         ${s.notas ? '<div style="font-size:12px;color:#6B6B80;margin-bottom:12px;padding:8px 12px;background:#F7F4F0;border-radius:8px;">?? '+s.notas+'</div>' : ''}
         <div class="sol-actions">
-          <button class="btn-aceptar" onclick="accionSesion(${s.id},'aceptada')">? Aceptar � revelar WhatsApp</button>
+          <button class="btn-aceptar" onclick="accionSesion(${s.id},'aceptada')">? Aceptar ï¿½ revelar WhatsApp</button>
           <button class="btn-rechazar" onclick="accionSesion(${s.id},'rechazada')">? Rechazar</button>
         </div>
       </div>`).join('');
@@ -165,11 +165,11 @@
 
   function accionSesion(id, estado) {
     const msg = estado === 'aceptada'
-      ? '�Aceptar esta sesi�n? El estudiante recibir� tu n�mero de WhatsApp.'
-      : '�Rechazar esta solicitud?';
+      ? 'ï¿½Aceptar esta sesiï¿½n? El estudiante recibirï¿½ tu nï¿½mero de WhatsApp.'
+      : 'ï¿½Rechazar esta solicitud?';
     if (!confirm(msg)) return;
     cambiarEstadoSesion(id, estado);
-    tutoriasToast(estado==='aceptada' ? '? Sesi�n aceptada. El estudiante ya tiene tu WhatsApp.' : 'Solicitud rechazada.', estado==='aceptada'?'success':'info');
+    tutoriasToast(estado==='aceptada' ? '? Sesiï¿½n aceptada. El estudiante ya tiene tu WhatsApp.' : 'Solicitud rechazada.', estado==='aceptada'?'success':'info');
     renderSolicitudes();
     renderSidebar();
   }
@@ -183,13 +183,13 @@
     document.getElementById('cal-ganado').textContent = '$'+ganado;
     document.getElementById('cal-prox').textContent = prox.length;
     const cont = document.getElementById('calendario-cont');
-    if (!prox.length) { cont.innerHTML = '<div class="empty-panel"><div style="font-size:40px">??</div><div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800;color:#1A1A2E;margin:10px 0 6px;">Sin sesiones pr�ximas</div></div>'; return; }
+    if (!prox.length) { cont.innerHTML = '<div class="empty-panel"><div style="font-size:40px">??</div><div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800;color:#1A1A2E;margin:10px 0 6px;">Sin sesiones prï¿½ximas</div></div>'; return; }
     cont.innerHTML = prox.map(s => `
       <div class="historial-row">
         <div style="width:40px;height:40px;border-radius:10px;background:${s.tutorColor||'#F5841F'};display:flex;align-items:center;justify-content:center;color:white;font-family:Syne,sans-serif;font-weight:800;font-size:14px;flex-shrink:0;">E</div>
         <div class="hr-info">
           <div class="hr-nombre">${s.materia}</div>
-          <div class="hr-meta">?? ${s.fecha} � ?? ${s.hora} � ?? $${s.precio}/hr</div>
+          <div class="hr-meta">?? ${s.fecha} ï¿½ ?? ${s.hora} ï¿½ ?? $${s.precio}/hr</div>
         </div>
         ${estadoBadge(s.estado)}
         <button onclick="completar(${s.id})" style="padding:7px 14px;background:#DCFCE7;color:#16A34A;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;">Marcar completada</button>
@@ -198,19 +198,19 @@
 
   function completar(id) {
     cambiarEstadoSesion(id, 'completada');
-    tutoriasToast('Sesi�n marcada como completada ?', 'success');
+    tutoriasToast('Sesiï¿½n marcada como completada ?', 'success');
     renderCalendario();
   }
 
   function renderHistorial() {
     const hist = getMisSesiones().filter(s => s.estado==='completada'||s.estado==='rechazada'||s.estado==='cancelada');
     const cont = document.getElementById('historial-cont');
-    if (!hist.length) { cont.innerHTML = '<div class="empty-panel"><div style="font-size:40px">??</div><div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800;color:#1A1A2E;margin:10px 0 6px;">Sin historial a�n</div></div>'; return; }
+    if (!hist.length) { cont.innerHTML = '<div class="empty-panel"><div style="font-size:40px">??</div><div style="font-family:Syne,sans-serif;font-size:16px;font-weight:800;color:#1A1A2E;margin:10px 0 6px;">Sin historial aï¿½n</div></div>'; return; }
     cont.innerHTML = [...hist].reverse().map(s => `
       <div class="historial-row">
         <div class="hr-info">
           <div class="hr-nombre">${s.materia}</div>
-          <div class="hr-meta">?? ${s.fecha} � $${s.precio}/hr</div>
+          <div class="hr-meta">?? ${s.fecha} ï¿½ $${s.precio}/hr</div>
         </div>
         ${estadoBadge(s.estado)}
       </div>`).join('');
@@ -228,13 +228,13 @@
         <div style="width:60px;height:60px;border-radius:50%;background:${perfil.color};display:flex;align-items:center;justify-content:center;font-family:Syne,sans-serif;font-size:20px;font-weight:800;color:white;">${perfil.avatar}</div>
         <div>
           <div style="font-family:Syne,sans-serif;font-size:18px;font-weight:800;color:#1A1A2E;">${perfil.nombre}</div>
-          <div style="font-size:13px;color:#6B6B80;">${perfil.carrera} � ${perfil.semestre} � $${perfil.precio}/hr</div>
+          <div style="font-size:13px;color:#6B6B80;">${perfil.carrera} ï¿½ ${perfil.semestre} ï¿½ $${perfil.precio}/hr</div>
         </div>
       </div>
       <p style="font-size:13px;color:#6B6B80;line-height:1.6;margin-bottom:16px;">${perfil.descripcion}</p>
       <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">${perfil.materias.map(m=>'<span style="background:#FFF0E0;color:#D96A08;padding:5px 12px;border-radius:100px;font-size:12px;font-weight:600;">'+m+'</span>').join('')}</div>
-      <div style="font-size:13px;color:#6B6B80;margin-bottom:12px;">${modalidadLabel(perfil.modalidad)} � ${perfil.ubicacion}</div>
-      <div style="font-size:12px;color:#16A34A;padding:10px 14px;background:#DCFCE7;border-radius:8px;">?? Tu WhatsApp (+52${perfil.whatsapp}) solo se revela cuando aceptas una sesi�n</div>
+      <div style="font-size:13px;color:#6B6B80;margin-bottom:12px;">${modalidadLabel(perfil.modalidad)} ï¿½ ${perfil.ubicacion}</div>
+      <div style="font-size:12px;color:#16A34A;padding:10px 14px;background:#DCFCE7;border-radius:8px;">?? Tu WhatsApp (+52${perfil.whatsapp}) solo se revela cuando aceptas una sesiï¿½n</div>
       <div style="margin-top:16px;"><a href="ser-tutor.html" style="font-size:13px;color:#F5841F;font-weight:600;">?? Editar perfil</a></div>
     </div>`;
   }
@@ -246,7 +246,7 @@
       document.getElementById('sb-name').textContent = perfil.nombre;
       const total = getMisSesiones().filter(s=>s.estado==='completada'||s.estado==='aceptada').length;
       const ganado = getMisSesiones().filter(s=>s.estado==='completada'||s.estado==='aceptada').reduce((a,s)=>a+s.precio,0);
-      document.getElementById('sb-stats').textContent = total+' sesiones � $'+ganado+' ganados';
+      document.getElementById('sb-stats').textContent = total+' sesiones ï¿½ $'+ganado+' ganados';
     }
     const sols = getMisSesiones().filter(s=>s.estado==='pendiente').length;
     const badge = document.getElementById('badge-sol');
@@ -255,5 +255,8 @@
 
   document.addEventListener('DOMContentLoaded', () => { renderSolicitudes(); renderSidebar(); });
   </script>
+  <script src="../../js/main.js"></script>
 </body>
 </html>
+
+

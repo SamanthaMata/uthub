@@ -347,12 +347,32 @@ function resaltarModuloFavorito(modulo) {
     card.style.border = '2px solid var(--ut-orange)';
   }
 }
+
+function getStoredUser() {
+  try {
+    return JSON.parse(localStorage.getItem('uthub_user') || '{}');
+  } catch {
+    return {};
+  }
+}
+
+function pageHref(pagePath) {
+  const path = window.location.pathname.replace(/\\/g, '/');
+
+  if (path.includes('/pages/')) {
+    const afterPages = path.split('/pages/')[1] || '';
+    const depth = Math.max(0, afterPages.split('/').length - 1);
+    return `${'../'.repeat(depth)}${pagePath}`;
+  }
+
+  return `pages/${pagePath}`;
+}
+
 function initUserUI() {
-  const user = JSON.parse(localStorage.getItem("uthub_user"));
-  if (!user) return;
+  const user = getStoredUser();
+  if (!user?.nombre) return;
 
   const fullName = `${user.nombre} ${user.apellido || ""}`.trim();
-
   const initials = getInitials(fullName);
 
   const userNameEl = document.getElementById("user-name");
@@ -361,11 +381,12 @@ function initUserUI() {
 
   if (userNameEl) userNameEl.textContent = fullName;
   if (userInitialsEl) userInitialsEl.textContent = initials;
-  if (welcomeNameEl) userNombreEl.textContent = user.nombre; // solo nombre en welcome
+  if (welcomeNameEl) welcomeNameEl.textContent = user.nombre;
 }
 
 function getInitials(nombreCompleto) {
-  const partes = nombreCompleto.split(" ");
+  const partes = String(nombreCompleto || '').trim().split(/\s+/).filter(Boolean);
+  if (partes.length === 0) return 'UT';
   
   if (partes.length >= 2) {
     return (partes[0][0] + partes[1][0]).toUpperCase();
@@ -373,34 +394,60 @@ function getInitials(nombreCompleto) {
   
   return partes[0][0].toUpperCase();
 }
+
+function closeUserDropdown(dropdown) {
+  if (!dropdown) return;
+  dropdown.style.display = 'none';
+  dropdown.classList.remove('active', 'is-open');
+}
+
+function logoutUthub() {
+  localStorage.removeItem('uthub_token');
+  localStorage.removeItem('uthub_user');
+  window.location.href = pageHref('auth/login.html');
+}
+
 function initUserMenu() {
   const userBtn = document.getElementById("user-menu-btn");
-  const dropdown = document.getElementById("user-dropdown");
-  const logoutBtn = document.getElementById("logout-btn");
+  if (!userBtn) return;
+
+  let dropdown = document.getElementById("user-dropdown");
+  if (!dropdown) {
+    dropdown = document.createElement('div');
+    dropdown.id = 'user-dropdown';
+    dropdown.className = 'user-dropdown dropdown-menu';
+    userBtn.insertAdjacentElement('afterend', dropdown);
+  }
+
+  dropdown.innerHTML = `
+    <a href="${pageHref('usuario/perfil.html')}" class="dropdown-item">Mi Perfil</a>
+    <a href="${pageHref('usuario/perfil.html')}" class="dropdown-item">Configuración</a>
+    <a href="${pageHref('comida/pedidos.html')}" class="dropdown-item">Mis Pedidos</a>
+    <a href="${pageHref('comida/mi-tienda.html')}" class="dropdown-item">Mi Tienda</a>
+    <button type="button" class="dropdown-item logout-btn" id="logout-btn">Cerrar Sesión</button>
+  `;
 
   if (userBtn && dropdown) {
-    userBtn.addEventListener("click", () => {
-      dropdown.style.display =
-        dropdown.style.display === "block" ? "none" : "block";
+    userBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const isOpen = dropdown.style.display === "block" || dropdown.classList.contains('active') || dropdown.classList.contains('is-open');
+      dropdown.style.display = isOpen ? "none" : "block";
+      dropdown.classList.toggle('active', !isOpen);
+      dropdown.classList.toggle('is-open', !isOpen);
     });
 
     document.addEventListener("click", (e) => {
       if (!userBtn.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.style.display = "none";
+        closeUserDropdown(dropdown);
       }
     });
   }
 
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("uthub_user");
-      window.location.href = window.location.origin + '/pages/auth/login.html';
-    });
-  }
+  dropdown.querySelector('#logout-btn')?.addEventListener('click', logoutUthub);
 }
 
 function redirigirLogin() {
-  window.location.href = `${window.location.origin}/pages/auth/login.html`;
+  window.location.href = pageHref('auth/login.html');
 }
 
 function protegerRuta() {
@@ -421,7 +468,7 @@ function protegerRuta() {
 
   // Si NO es pública y NO hay sesión → redirigir
   if (!esPublica && (!token || !user)) {
-    window.location.href = `${window.location.origin}/pages/auth/login.html`;
+    redirigirLogin();
   }
 }
 // ──── INICIALIZACIÓN ────

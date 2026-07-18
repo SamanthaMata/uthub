@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -16,9 +16,9 @@
       <a href="../../index.html" class="logo"><span class="logo-ut">UT</span><span class="logo-hub">hub</span></a>
       <nav class="nav">
         <ul class="nav-list">
-          <li><a href="../auth/dashboard.html" class="nav-link">Dashboard</a></li>
+          <li><a href="../dashboard.html" class="nav-link">Dashboard</a></li>
           <li><a href="../comida/tiendas.html" class="nav-link">?? Comida</a></li>
-          <li><a href="../tutorias/buscar.html" class="nav-link">?? Tutor�as</a></li>
+          <li><a href="../tutorias/buscar.html" class="nav-link">?? Tutorï¿½as</a></li>
           <li><a href="../libros/catalogo.html" class="nav-link">?? Libros</a></li>
           <li><a href="explorar.html" class="nav-link active">?? Servicios</a></li>
         </ul>
@@ -65,7 +65,7 @@
       document.title = s.titulo + ' - UThub';
       document.getElementById('bc-titulo').textContent = s.titulo;
 
-      const waMsg = encodeURIComponent(`Hola ${s.freelancer.nombre.split(' ')[0]}, vi tu servicio *"${s.titulo}"* en UThub y me interesa contratarte. �Est� disponible?`);
+      const waMsg = encodeURIComponent(`Hola ${s.freelancer.nombre.split(' ')[0]}, vi tu servicio *"${s.titulo}"* en UThub y me interesa contratarte. ï¿½Estï¿½ disponible?`);
 
       root.innerHTML = `
         <div class="servicio-detail-layout">
@@ -83,11 +83,11 @@
                 <div style="width:56px;height:56px;border-radius:50%;background:${s.freelancer.color};display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:white;">${s.freelancer.iniciales}</div>
                 <div>
                   <div style="font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:#1A1A2E;">${s.freelancer.nombre}</div>
-                  <div style="font-size:13px;color:#6B6B80;">${s.freelancer.carrera} � ${s.freelancer.semestre} semestre</div>
+                  <div style="font-size:13px;color:#6B6B80;">${s.freelancer.carrera} ï¿½ ${s.freelancer.semestre} semestre</div>
                   <div style="display:flex;align-items:center;gap:4px;margin-top:4px;font-size:13px;">
                     <span style="color:#F5841F;">${ServiciosUI.renderStars(s.calificacion)}</span>
                     <span style="font-weight:600;">${s.calificacion > 0 ? s.calificacion.toFixed(1) : 'Nuevo'}</span>
-                    <span style="color:#6B6B80;">(${s.rese�as} rese�as � ${s.trabajos} trabajos)</span>
+                    <span style="color:#6B6B80;">(${s.resenas} resenas ï¿½ ${s.trabajos} trabajos)</span>
                   </div>
                 </div>
               </div>
@@ -103,12 +103,12 @@
               <h3 style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;margin-bottom:16px;">Paquetes disponibles</h3>
               <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
                 ${[
-                  { nombre: 'B�sico', precio: s.precioBasico, entrega: s.entregaBasico, desc: 'Servicio esencial con las caracter�sticas principales.' },
-                  { nombre: 'Est�ndar', precio: s.precio, entrega: s.entrega, desc: 'La opci�n m�s popular. Incluye revisiones y soporte.' },
-                  { nombre: 'Premium', precio: s.precioPremium, entrega: s.entregaPremium, desc: 'M�xima calidad, entrega express y dedicaci�n completa.' }
+                  { nombre: 'Bï¿½sico', precio: s.precioBasico, entrega: s.entregaBasico, desc: 'Servicio esencial con las caracterï¿½sticas principales.' },
+                  { nombre: 'Estï¿½ndar', precio: s.precio, entrega: s.entrega, desc: 'La opciï¿½n mï¿½s popular. Incluye revisiones y soporte.' },
+                  { nombre: 'Premium', precio: s.precioPremium, entrega: s.entregaPremium, desc: 'Mï¿½xima calidad, entrega express y dedicaciï¿½n completa.' }
                 ].map((p, i) => `
                 <div style="border:${i===1?'2px solid #F5841F':'1.5px solid #E8E4DE'};border-radius:14px;padding:16px;background:${i===1?'#FFF0E0':'white'};position:relative;">
-                  ${i===1 ? '<span style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#F5841F;color:white;font-size:10px;font-weight:800;padding:3px 10px;border-radius:100px;white-space:nowrap;">M�s popular</span>' : ''}
+                  ${i===1 ? '<span style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#F5841F;color:white;font-size:10px;font-weight:800;padding:3px 10px;border-radius:100px;white-space:nowrap;">Mï¿½s popular</span>' : ''}
                   <div style="font-family:\'Syne\',sans-serif;font-size:13px;font-weight:800;color:#1A1A2E;margin-bottom:6px;">${p.nombre}</div>
                   <div style="font-family:\'Syne\',sans-serif;font-size:22px;font-weight:800;color:#F5841F;margin-bottom:4px;">$${p.precio}</div>
                   <div style="font-size:11px;color:#6B6B80;margin-bottom:8px;">? Entrega en ${p.entrega}</div>
@@ -122,7 +122,7 @@
           <div>
             <div class="contratar-card">
               <div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#F5841F;margin-bottom:4px;">
-                $${s.precio} <span style="font-size:13px;font-weight:400;color:#6B6B80;">/ paquete est�ndar</span>
+                $${s.precio} <span style="font-size:13px;font-weight:400;color:#6B6B80;">/ paquete estï¿½ndar</span>
               </div>
 
               <div class="entrega-info">
@@ -133,7 +133,7 @@
                 ?? Contratar por WhatsApp
               </a>
 
-              <button onclick="ServiciosUI.serviciosToast('�Guardado en favoritos!','success')" style="display:block;width:100%;padding:12px;background:#F7F4F0;color:#1A1A2E;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:16px;transition:all .2s;" onmouseover="this.style.background='#EDE8E0'" onmouseout="this.style.background='#F7F4F0'">
+              <button onclick="ServiciosUI.serviciosToast('ï¿½Guardado en favoritos!','success')" style="display:block;width:100%;padding:12px;background:#F7F4F0;color:#1A1A2E;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:16px;transition:all .2s;" onmouseover="this.style.background='#EDE8E0'" onmouseout="this.style.background='#F7F4F0'">
                 ? Guardar servicio
               </button>
 
@@ -152,13 +152,18 @@
 
             <!-- Otros servicios del freelancer -->
             <div style="background:white;border-radius:16px;padding:20px;margin-top:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);">
-              <p style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:8px;">M�s de ${s.freelancer.nombre.split(' ')[0]}</p>
-              <p style="font-size:12px;color:#6B6B80;margin-bottom:10px;">Preg�ntale por otros servicios que puede ofrecer.</p>
+              <p style="font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:8px;">Mï¿½s de ${s.freelancer.nombre.split(' ')[0]}</p>
+              <p style="font-size:12px;color:#6B6B80;margin-bottom:10px;">Pregï¿½ntale por otros servicios que puede ofrecer.</p>
               <a href="explorar.html" style="font-size:13px;color:#F5841F;font-weight:600;text-decoration:none;">Ver todos los servicios ?</a>
             </div>
           </div>
         </div>`;
     });
   </script>
+  <script src="../../js/main.js"></script>
 </body>
 </html>
+
+
+
+

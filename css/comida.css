@@ -1,8 +1,8 @@
 /* ============================================
-   UTHUB - M�DULO DE COMIDA
+   UTHUB - MDULO DE COMIDA
    ============================================ */
 
-/* ---- P�GINA GENERAL ---- */
+/* ---- PGINA GENERAL ---- */
 .main-content {
   padding: 40px 0 80px;
   min-height: calc(100vh - 200px);
@@ -385,7 +385,7 @@
   color: var(--ut-text-s);
 }
 
-/* ---- MEN� ---- */
+/* ---- MEN ---- */
 .menu-container {
   display: grid;
   grid-template-columns: 250px 1fr;
@@ -693,6 +693,130 @@
   z-index: 1;
 }
 
+.campus-static-map {
+  position: relative;
+  width: 100%;
+  min-height: 330px;
+  overflow: hidden;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at 18% 78%, rgba(34, 197, 94, .18) 0 18%, transparent 19%),
+    radial-gradient(circle at 82% 18%, rgba(245, 132, 31, .16) 0 16%, transparent 17%),
+    linear-gradient(135deg, #FFF8EE 0%, #F7F4F0 42%, #E8F4EF 100%);
+}
+
+.campus-static-map::before,
+.campus-static-map::after {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  border: 1px dashed rgba(26, 26, 46, .08);
+  border-radius: 22px;
+}
+
+.campus-static-map::after {
+  inset: 58px 74px;
+  border-style: solid;
+  transform: rotate(-8deg);
+}
+
+.campus-static-label {
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  z-index: 2;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .86);
+  color: var(--ut-text);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 8px 22px rgba(26, 26, 46, .08);
+}
+
+.campus-static-road {
+  position: absolute;
+  z-index: 1;
+  background: rgba(255, 255, 255, .72);
+  box-shadow: 0 8px 18px rgba(26, 26, 46, .06);
+}
+
+.campus-static-road.road-main {
+  left: 9%;
+  right: 8%;
+  top: 51%;
+  height: 24px;
+  border-radius: 999px;
+  transform: rotate(-10deg);
+}
+
+.campus-static-road.road-cross {
+  left: 47%;
+  top: 14%;
+  width: 22px;
+  height: 72%;
+  border-radius: 999px;
+  transform: rotate(18deg);
+}
+
+.campus-static-pin {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  color: var(--ut-text);
+  cursor: pointer;
+  transform: translate(-14px, -14px);
+}
+
+.campus-static-pin-dot {
+  width: 28px;
+  height: 28px;
+  border: 4px solid white;
+  border-radius: 999px;
+  background: var(--ut-orange);
+  box-shadow: 0 10px 22px rgba(245, 132, 31, .34);
+}
+
+.campus-static-pin-label {
+  max-width: 150px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .9);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 8px 22px rgba(26, 26, 46, .1);
+}
+
+.campus-static-pin.active .campus-static-pin-dot,
+.campus-static-pin:hover .campus-static-pin-dot {
+  background: var(--ut-dark);
+  transform: scale(1.08);
+}
+
+.campus-static-pin.active .campus-static-pin-label,
+.campus-static-pin:hover .campus-static-pin-label {
+  color: var(--ut-orange-d);
+}
+
+.campus-static-empty {
+  display: grid;
+  min-height: 220px;
+  place-items: center;
+  padding: 24px;
+  color: var(--ut-text-s);
+  text-align: center;
+}
+
+.delivery-static-map {
+  min-height: 320px;
+}
+
 .campus-map-points {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -768,8 +892,6 @@
 
 .wiki-link:hover { background: var(--ut-slate); transform: translateY(-1px); }
 
-.leaflet-popup-content-wrapper { border-radius: 14px; }
-.leaflet-popup-content { font-family: var(--font-body); color: var(--ut-text); }
 /* ---- EMPTY STATE ---- */
 .empty-state {
   text-align: center;
