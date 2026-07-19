@@ -151,6 +151,23 @@ router.get('/mis-tiendas', auth, async (req, res) => {
   }
 });
 
+router.get('/mi-tienda', auth, async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      'SELECT * FROM tiendas WHERE usuario_id = ? ORDER BY id DESC LIMIT 1',
+      [req.usuario.id]
+    );
+    const tienda = normalizeTienda(rows[0]);
+    if (!tienda) {
+      return res.status(404).json({ error: 'Tienda no encontrada' });
+    }
+    res.json(tienda);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al obtener tu tienda' });
+  }
+});
+
 router.get('/tienda/:id', async (req, res) => {
   try {
     const tienda = await getStoreById(req.params.id);

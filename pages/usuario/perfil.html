@@ -13,6 +13,40 @@
       min-height: 100vh;
     }
 
+    .header .nav.container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .header .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .header .user-menu {
+      margin-left: auto;
+    }
+
+    .header .user-menu-btn {
+      min-height: 52px;
+    }
+
+    .header .user-menu-btn::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg) translateY(-2px);
+      margin-left: 4px;
+    }
+
     .profile-page {
       max-width: 1080px;
       margin: 110px auto 48px;
@@ -180,7 +214,7 @@
       <ul class="nav-menu" id="nav-menu">
         <li><a href="../dashboard.html" class="nav-link">Dashboard</a></li>
         <li><a href="../comida/tiendas.html" class="nav-link">Comida</a></li>
-        <li><a href="../tutorias/explorar.html" class="nav-link">Tutorías</a></li>
+        <li><a href="../tutorias/buscar.html" class="nav-link">Tutorías</a></li>
         <li><a href="../libros/catalogo.html" class="nav-link">Libros</a></li>
         <li><a href="../servicios/explorar.html" class="nav-link">Servicios</a></li>
       </ul>

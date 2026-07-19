@@ -18,7 +18,7 @@ router.post('/register', async (req, res) => {
       [email, matricula]
     );
     if (existe.length > 0) {
-      return res.status(400).json({ error: 'El email o matr�cula ya est�n registrados' });
+      return res.status(400).json({ error: 'El email o matrícula ya están registrados' });
     }
 
     const hash = await bcrypt.hash(password, 12);
@@ -38,7 +38,7 @@ router.post('/register', async (req, res) => {
     usuario: { 
     id: result.insertId, 
     nombre, 
-    apellido, // ?? ESTE
+    apellido,
     email 
   } 
 });
@@ -52,7 +52,7 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ error: 'Email y contrase�a requeridos' });
+    return res.status(400).json({ error: 'Email y contraseña requeridos' });
   }
 
   try {
@@ -81,7 +81,7 @@ router.post('/login', async (req, res) => {
     usuario: { 
     id: usuario.id, 
     nombre: usuario.nombre, 
-    apellido: usuario.apellido, // ?? ESTE
+    apellido: usuario.apellido,
     email: usuario.email, 
     rol: usuario.rol 
   } 

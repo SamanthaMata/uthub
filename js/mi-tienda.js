@@ -33,6 +33,14 @@ let productosCache = [];
 let pedidosCache = [];
 let editingProductId = null;
 
+class MiTiendaApiError extends Error {
+  constructor(message, status) {
+    super(message);
+    this.name = 'MiTiendaApiError';
+    this.status = status;
+  }
+}
+
 function tiendaEscapeHtml(value) {
   return String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -63,10 +71,22 @@ async function miTiendaApiJson(url, options = {}) {
   }
 
   if (!response.ok) {
-    throw new Error(data?.error || data?.message || `Error HTTP ${response.status}`);
+    throw new MiTiendaApiError(data?.error || data?.message || `Error HTTP ${response.status}`, response.status);
   }
 
   return data;
+}
+
+async function miTiendaApiOptional(url, options = {}, fallback = null) {
+  try {
+    return await miTiendaApiJson(url, options);
+  } catch (error) {
+    if (error.status === 404) {
+      console.warn('Ruta opcional de Mi Tienda no disponible:', url);
+      return fallback;
+    }
+    throw error;
+  }
 }
 
 function defaultHorario() {
@@ -112,9 +132,20 @@ function getStoreIcon() {
 }
 
 async function findOrCreateStore() {
-  const stores = await miTiendaApiJson(`${MI_TIENDA_API_URL}/comida/mis-tiendas`, {
+  let stores = await miTiendaApiOptional(`${MI_TIENDA_API_URL}/comida/mis-tiendas`, {
     headers: miTiendaHeaders()
-  });
+  }, null);
+
+  if (stores == null) {
+    const singleStore = await miTiendaApiOptional(`${MI_TIENDA_API_URL}/comida/mi-tienda`, {
+      headers: miTiendaHeaders()
+    }, null);
+    stores = singleStore ? [singleStore] : [];
+  }
+
+  if (!Array.isArray(stores)) {
+    stores = stores.tiendas || stores.stores || stores.data || [];
+  }
 
   if (stores.length > 0) {
     return stores[0];
@@ -140,10 +171,10 @@ async function reloadStoreData() {
   currentStore = await findOrCreateStore();
 
   const [productos, pedidos] = await Promise.all([
-    miTiendaApiJson(`${MI_TIENDA_API_URL}/comida/productos/${currentStore.id}`),
-    miTiendaApiJson(`${MI_TIENDA_API_URL}/comida/tienda/${currentStore.id}/pedidos`, {
+    miTiendaApiOptional(`${MI_TIENDA_API_URL}/comida/productos/${currentStore.id}`, {}, []),
+    miTiendaApiOptional(`${MI_TIENDA_API_URL}/comida/tienda/${currentStore.id}/pedidos`, {
       headers: miTiendaHeaders()
-    })
+    }, [])
   ]);
 
   productosCache = productos || [];
@@ -639,6 +670,10 @@ async function initMiTienda() {
     await reloadStoreData();
     renderResumen();
     renderHorario();
+    const requestedPanel = new URLSearchParams(window.location.search).get('panel') || window.location.hash.replace('#', '');
+    if (requestedPanel && document.getElementById(`panel-${requestedPanel}`)) {
+      showPanel(requestedPanel);
+    }
   } catch (error) {
     console.error(error);
     const main = document.querySelector('.vendor-main');

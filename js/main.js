@@ -374,9 +374,10 @@ function initUserUI() {
 
   const fullName = `${user.nombre} ${user.apellido || ""}`.trim();
   const initials = getInitials(fullName);
+  const userMenu = document.querySelector('.user-menu');
 
-  const userNameEl = document.getElementById("user-name");
-  const userInitialsEl = document.getElementById("user-initials");
+  const userNameEl = document.getElementById("user-name") || userMenu?.querySelector(".user-name");
+  const userInitialsEl = document.getElementById("user-initials") || userMenu?.querySelector(".user-avatar span");
   const welcomeNameEl = document.getElementById("welcome-name");
 
   if (userNameEl) userNameEl.textContent = fullName;
@@ -408,8 +409,10 @@ function logoutUthub() {
 }
 
 function initUserMenu() {
-  const userBtn = document.getElementById("user-menu-btn");
+  const userBtn = document.getElementById("user-menu-btn")
+    || document.querySelector(".user-menu .user-btn, .user-menu .user-menu-btn");
   if (!userBtn) return;
+  if (!userBtn.id) userBtn.id = "user-menu-btn";
 
   let dropdown = document.getElementById("user-dropdown");
   if (!dropdown) {
@@ -420,11 +423,45 @@ function initUserMenu() {
   }
 
   dropdown.innerHTML = `
-    <a href="${pageHref('usuario/perfil.html')}" class="dropdown-item">Mi Perfil</a>
-    <a href="${pageHref('usuario/perfil.html')}" class="dropdown-item">Configuración</a>
-    <a href="${pageHref('comida/pedidos.html')}" class="dropdown-item">Mis Pedidos</a>
-    <a href="${pageHref('comida/mi-tienda.html')}" class="dropdown-item">Mi Tienda</a>
-    <button type="button" class="dropdown-item logout-btn" id="logout-btn">Cerrar Sesión</button>
+    <a href="${pageHref('usuario/perfil.html')}" class="dropdown-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      Mi Perfil
+    </a>
+    <a href="${pageHref('usuario/perfil.html')}" class="dropdown-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1v.2a2 2 0 1 1-4 0V21a1.7 1.7 0 0 0-.4-1 1.7 1.7 0 0 0-1-.6 1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1-.4h-.2a2 2 0 1 1 0-4H3a1.7 1.7 0 0 0 1-.4 1.7 1.7 0 0 0 .6-1 1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1v-.2a2 2 0 1 1 4 0V3a1.7 1.7 0 0 0 .4 1 1.7 1.7 0 0 0 1 .6 1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.2.33.41.67.6 1h.2a2 2 0 1 1 0 4H20a1.7 1.7 0 0 0-.6 1z"></path>
+      </svg>
+      Configuración
+    </a>
+    <a href="${pageHref('comida/pedidos.html')}" class="dropdown-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+        <rect x="8" y="2" width="8" height="4" rx="1"></rect>
+        <path d="M8 12h8M8 16h5"></path>
+      </svg>
+      Mis Pedidos
+    </a>
+    <a href="${pageHref('comida/mi-tienda.html')}" class="dropdown-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7"></path>
+        <path d="M5 10v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10"></path>
+        <path d="M9 22V12h6v10"></path>
+      </svg>
+      Mi Tienda
+    </a>
+    <div class="dropdown-divider"></div>
+    <button type="button" class="dropdown-item logout-btn" id="logout-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+      </svg>
+      Cerrar Sesión
+    </button>
   `;
 
   if (userBtn && dropdown) {
