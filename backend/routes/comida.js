@@ -33,6 +33,65 @@ function normalizeTienda(row) {
   };
 }
 
+function isPlaceholderStore(row) {
+  if (!row) return false;
+  const nombre = String(row.nombre || '').trim().toLowerCase();
+  const descripcion = String(row.descripcion || '').trim().toLowerCase();
+  return nombre === 'mi tienda' && (!descripcion || descripcion === 'emprendimiento estudiantil uthub');
+}
+
+async function getAuthenticatedUserId(req) {
+  if (req.usuario?.id) {
+    return Number(req.usuario.id);
+  }
+
+  if (req.usuario?.email) {
+    const [rows] = await db.query('SELECT id FROM usuarios WHERE email = ? LIMIT 1', [req.usuario.email]);
+    if (rows[0]?.id) {
+      req.usuario.id = rows[0].id;
+      return Number(rows[0].id);
+    }
+  }
+
+  return null;
+}
+
+async function getMainStoreForUser(userId) {
+  const [rows] = await db.query(
+    `SELECT * FROM tiendas
+     WHERE usuario_id = ?
+     ORDER BY
+       CASE
+         WHEN LOWER(TRIM(COALESCE(nombre, ''))) = 'mi tienda'
+          AND LOWER(TRIM(COALESCE(descripcion, ''))) IN ('', 'emprendimiento estudiantil uthub')
+         THEN 1 ELSE 0
+       END,
+       id ASC
+     LIMIT 1`,
+    [userId]
+  );
+
+  if (rows[0]) return normalizeTienda(rows[0]);
+
+  const [legacyRows] = await db.query(
+    `SELECT *
+     FROM tiendas
+     WHERE usuario_id IS NULL
+       AND LOWER(TRIM(COALESCE(nombre, ''))) = 'mi tienda'
+     ORDER BY id ASC
+     LIMIT 1`
+  );
+
+  if (!legacyRows[0]) return null;
+
+  await db.query(
+    'UPDATE tiendas SET usuario_id = ? WHERE id = ? AND usuario_id IS NULL',
+    [userId, legacyRows[0].id]
+  );
+
+  return getStoreById(legacyRows[0].id);
+}
+
 function groupPedidos(rows) {
   const pedidos = new Map();
 
@@ -103,12 +162,41 @@ function canManageStore(user, store) {
   if (!store) return false;
   if (!user) return false;
   if (user.rol === 'admin') return true;
-  return Number(store.usuario_id) === Number(user.id);
+  if (user.id && Number(store.usuario_id) === Number(user.id)) return true;
+  return Boolean(
+    user.email
+    && store.usuario_email
+    && String(user.email).toLowerCase() === String(store.usuario_email).toLowerCase()
+  );
 }
 
 async function getStoreById(id) {
-  const [rows] = await db.query('SELECT * FROM tiendas WHERE id = ?', [id]);
+  const [rows] = await db.query(
+    `SELECT t.*, u.email AS usuario_email
+     FROM tiendas t
+     LEFT JOIN usuarios u ON u.id = t.usuario_id
+     WHERE t.id = ?`,
+    [id]
+  );
   return normalizeTienda(rows[0]);
+}
+
+async function getManageableStore(req, id) {
+  let store = await getStoreById(id);
+  if (!store) return null;
+
+  if (store.usuario_id == null && isPlaceholderStore(store)) {
+    const userId = await getAuthenticatedUserId(req);
+    if (userId) {
+      await db.query(
+        'UPDATE tiendas SET usuario_id = ? WHERE id = ? AND usuario_id IS NULL',
+        [userId, store.id]
+      );
+      store = await getStoreById(id);
+    }
+  }
+
+  return store;
 }
 
 async function getOwnershipInfoByPedidoId(pedidoId) {
@@ -130,8 +218,27 @@ router.get('/ubicaciones', (req, res) => {
 // Tiendas públicas
 router.get('/tiendas', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM tiendas ORDER BY id DESC');
-    res.json(rows.map(normalizeTienda));
+    const [rows] = await db.query(
+      `SELECT t.*, COALESCE(pc.total_productos, 0) AS total_productos
+       FROM tiendas t
+       LEFT JOIN (
+         SELECT tienda_id, COUNT(*) AS total_productos
+         FROM productos
+         GROUP BY tienda_id
+       ) pc ON pc.tienda_id = t.id
+       WHERE NOT (
+         LOWER(TRIM(COALESCE(t.nombre, ''))) = 'mi tienda'
+         AND LOWER(TRIM(COALESCE(t.descripcion, ''))) IN ('', 'emprendimiento estudiantil uthub')
+         AND COALESCE(pc.total_productos, 0) = 0
+       )
+       ORDER BY t.id DESC`
+    );
+
+    res.json(rows.map((row) => {
+      const tienda = normalizeTienda(row);
+      delete tienda.total_productos;
+      return tienda;
+    }));
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al obtener tiendas' });
@@ -140,11 +247,13 @@ router.get('/tiendas', async (req, res) => {
 
 router.get('/mis-tiendas', auth, async (req, res) => {
   try {
-    const [rows] = await db.query(
-      'SELECT * FROM tiendas WHERE usuario_id = ? ORDER BY id DESC',
-      [req.usuario.id]
-    );
-    res.json(rows.map(normalizeTienda));
+    const userId = await getAuthenticatedUserId(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'No se pudo identificar al usuario' });
+    }
+
+    const tienda = await getMainStoreForUser(userId);
+    res.json(tienda ? [tienda] : []);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al obtener tus tiendas' });
@@ -153,11 +262,12 @@ router.get('/mis-tiendas', auth, async (req, res) => {
 
 router.get('/mi-tienda', auth, async (req, res) => {
   try {
-    const [rows] = await db.query(
-      'SELECT * FROM tiendas WHERE usuario_id = ? ORDER BY id DESC LIMIT 1',
-      [req.usuario.id]
-    );
-    const tienda = normalizeTienda(rows[0]);
+    const userId = await getAuthenticatedUserId(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'No se pudo identificar al usuario' });
+    }
+
+    const tienda = await getMainStoreForUser(userId);
     if (!tienda) {
       return res.status(404).json({ error: 'Tienda no encontrada' });
     }
@@ -183,6 +293,16 @@ router.get('/tienda/:id', async (req, res) => {
 
 router.post('/tienda', auth, async (req, res) => {
   try {
+    const userId = await getAuthenticatedUserId(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'No se pudo identificar al usuario' });
+    }
+
+    const existingStore = await getMainStoreForUser(userId);
+    if (existingStore) {
+      return res.status(200).json({ ok: true, tienda: existingStore, reused: true });
+    }
+
     const {
       nombre = 'Mi Tienda',
       descripcion = '',
@@ -199,7 +319,7 @@ router.post('/tienda', auth, async (req, res) => {
     const [result] = await db.query(
       `INSERT INTO tiendas (nombre, descripcion, imagen, categoria, horario, abierta, usuario_id)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [nombre, descripcionFinal, imagen || null, categoria || 'otro', horarioValue, abierta ? 1 : 0, req.usuario.id]
+      [nombre, descripcionFinal, imagen || null, categoria || 'otro', horarioValue, abierta ? 1 : 0, userId]
     );
 
     const tienda = await getStoreById(result.insertId);
@@ -212,7 +332,7 @@ router.post('/tienda', auth, async (req, res) => {
 
 router.put('/tienda/:id', auth, async (req, res) => {
   try {
-    const tienda = await getStoreById(req.params.id);
+    const tienda = await getManageableStore(req, req.params.id);
     if (!tienda) {
       return res.status(404).json({ error: 'Tienda no encontrada' });
     }
@@ -256,7 +376,7 @@ router.put('/tienda/:id', auth, async (req, res) => {
 
 router.delete('/tienda/:id', auth, async (req, res) => {
   try {
-    const tienda = await getStoreById(req.params.id);
+    const tienda = await getManageableStore(req, req.params.id);
     if (!tienda) {
       return res.status(404).json({ error: 'Tienda no encontrada' });
     }
@@ -293,7 +413,7 @@ router.post('/producto', auth, async (req, res) => {
       return res.status(400).json({ error: 'La tienda es requerida' });
     }
 
-    const tienda = await getStoreById(tiendaId);
+    const tienda = await getManageableStore(req, tiendaId);
     if (!tienda) {
       return res.status(404).json({ error: 'Tienda no encontrada' });
     }
@@ -337,7 +457,7 @@ router.put('/producto/:id', auth, async (req, res) => {
       return res.status(404).json({ error: 'Producto no encontrado' });
     }
 
-    const tienda = await getStoreById(producto.tienda_id);
+    const tienda = await getManageableStore(req, producto.tienda_id);
     if (!canManageStore(req.usuario, tienda)) {
       return res.status(403).json({ error: 'No tienes permiso para editar este producto' });
     }
@@ -382,7 +502,7 @@ router.delete('/producto/:id', auth, async (req, res) => {
       return res.status(404).json({ error: 'Producto no encontrado' });
     }
 
-    const tienda = await getStoreById(producto.tienda_id);
+    const tienda = await getManageableStore(req, producto.tienda_id);
     if (!canManageStore(req.usuario, tienda)) {
       return res.status(403).json({ error: 'No tienes permiso para eliminar este producto' });
     }
@@ -399,6 +519,11 @@ router.delete('/producto/:id', auth, async (req, res) => {
 router.post('/pedido', auth, async (req, res) => {
   const conn = await db.getConnection();
   try {
+    const userId = await getAuthenticatedUserId(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'No se pudo identificar al usuario' });
+    }
+
     const items = Array.isArray(req.body.items) ? req.body.items : [];
     const ubicacion = (req.body.ubicacion || '').trim();
     const instrucciones = (req.body.instrucciones || '').trim();
@@ -457,7 +582,7 @@ router.post('/pedido', auth, async (req, res) => {
       `INSERT INTO pedidos (usuario_id, tienda_id, tienda_nombre, ubicacion, instrucciones, total, estado)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [
-        req.usuario.id,
+        userId,
         tiendaId,
         tiendaNombre,
         ubicacion,
@@ -481,7 +606,7 @@ router.post('/pedido', auth, async (req, res) => {
       ok: true,
       pedido: {
         id: pedidoResult.insertId,
-        usuario_id: req.usuario.id,
+        usuario_id: userId,
         tienda_id: tiendaId,
         tienda_nombre: tiendaNombre,
         ubicacion,
@@ -508,6 +633,11 @@ router.post('/pedido', auth, async (req, res) => {
 
 router.get('/pedidos/mios', auth, async (req, res) => {
   try {
+    const userId = await getAuthenticatedUserId(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'No se pudo identificar al usuario' });
+    }
+
     const [rows] = await db.query(
       `SELECT p.id, p.usuario_id, p.tienda_id, p.tienda_nombre, p.ubicacion, p.instrucciones,
               p.total, p.estado, p.created_at,
@@ -516,7 +646,7 @@ router.get('/pedidos/mios', auth, async (req, res) => {
        LEFT JOIN detalle_pedido d ON d.pedido_id = p.id
        WHERE p.usuario_id = ?
        ORDER BY p.created_at DESC, p.id DESC, d.id ASC`,
-      [req.usuario.id]
+      [userId]
     );
 
     res.json(groupPedidos(rows));
@@ -528,7 +658,7 @@ router.get('/pedidos/mios', auth, async (req, res) => {
 
 router.get('/tienda/:id/pedidos', auth, async (req, res) => {
   try {
-    const tienda = await getStoreById(req.params.id);
+    const tienda = await getManageableStore(req, req.params.id);
     if (!tienda) {
       return res.status(404).json({ error: 'Tienda no encontrada' });
     }
@@ -561,7 +691,7 @@ router.put('/pedido/:id/estado', auth, async (req, res) => {
       return res.status(404).json({ error: 'Pedido no encontrado' });
     }
 
-    const tienda = info.tienda_id ? await getStoreById(info.tienda_id) : null;
+    const tienda = info.tienda_id ? await getManageableStore(req, info.tienda_id) : null;
     if (!canManageStore(req.usuario, tienda)) {
       return res.status(403).json({ error: 'No tienes permiso para modificar este pedido' });
     }
@@ -589,14 +719,19 @@ router.put('/pedido/:id/estado', auth, async (req, res) => {
 
 router.delete('/pedidos/mios', auth, async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT id FROM pedidos WHERE usuario_id = ?', [req.usuario.id]);
+    const userId = await getAuthenticatedUserId(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'No se pudo identificar al usuario' });
+    }
+
+    const [rows] = await db.query('SELECT id FROM pedidos WHERE usuario_id = ?', [userId]);
     const pedidoIds = rows.map((row) => row.id);
     if (pedidoIds.length === 0) {
       return res.json({ ok: true, removed: 0 });
     }
 
     await db.query('DELETE FROM detalle_pedido WHERE pedido_id IN (?)', [pedidoIds]);
-    await db.query('DELETE FROM pedidos WHERE usuario_id = ?', [req.usuario.id]);
+    await db.query('DELETE FROM pedidos WHERE usuario_id = ?', [userId]);
     res.json({ ok: true, removed: pedidoIds.length });
   } catch (error) {
     console.error(error);
