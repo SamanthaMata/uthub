@@ -131,34 +131,24 @@ function getStoreIcon() {
   return getStoreExtra().icono || 'UT';
 }
 
-function normalizeStoreResponse(data) {
-  if (!data) return null;
-  if (Array.isArray(data)) return data[0] || null;
-  if (data.tienda) return normalizeStoreResponse(data.tienda);
-  if (data.store) return normalizeStoreResponse(data.store);
-  if (data.tiendas) return normalizeStoreResponse(data.tiendas);
-  if (data.stores) return normalizeStoreResponse(data.stores);
-  if (data.data) return normalizeStoreResponse(data.data);
-  if (data.id) return data;
-  return null;
-}
-
 async function findOrCreateStore() {
   let stores = await miTiendaApiOptional(`${MI_TIENDA_API_URL}/comida/mis-tiendas`, {
     headers: miTiendaHeaders()
   }, null);
 
-  let store = normalizeStoreResponse(stores);
-
   if (stores == null) {
     const singleStore = await miTiendaApiOptional(`${MI_TIENDA_API_URL}/comida/mi-tienda`, {
       headers: miTiendaHeaders()
     }, null);
-    store = normalizeStoreResponse(singleStore);
+    stores = singleStore ? [singleStore] : [];
   }
 
-  if (store?.id) {
-    return store;
+  if (!Array.isArray(stores)) {
+    stores = stores.tiendas || stores.stores || stores.data || [];
+  }
+
+  if (stores.length > 0) {
+    return stores[0];
   }
 
   const created = await miTiendaApiJson(`${MI_TIENDA_API_URL}/comida/tienda`, {
@@ -174,19 +164,11 @@ async function findOrCreateStore() {
     })
   });
 
-  const createdStore = normalizeStoreResponse(created);
-  if (!createdStore?.id) {
-    throw new Error('El servidor no devolvió una tienda válida');
-  }
-
-  return createdStore;
+  return created.tienda;
 }
 
 async function reloadStoreData() {
   currentStore = await findOrCreateStore();
-  if (!currentStore?.id) {
-    throw new Error('No se encontró una tienda válida para tu usuario');
-  }
 
   const [productos, pedidos] = await Promise.all([
     miTiendaApiOptional(`${MI_TIENDA_API_URL}/comida/productos/${currentStore.id}`, {}, []),
