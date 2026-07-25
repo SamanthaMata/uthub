@@ -10,10 +10,7 @@ module.exports = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.usuario = {
-      ...decoded,
-      id: decoded.id || decoded.usuario_id || decoded.userId || decoded.uid
-    };
+    req.usuario = decoded;
     next();
   } catch (err) {
     res.status(401).json({ error: 'Token inválido o expirado' });
