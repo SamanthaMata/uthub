@@ -33,6 +33,47 @@ function normalizeTienda(row) {
   };
 }
 
+function isPlaceholderStore(row) {
+  if (!row) return false;
+  const nombre = String(row.nombre || '').trim().toLowerCase();
+  const descripcion = String(row.descripcion || '').trim().toLowerCase();
+  return nombre === 'mi tienda' && (!descripcion || descripcion === 'emprendimiento estudiantil uthub');
+}
+
+async function getAuthenticatedUserId(req) {
+  if (req.usuario?.id) {
+    return Number(req.usuario.id);
+  }
+
+  if (req.usuario?.email) {
+    const [rows] = await db.query('SELECT id FROM usuarios WHERE email = ? LIMIT 1', [req.usuario.email]);
+    if (rows[0]?.id) {
+      req.usuario.id = rows[0].id;
+      return Number(rows[0].id);
+    }
+  }
+
+  return null;
+}
+
+async function getMainStoreForUser(userId) {
+  const [rows] = await db.query(
+    `SELECT * FROM tiendas
+     WHERE usuario_id = ?
+     ORDER BY
+       CASE
+         WHEN LOWER(TRIM(COALESCE(nombre, ''))) = 'mi tienda'
+          AND LOWER(TRIM(COALESCE(descripcion, ''))) IN ('', 'emprendimiento estudiantil uthub')
+         THEN 1 ELSE 0
+       END,
+       id ASC
+     LIMIT 1`,
+    [userId]
+  );
+
+  return normalizeTienda(rows[0]);
+}
+
 function groupPedidos(rows) {
   const pedidos = new Map();
 
@@ -103,11 +144,22 @@ function canManageStore(user, store) {
   if (!store) return false;
   if (!user) return false;
   if (user.rol === 'admin') return true;
-  return Number(store.usuario_id) === Number(user.id);
+  if (user.id && Number(store.usuario_id) === Number(user.id)) return true;
+  return Boolean(
+    user.email
+    && store.usuario_email
+    && String(user.email).toLowerCase() === String(store.usuario_email).toLowerCase()
+  );
 }
 
 async function getStoreById(id) {
-  const [rows] = await db.query('SELECT * FROM tiendas WHERE id = ?', [id]);
+  const [rows] = await db.query(
+    `SELECT t.*, u.email AS usuario_email
+     FROM tiendas t
+     LEFT JOIN usuarios u ON u.id = t.usuario_id
+     WHERE t.id = ?`,
+    [id]
+  );
   return normalizeTienda(rows[0]);
 }
 
@@ -130,8 +182,27 @@ router.get('/ubicaciones', (req, res) => {
 // Tiendas públicas
 router.get('/tiendas', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM tiendas ORDER BY id DESC');
-    res.json(rows.map(normalizeTienda));
+    const [rows] = await db.query(
+      `SELECT t.*, COALESCE(pc.total_productos, 0) AS total_productos
+       FROM tiendas t
+       LEFT JOIN (
+         SELECT tienda_id, COUNT(*) AS total_productos
+         FROM productos
+         GROUP BY tienda_id
+       ) pc ON pc.tienda_id = t.id
+       WHERE NOT (
+         LOWER(TRIM(COALESCE(t.nombre, ''))) = 'mi tienda'
+         AND LOWER(TRIM(COALESCE(t.descripcion, ''))) IN ('', 'emprendimiento estudiantil uthub')
+         AND COALESCE(pc.total_productos, 0) = 0
+       )
+       ORDER BY t.id DESC`
+    );
+
+    res.json(rows.map((row) => {
+      const tienda = normalizeTienda(row);
+      delete tienda.total_productos;
+      return tienda;
+    }));
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al obtener tiendas' });
@@ -140,11 +211,13 @@ router.get('/tiendas', async (req, res) => {
 
 router.get('/mis-tiendas', auth, async (req, res) => {
   try {
-    const [rows] = await db.query(
-      'SELECT * FROM tiendas WHERE usuario_id = ? ORDER BY id DESC',
-      [req.usuario.id]
-    );
-    res.json(rows.map(normalizeTienda));
+    const userId = await getAuthenticatedUserId(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'No se pudo identificar al usuario' });
+    }
+
+    const tienda = await getMainStoreForUser(userId);
+    res.json(tienda ? [tienda] : []);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error al obtener tus tiendas' });
@@ -153,11 +226,12 @@ router.get('/mis-tiendas', auth, async (req, res) => {
 
 router.get('/mi-tienda', auth, async (req, res) => {
   try {
-    const [rows] = await db.query(
-      'SELECT * FROM tiendas WHERE usuario_id = ? ORDER BY id DESC LIMIT 1',
-      [req.usuario.id]
-    );
-    const tienda = normalizeTienda(rows[0]);
+    const userId = await getAuthenticatedUserId(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'No se pudo identificar al usuario' });
+    }
+
+    const tienda = await getMainStoreForUser(userId);
     if (!tienda) {
       return res.status(404).json({ error: 'Tienda no encontrada' });
     }
@@ -183,6 +257,16 @@ router.get('/tienda/:id', async (req, res) => {
 
 router.post('/tienda', auth, async (req, res) => {
   try {
+    const userId = await getAuthenticatedUserId(req);
+    if (!userId) {
+      return res.status(401).json({ error: 'No se pudo identificar al usuario' });
+    }
+
+    const existingStore = await getMainStoreForUser(userId);
+    if (existingStore) {
+      return res.status(200).json({ ok: true, tienda: existingStore, reused: true });
+    }
+
     const {
       nombre = 'Mi Tienda',
       descripcion = '',
@@ -199,7 +283,7 @@ router.post('/tienda', auth, async (req, res) => {
     const [result] = await db.query(
       `INSERT INTO tiendas (nombre, descripcion, imagen, categoria, horario, abierta, usuario_id)
        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [nombre, descripcionFinal, imagen || null, categoria || 'otro', horarioValue, abierta ? 1 : 0, req.usuario.id]
+      [nombre, descripcionFinal, imagen || null, categoria || 'otro', horarioValue, abierta ? 1 : 0, userId]
     );
 
     const tienda = await getStoreById(result.insertId);
